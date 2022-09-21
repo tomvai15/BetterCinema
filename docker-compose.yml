@@ -6,5 +6,3 @@ services:
     build:
       context: .
       dockerfile: src/BetterCinema.Api/Dockerfile
-  sqldata:
-    image: mcr.microsoft.com/mssql/server:2019-latest
