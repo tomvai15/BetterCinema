@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterCinema.Api", "src\Bet
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CEAD4795-9D8D-4771-A088-EE47AC914690}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{907B8597-921A-4B2A-885A-B44877A2A95A}"
-EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "BetterCinema.Portal", "src\BetterCinema.Portal\BetterCinema.Portal.esproj", "{9AD514DF-13A9-4C1C-8C65-40165197A8BB}"
 EndProject
 Global
@@ -21,10 +19,6 @@ Global
 		{8917C27D-42BA-451E-9B19-FDD97E213165}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8917C27D-42BA-451E-9B19-FDD97E213165}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8917C27D-42BA-451E-9B19-FDD97E213165}.Release|Any CPU.Build.0 = Release|Any CPU
-		{907B8597-921A-4B2A-885A-B44877A2A95A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{907B8597-921A-4B2A-885A-B44877A2A95A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{907B8597-921A-4B2A-885A-B44877A2A95A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{907B8597-921A-4B2A-885A-B44877A2A95A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9AD514DF-13A9-4C1C-8C65-40165197A8BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9AD514DF-13A9-4C1C-8C65-40165197A8BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AD514DF-13A9-4C1C-8C65-40165197A8BB}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
