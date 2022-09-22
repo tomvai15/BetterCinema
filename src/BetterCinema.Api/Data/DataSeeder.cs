@@ -10,7 +10,7 @@
 
             dbContext.Database.EnsureCreated();
 
-            dbContext.Theaters.Add(new Models.Theater { Name = "Test1"});
+            dbContext.Theaters.Add(new Models.Theater { Name = "Test1", Location="Location"});
 
             dbContext.SaveChanges();
         }

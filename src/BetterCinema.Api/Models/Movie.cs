@@ -7,6 +7,10 @@ namespace BetterCinema.Api.Models
         [Key]
         public int MovieId { get; set; }
 
-        public string Name { get; set; }
+        public string Title { get; set; }
+
+        public string Genre { get; set; }
+        public DateTime RealeaseDate { get; set; }
+        public string Director { get; set; }
     }
 }

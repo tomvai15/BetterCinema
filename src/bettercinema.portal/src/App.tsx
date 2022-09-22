@@ -1,25 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
+import Movie from './pages/Movie/Movie';
+import Movies from './pages/Movie/Movies';
+import Session from './pages/Session/Session';
+import Sessions from './pages/Session/Sessions';
+import Theater from './pages/Theater/Theater';
+import Theaters from './pages/Theater/Theaters';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path='/theaters'>
+        <Route index element={<Theaters/>}/>
+        <Route path=':theaterId'>
+          <Route index element={<Theater/>}/>
+          <Route path='movies'>
+            <Route index element={<Movies/>}/>
+            <Route path=':movieId'>
+              <Route index element={<Movie/>}/>
+              <Route path='sessions'>
+                <Route index element={<Sessions/>}/>
+                <Route path=':sessionId' element={<Session/>}/>
+              </Route>
+            </Route>
+          </Route>
+        </Route>
+      </Route>
+    </Routes>
   );
 }
 
