@@ -17,15 +17,15 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies(int theaterId)
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
             return await _context.Movies.ToListAsync();
         }
 
         [HttpGet("{movieId}")]
-        public async Task<ActionResult<Movie>> GetMovie(int id)
+        public async Task<ActionResult<Movie>> GetMovie(int movieId)
         {
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _context.Movies.FindAsync(movieId);
 
             if (movie == null)
             {
@@ -36,9 +36,9 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPut("{movieId}")]
-        public async Task<IActionResult> PutMovie(int id, Movie movie)
+        public async Task<IActionResult> PutMovie(int movieId, Movie movie)
         {
-            if (id != movie.MovieId)
+            if (movieId != movie.MovieId)
             {
                 return BadRequest();
             }
@@ -51,7 +51,7 @@ namespace BetterCinema.Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MovieExists(id))
+                if (!MovieExists(movieId))
                 {
                     return NotFound();
                 }
@@ -65,18 +65,18 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Session>> PostMovie(Movie movie)
+        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
         {
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMovie", new { id = movie.MovieId }, movie);
+            return CreatedAtAction("GetMovie", new { theaterId = movie.MovieId }, movie);
         }
 
         [HttpDelete("{movieId}")]
-        public async Task<IActionResult> DeleteMovie(int id)
+        public async Task<IActionResult> DeleteMovie(int movieId)
         {
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _context.Movies.FindAsync(movieId);
             if (movie == null)
             {
                 return NotFound();
@@ -88,9 +88,9 @@ namespace BetterCinema.Api.Controllers
             return NoContent();
         }
 
-        private bool MovieExists(int id)
+        private bool MovieExists(int movieId)
         {
-            return _context.Sessions.Any(e => e.SessionId == id);
+            return _context.Sessions.Any(e => e.SessionId == movieId);
         }
     }
 }

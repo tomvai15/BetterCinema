@@ -23,9 +23,9 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpGet("{theaterId}")]
-        public async Task<ActionResult<Theater>> GetTheater(int id)
+        public async Task<ActionResult<Theater>> GetTheater(int theaterId)
         {
-            var theater = await _context.Theaters.FindAsync(id);
+            var theater = await _context.Theaters.FindAsync(theaterId);
 
             if (theater == null)
             {
@@ -36,9 +36,9 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPut("{theaterId}")]
-        public async Task<IActionResult> PutTheater(int id, Theater theater)
+        public async Task<IActionResult> PutTheater(int theaterId, Theater theater)
         {
-            if (id != theater.TheaterId)
+            if (theaterId != theater.TheaterId)
             {
                 return BadRequest();
             }
@@ -51,7 +51,7 @@ namespace BetterCinema.Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TheaterExists(id))
+                if (!TheaterExists(theaterId))
                 {
                     return NotFound();
                 }
@@ -74,9 +74,9 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpDelete("{theaterId}")]
-        public async Task<IActionResult> DeleteTheater(int id)
+        public async Task<IActionResult> DeleteTheater(int theaterId)
         {
-            var theater = await _context.Theaters.FindAsync(id);
+            var theater = await _context.Theaters.FindAsync(theaterId);
             if (theater == null)
             {
                 return NotFound();
@@ -88,9 +88,9 @@ namespace BetterCinema.Api.Controllers
             return NoContent();
         }
 
-        private bool TheaterExists(int id)
+        private bool TheaterExists(int theaterId)
         {
-            return _context.Theaters.Any(e => e.TheaterId == id);
+            return _context.Theaters.Any(e => e.TheaterId == theaterId);
         }
     }
 }

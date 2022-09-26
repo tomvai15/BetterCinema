@@ -23,9 +23,9 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpGet("{sessionId}")]
-        public async Task<ActionResult<Session>> GetSession(int id)
+        public async Task<ActionResult<Session>> GetSession(int sessionId)
         {
-            var session = await _context.Sessions.FindAsync(id);
+            var session = await _context.Sessions.FindAsync(sessionId);
 
             if (session == null)
             {
@@ -36,9 +36,9 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPut("{sessionId}")]
-        public async Task<IActionResult> PutSession(int id, Session session)
+        public async Task<IActionResult> PutSession(int sessionId, Session session)
         {
-            if (id != session.SessionId)
+            if (sessionId != session.SessionId)
             {
                 return BadRequest();
             }
@@ -51,7 +51,7 @@ namespace BetterCinema.Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SessionExists(id))
+                if (!SessionExists(sessionId))
                 {
                     return NotFound();
                 }
@@ -70,13 +70,13 @@ namespace BetterCinema.Api.Controllers
             _context.Sessions.Add(session);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSession", new { id = session.SessionId }, session);
+            return CreatedAtAction("GetSession", new { sessionId = session.SessionId }, session);
         }
 
         [HttpDelete("{sessionId}")]
-        public async Task<IActionResult> DeleteSession(int id)
+        public async Task<IActionResult> DeleteSession(int sessionId)
         {
-            var session = await _context.Sessions.FindAsync(id);
+            var session = await _context.Sessions.FindAsync(sessionId);
             if (session == null)
             {
                 return NotFound();
@@ -88,9 +88,9 @@ namespace BetterCinema.Api.Controllers
             return NoContent();
         }
 
-        private bool SessionExists(int id)
+        private bool SessionExists(int sessionId)
         {
-            return _context.Sessions.Any(e => e.SessionId == id);
+            return _context.Sessions.Any(e => e.SessionId == sessionId);
         }
     }
 }
