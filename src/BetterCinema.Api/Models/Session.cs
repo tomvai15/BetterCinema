@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace BetterCinema.Api.Models
 {
@@ -9,5 +10,8 @@ namespace BetterCinema.Api.Models
 
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+
+        [JsonIgnore]
+        public Movie Movie { get; set; }
     }
 }
