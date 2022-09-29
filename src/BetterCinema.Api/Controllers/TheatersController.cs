@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using BetterCinema.Api.Data;
 using BetterCinema.Api.Models;
+using BetterCinema.Api.Handlers;
+using BetterCinema.Api.Contracts;
 
 namespace BetterCinema.Api.Controllers
 {
@@ -10,16 +12,19 @@ namespace BetterCinema.Api.Controllers
     public class TheatersController : ControllerBase
     {
         private readonly CinemaDbContext _context;
+        private readonly ITheatersHandler theatersHandler;
 
-        public TheatersController(CinemaDbContext context)
+        public TheatersController(CinemaDbContext context, ITheatersHandler theatersHandler)
         {
             _context = context;
+            this.theatersHandler = theatersHandler;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Theater>>> GetTheaters()
+        public async Task<ActionResult<GetTheatersResponse>> GetTheaters([FromQuery] int limit, [FromQuery]  int offset )
         {
-            return await _context.Theaters.ToListAsync();
+            return await theatersHandler.GetTheaters(limit, offset);
+            
         }
 
         [HttpGet("{theaterId}")]

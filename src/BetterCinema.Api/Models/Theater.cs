@@ -8,6 +8,7 @@ namespace BetterCinema.Api.Models
         [Key]
         public int TheaterId { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public string Location { get; set; }
 
         [JsonIgnore]

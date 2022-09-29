@@ -1,6 +1,13 @@
-﻿namespace BetterCinema.Api.Bootstrap
+﻿using BetterCinema.Api.Handlers;
+
+namespace BetterCinema.Api.Bootstrap
 {
-    public class HandlerBootstrap
+    public static class HandlerBootstrap
     {
+        public static IServiceCollection AddHandlers(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddTransient<ITheatersHandler, TheatersHandler>();
+            return services;
+        }
     }
 }

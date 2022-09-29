@@ -10,7 +10,15 @@
 
             dbContext.Database.EnsureCreated();
 
-            dbContext.Theaters.Add(new Models.Theater { Name = "Test1", Location="Location"});
+            for (int i = 0; i < 10; i++)
+            {
+                dbContext.Theaters.Add(new Models.Theater
+                {
+                    Name = $"Borum Cinemas{Guid.NewGuid().ToString().Substring(0,4)}",
+                    Location = "Šventų gatvė 4a",
+                    Description = "Labai geras kino teatras"
+                });
+            }
 
             dbContext.SaveChanges();
         }

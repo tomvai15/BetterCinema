@@ -6,8 +6,10 @@ namespace BetterCinema.Api
     {
         public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddAuthorizationServices(config);
-            services.AddCinemaDbServices(config);
+            services.AddAuthorizationServices(config)
+                .AddCinemaDbServices(config)
+                .AddHandlers(config);
+
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();

@@ -1,4 +1,5 @@
-﻿using BetterCinema.Api.TokenGeneration;
+﻿using BetterCinema.Api.Constants;
+using BetterCinema.Api.TokenGeneration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -10,7 +11,7 @@ namespace BetterCinema.Api.Bootstrap
 {
     public static class AuthorizationBootstrap
     {
-        public static void AddAuthorizationServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddAuthorizationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSwaggerGen(options =>
             {
@@ -23,6 +24,18 @@ namespace BetterCinema.Api.Bootstrap
                 });
 
                 options.OperationFilter<SecurityRequirementsOperationFilter>();
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(Policy.DevelopmentCors, builder =>
+                {
+                    builder.WithOrigins("https://localhost:3000")
+                           .AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .SetIsOriginAllowed((x) => true)
+                           .AllowCredentials();
+                });
             });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -40,6 +53,8 @@ namespace BetterCinema.Api.Bootstrap
 
             services.AddTransient<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddTransient<SecurityTokenHandler, JwtSecurityTokenHandler>();
+
+            return services;
         }
     }
 }

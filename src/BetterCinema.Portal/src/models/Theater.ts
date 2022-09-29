@@ -1,4 +1,6 @@
 export type Theater = {
-    id:number,
+    theaterId: number,
+    name: string
+    description: string,
     location: string
 }

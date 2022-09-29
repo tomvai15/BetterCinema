@@ -1,4 +1,5 @@
 using BetterCinema.Api;
+using BetterCinema.Api.Constants;
 using BetterCinema.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ if (app.Environment.IsDevelopment())
     app.AddInitialData();
 }
 
+app.UseCors(Policy.DevelopmentCors);
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
