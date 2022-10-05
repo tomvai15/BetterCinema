@@ -1,4 +1,6 @@
-﻿using BetterCinema.Api.Data;
+﻿using AutoMapper;
+using BetterCinema.Api.Contracts.Movies;
+using BetterCinema.Api.Data;
 using BetterCinema.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,23 +11,32 @@ namespace BetterCinema.Api.Controllers
     [ApiController]
     public class MoviesController : ControllerBase
     {
-        private readonly CinemaDbContext _context;
+        private readonly CinemaDbContext context;
+        private readonly IMapper mapper;
 
-        public MoviesController(CinemaDbContext context)
+        public MoviesController(CinemaDbContext context, IMapper mapper)
         {
-            _context = context;
+            this.context = context;
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies(int theaterId)
         {
-            return await _context.Movies.ToListAsync();
+            var theater = await context.Theaters.Where(t => t.TheaterId == theaterId).Include(t => t.Movies).FirstAsync();
+
+            if (theater == null)
+            {
+                return NotFound();
+            }
+
+            return theater.Movies.ToList();
         }
 
         [HttpGet("{movieId}")]
         public async Task<ActionResult<Movie>> GetMovie(int movieId)
         {
-            var movie = await _context.Movies.FindAsync(movieId);
+            var movie = await context.Movies.FindAsync(movieId);
 
             if (movie == null)
             {
@@ -43,11 +54,11 @@ namespace BetterCinema.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(movie).State = EntityState.Modified;
+            context.Entry(movie).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -65,32 +76,34 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
+        public async Task<ActionResult<Movie>> PostMovie(int theaterId, CreateMovieRequest createMovieRequest)
         {
-            _context.Movies.Add(movie);
-            await _context.SaveChangesAsync();
+            Movie newMovie = mapper.Map<Movie>(createMovieRequest);
+            newMovie.TheaterId = theaterId;
+            var movie  = context.Movies.Add(newMovie);
+            await context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMovie", new { theaterId = movie.MovieId }, movie);
+            return CreatedAtAction("GetMovie", new {theaterId = theaterId,  movieId = movie.Entity.MovieId }, movie.Entity);
         }
 
         [HttpDelete("{movieId}")]
         public async Task<IActionResult> DeleteMovie(int movieId)
         {
-            var movie = await _context.Movies.FindAsync(movieId);
+            var movie = await context.Movies.FindAsync(movieId);
             if (movie == null)
             {
                 return NotFound();
             }
 
-            _context.Movies.Remove(movie);
-            await _context.SaveChangesAsync();
+            context.Movies.Remove(movie);
+            await context.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool MovieExists(int movieId)
         {
-            return _context.Sessions.Any(e => e.SessionId == movieId);
+            return context.Sessions.Any(e => e.SessionId == movieId);
         }
     }
 }

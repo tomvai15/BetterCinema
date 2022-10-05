@@ -8,7 +8,8 @@ namespace BetterCinema.Api
         {
             services.AddAuthorizationServices(config)
                 .AddCinemaDbServices(config)
-                .AddHandlers(config);
+                .AddHandlers(config)
+                .AddMappingProfiles();
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();

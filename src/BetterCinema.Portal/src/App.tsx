@@ -9,6 +9,8 @@ import Theater from './pages/Theater/Theater';
 import Theaters from './pages/Theater/Theaters';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from './components/Header';
+import SignUp from './pages/Authentication/SignUp';
+import SignIn from './pages/Authentication/SignIn';
 
 const theme = createTheme();
 
@@ -33,6 +35,8 @@ function App() {
 						</Route>
 					</Route>
 				</Route>
+				<Route path='/sign-up' element={<SignUp/>} />
+				<Route path='/sign-in' element={<SignIn/>} />
 			</Routes>
 		</ThemeProvider>
 	);

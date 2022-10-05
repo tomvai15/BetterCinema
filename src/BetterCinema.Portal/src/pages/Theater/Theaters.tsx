@@ -34,7 +34,6 @@ const Theaters = () => {
 
 	function onPageChange(e: React.ChangeEvent<any>, page:number)
 	{
-		console.log(e, page);
 		setCurrentPage(page);
 	}
 

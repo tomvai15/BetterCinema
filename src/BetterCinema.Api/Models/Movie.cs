@@ -17,6 +17,8 @@ namespace BetterCinema.Api.Models
 
         public string Director { get; set; }
 
+        public int TheaterId { get; set; }
+
         [JsonIgnore]
         public Theater Theater { get; set; }
 

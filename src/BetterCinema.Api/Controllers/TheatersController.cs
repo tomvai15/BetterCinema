@@ -4,6 +4,8 @@ using BetterCinema.Api.Data;
 using BetterCinema.Api.Models;
 using BetterCinema.Api.Handlers;
 using BetterCinema.Api.Contracts;
+using AutoMapper;
+using BetterCinema.Api.Contracts.Theaters;
 
 namespace BetterCinema.Api.Controllers
 {
@@ -11,26 +13,27 @@ namespace BetterCinema.Api.Controllers
     [ApiController]
     public class TheatersController : ControllerBase
     {
-        private readonly CinemaDbContext _context;
+        private readonly CinemaDbContext context;
         private readonly ITheatersHandler theatersHandler;
+        private readonly IMapper mapper;
 
-        public TheatersController(CinemaDbContext context, ITheatersHandler theatersHandler)
+        public TheatersController(CinemaDbContext context, ITheatersHandler theatersHandler, IMapper mapper)
         {
-            _context = context;
+            this.context = context;
             this.theatersHandler = theatersHandler;
+            this.mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<GetTheatersResponse>> GetTheaters([FromQuery] int limit, [FromQuery]  int offset )
         {
-            return await theatersHandler.GetTheaters(limit, offset);
-            
+            return await theatersHandler.GetTheaters(limit, offset);           
         }
 
         [HttpGet("{theaterId}")]
         public async Task<ActionResult<Theater>> GetTheater(int theaterId)
         {
-            var theater = await _context.Theaters.FindAsync(theaterId);
+            var theater = await context.Theaters.FindAsync(theaterId);
 
             if (theater == null)
             {
@@ -40,19 +43,21 @@ namespace BetterCinema.Api.Controllers
             return theater;
         }
 
-        [HttpPut("{theaterId}")]
-        public async Task<IActionResult> PutTheater(int theaterId, Theater theater)
+        [HttpPatch("{theaterId}")]
+        public async Task<IActionResult> PutTheater(int theaterId, UpdateTheaterRequest updateTheaterRequest)
         {
-            if (theaterId != theater.TheaterId)
+            Theater theater = await context.Theaters.Where(t => t.TheaterId == theaterId).FirstAsync();
+
+            if (updateTheaterRequest.Name!=null)
             {
-                return BadRequest();
+                theater.Name = updateTheaterRequest.Name;
             }
 
-            _context.Entry(theater).State = EntityState.Modified;
+            context.Entry(theater).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -70,32 +75,33 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Theater>> PostTheater(Theater theater)
+        public async Task<ActionResult<Theater>> PostTheater(CreateTheaterRequest createTheaterRequest)
         {
-            _context.Theaters.Add(theater);
-            await _context.SaveChangesAsync();
+            Theater newTheater = mapper.Map<Theater>(createTheaterRequest);
+            var addedTheater = context.Theaters.Add(newTheater);
+            await context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTheater", new { theaterId = theater.TheaterId }, theater);
+            return CreatedAtAction("GetTheater", new { theaterId = addedTheater.Entity.TheaterId }, addedTheater.Entity);
         }
 
         [HttpDelete("{theaterId}")]
         public async Task<IActionResult> DeleteTheater(int theaterId)
         {
-            var theater = await _context.Theaters.FindAsync(theaterId);
+            var theater = await context.Theaters.FindAsync(theaterId);
             if (theater == null)
             {
                 return NotFound();
             }
 
-            _context.Theaters.Remove(theater);
-            await _context.SaveChangesAsync();
+            context.Theaters.Remove(theater);
+            await context.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool TheaterExists(int theaterId)
         {
-            return _context.Theaters.Any(e => e.TheaterId == theaterId);
+            return context.Theaters.Any(e => e.TheaterId == theaterId);
         }
     }
 }

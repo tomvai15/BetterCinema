@@ -10,6 +10,13 @@ namespace BetterCinema.Api.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Theater>()
+                .HasMany(c => c.Movies)
+                .WithOne(e => e.Theater);
+        }
+
         public DbSet<Theater> Theaters { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Session> Sessions { get; set; }

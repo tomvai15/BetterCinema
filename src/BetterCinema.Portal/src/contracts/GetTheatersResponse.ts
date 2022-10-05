@@ -1,4 +1,4 @@
-import { Theater } from "../models/Theater"
+import { Theater } from '../models/Theater';
 
 export type GetTheatersResponse = {
     totalCount: number,

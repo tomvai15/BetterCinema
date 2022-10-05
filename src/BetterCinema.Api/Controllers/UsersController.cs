@@ -15,8 +15,16 @@ namespace BetterCinema.Api.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        [HttpPost("login")]
+        public async Task<ActionResult<User>> LoginUser(User user)
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetUser", new { userUd = user.UserId }, user);
+        }
+        [HttpPost("register")]
+        public async Task<ActionResult<User>> RegisterUser(User user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
