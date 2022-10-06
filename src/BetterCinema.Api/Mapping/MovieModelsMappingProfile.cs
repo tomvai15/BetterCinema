@@ -9,6 +9,7 @@ namespace BetterCinema.Api.Mapping
         public MovieModelsMappingProfile()
         {
             CreateMap<CreateMovieRequest, Movie>();
+            CreateMap<GetMovieResponse, Movie>().ReverseMap();
         }
     }
 }

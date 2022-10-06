@@ -48,6 +48,11 @@ namespace BetterCinema.Api.Controllers
         {
             Theater theater = await context.Theaters.Where(t => t.TheaterId == theaterId).FirstAsync();
 
+            if (theater == null)
+            { 
+                return NotFound(); 
+            }  
+
             if (updateTheaterRequest.Name!=null)
             {
                 theater.Name = updateTheaterRequest.Name;
@@ -55,21 +60,7 @@ namespace BetterCinema.Api.Controllers
 
             context.Entry(theater).State = EntityState.Modified;
 
-            try
-            {
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TheaterExists(theaterId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await context.SaveChangesAsync();
 
             return NoContent();
         }

@@ -11,6 +11,8 @@ namespace BetterCinema.Api.Models
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 
+        public int MovieId { get;set; }
+
         [JsonIgnore]
         public Movie Movie { get; set; }
     }

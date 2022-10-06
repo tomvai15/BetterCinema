@@ -8,6 +8,7 @@ namespace BetterCinema.Api.Bootstrap
         {
             services.AddTransient<ITheatersHandler, TheatersHandler>();
             services.AddTransient<IUserAuthHandler, UserAuthHandler>();
+            services.AddTransient<IMoviesHandler, MoviesHandler>();
             return services;
         }
     }

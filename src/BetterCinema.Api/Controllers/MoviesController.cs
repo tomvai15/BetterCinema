@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using BetterCinema.Api.Contracts.Movies;
+using BetterCinema.Api.Contracts.Theaters;
 using BetterCinema.Api.Data;
+using BetterCinema.Api.Handlers;
 using BetterCinema.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BetterCinema.Api.Controllers
 {
@@ -11,65 +15,51 @@ namespace BetterCinema.Api.Controllers
     [ApiController]
     public class MoviesController : ControllerBase
     {
-        private readonly CinemaDbContext context;
+        private readonly IMoviesHandler moviesHandler;
         private readonly IMapper mapper;
 
-        public MoviesController(CinemaDbContext context, IMapper mapper)
+        public MoviesController (IMoviesHandler moviesHandler, IMapper mapper)
         {
-            this.context = context;
+            this.moviesHandler = moviesHandler;
             this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies(int theaterId)
+        public async Task<ActionResult<GetMoviesResponse>> GetMovies(int theaterId)
         {
-            var theater = await context.Theaters.Where(t => t.TheaterId == theaterId).Include(t => t.Movies).FirstAsync();
+            IEnumerable<Movie> movies = await moviesHandler.GetMovies(theaterId);
 
-            if (theater == null)
-            {
-                return NotFound();
-            }
-
-            return theater.Movies.ToList();
+            IEnumerable<GetMovieResponse> getMovies = mapper.Map<IEnumerable<GetMovieResponse>>(movies);
+            return new GetMoviesResponse { Movies = getMovies };
         }
 
         [HttpGet("{movieId}")]
-        public async Task<ActionResult<Movie>> GetMovie(int movieId)
+        public async Task<ActionResult<GetMovieResponse>> GetMovie(int theaterId, int movieId)
         {
-            var movie = await context.Movies.FindAsync(movieId);
+            Movie movie = await moviesHandler.GetMovie(theaterId, movieId);
 
             if (movie == null)
             {
                 return NotFound();
             }
 
-            return movie;
+            return mapper.Map<GetMovieResponse>(movie);
         }
 
-        [HttpPut("{movieId}")]
-        public async Task<IActionResult> PutMovie(int movieId, Movie movie)
+        [HttpPatch("{movieId}")]
+        public async Task<IActionResult> PutMovie(int theaterId, int movieId, UpdateMovieRequest updateMovieRequest)
         {
-            if (movieId != movie.MovieId)
-            {
-                return BadRequest();
-            }
-
-            context.Entry(movie).State = EntityState.Modified;
-
             try
             {
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MovieExists(movieId))
+                Movie movie = await moviesHandler.UpdateMovie(theaterId, movieId, updateMovieRequest);
+                if (movie == null)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
             }
 
             return NoContent();
@@ -78,32 +68,27 @@ namespace BetterCinema.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(int theaterId, CreateMovieRequest createMovieRequest)
         {
-            Movie newMovie = mapper.Map<Movie>(createMovieRequest);
-            newMovie.TheaterId = theaterId;
-            var movie  = context.Movies.Add(newMovie);
-            await context.SaveChangesAsync();
-
-            return CreatedAtAction("GetMovie", new {theaterId = theaterId,  movieId = movie.Entity.MovieId }, movie.Entity);
+            Movie movie = await moviesHandler.CreateMovie(theaterId, createMovieRequest);
+            return CreatedAtAction("GetMovie", new { theaterId = theaterId, movieId = movie.MovieId }, movie);
         }
 
         [HttpDelete("{movieId}")]
-        public async Task<IActionResult> DeleteMovie(int movieId)
+        public async Task<IActionResult> DeleteMovie(int theaterId, int movieId)
         {
-            var movie = await context.Movies.FindAsync(movieId);
-            if (movie == null)
+            try
             {
-                return NotFound();
+                bool isMovieDeleted = await moviesHandler.DeleteMovie(theaterId, movieId);
+                if (!isMovieDeleted)
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
             }
 
-            context.Movies.Remove(movie);
-            await context.SaveChangesAsync();
-
             return NoContent();
-        }
-
-        private bool MovieExists(int movieId)
-        {
-            return context.Sessions.Any(e => e.SessionId == movieId);
         }
     }
 }
