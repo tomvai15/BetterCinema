@@ -1,6 +1,6 @@
 ﻿namespace BetterCinema.Api.Contracts.Sessions
 {
-    public class CreateSessionRequest
+    public class UpdateSessionRequest
     {
         public DateTime Start { get; set; }
         public DateTime End { get; set; }

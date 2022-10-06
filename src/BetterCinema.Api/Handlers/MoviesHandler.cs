@@ -37,6 +37,7 @@ namespace BetterCinema.Api.Handlers
 
             Theater theater = await context.Theaters.Where(t => t.TheaterId == theaterId)
                 .Include(t => t.Movies)
+                .ThenInclude(m => m.Sessions)
                 .FirstAsync();
 
             return theater.Movies.ToList();
@@ -48,7 +49,14 @@ namespace BetterCinema.Api.Handlers
                 return null;
             }
 
-            var movie = await context.Movies.FindAsync(movieId);
+            if (!context.Movies.Any(m => m.MovieId == movieId))
+            {
+                return null;
+            }
+
+            var movie = await context.Movies.Where(m => m.MovieId == movieId)
+                .Include(m => m.Sessions)
+                .FirstAsync();
 
             return movie;
         }

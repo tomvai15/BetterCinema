@@ -11,6 +11,7 @@ namespace BetterCinema.Api.Bootstrap
             {
                 cfg.AddProfile(new TheaterModelsMappingProfile());
                 cfg.AddProfile(new MovieModelsMappingProfile());
+                cfg.AddProfile(new SessionModelsMappingProfile());
             });
 
             services.AddSingleton(config.CreateMapper());

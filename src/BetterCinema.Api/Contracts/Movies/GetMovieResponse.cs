@@ -1,4 +1,7 @@
-﻿namespace BetterCinema.Api.Contracts.Movies
+﻿using BetterCinema.Api.Contracts.Sessions;
+using BetterCinema.Api.Models;
+
+namespace BetterCinema.Api.Contracts.Movies
 {
     public class GetMovieResponse
     {
@@ -13,5 +16,7 @@
         public string Director { get; set; }
 
         public int TheaterId { get; set; }
+
+        public IEnumerable<GetSessionResponse> Sessions { get; set; }
     }
 }

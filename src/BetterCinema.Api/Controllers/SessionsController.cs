@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using BetterCinema.Api.Data;
 using BetterCinema.Api.Models;
+using AutoMapper;
+using BetterCinema.Api.Handlers;
+using BetterCinema.Api.Contracts.Sessions;
 
 namespace BetterCinema.Api.Controllers
 {
@@ -9,88 +10,85 @@ namespace BetterCinema.Api.Controllers
     [ApiController]
     public class SessionsController : ControllerBase
     {
-        private readonly CinemaDbContext _context;
+        private readonly ISessionsHandler sessionsHandler;
+        private readonly IMapper mapper;
 
-        public SessionsController(CinemaDbContext context)
+        public SessionsController(ISessionsHandler sessionsHandler, IMapper mapper)
         {
-            _context = context;
+            this.mapper = mapper;
+            this.sessionsHandler = sessionsHandler;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Session>>> GetSessions()
+        public async Task<ActionResult<GetSessionsResponse>> GetSessions(int theaterId, int movieId)
         {
-            return await _context.Sessions.ToListAsync();
+            IEnumerable<Session> sessions = await sessionsHandler.GetSessions(theaterId, movieId);
+
+            if (sessions == null)
+            {
+                return NotFound();
+            }
+
+            IEnumerable<GetSessionResponse> sessionsResponse = mapper.Map<IEnumerable<GetSessionResponse>>(sessions);
+            return new GetSessionsResponse { Sessions = sessionsResponse };
         }
 
         [HttpGet("{sessionId}")]
-        public async Task<ActionResult<Session>> GetSession(int sessionId)
+        public async Task<ActionResult<GetSessionResponse>> GetSession(int theaterId, int movieId, int sessionId)
         {
-            var session = await _context.Sessions.FindAsync(sessionId);
+            Session session = await sessionsHandler.GetSession(theaterId, movieId, sessionId);
 
             if (session == null)
             {
                 return NotFound();
             }
 
-            return session;
+            return mapper.Map<GetSessionResponse>(session);
         }
 
-        [HttpPut("{sessionId}")]
-        public async Task<IActionResult> PutSession(int sessionId, Session session)
+        [HttpPatch("{sessionId}")]
+        public async Task<IActionResult> PatchSession(int theaterId, int movieId, int sessionId, UpdateSessionRequest updateSessionRequest)
         {
-            if (sessionId != session.SessionId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(session).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SessionExists(sessionId))
+                Session session = await sessionsHandler.UpdateSession(theaterId, movieId, sessionId, updateSessionRequest);
+                if (session == null)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
             }
 
             return NoContent();
         }
 
         [HttpPost]
-        public async Task<ActionResult<Session>> PostSession(Session session)
+        public async Task<ActionResult<Session>> PostSession(int theaterId, int movieId, CreateSessionRequest createSessionRequest)
         {
-            _context.Sessions.Add(session);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetSession", new { sessionId = session.SessionId }, session);
+            Session session = await sessionsHandler.CreateSession(theaterId, movieId, createSessionRequest);
+            return CreatedAtAction("GetSession", new { theaterId = theaterId, movieId = movieId, sessionId = session.SessionId }, session);
         }
 
         [HttpDelete("{sessionId}")]
-        public async Task<IActionResult> DeleteSession(int sessionId)
+        public async Task<IActionResult> DeleteSession(int theaterId, int movieId, int sessionId)
         {
-            var session = await _context.Sessions.FindAsync(sessionId);
-            if (session == null)
+            try
             {
-                return NotFound();
+                bool isSessionDeleted = await sessionsHandler.DeleteSession(theaterId, movieId, sessionId);
+                if (!isSessionDeleted)
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
             }
 
-            _context.Sessions.Remove(session);
-            await _context.SaveChangesAsync();
-
             return NoContent();
-        }
-
-        private bool SessionExists(int sessionId)
-        {
-            return _context.Sessions.Any(e => e.SessionId == sessionId);
         }
     }
 }

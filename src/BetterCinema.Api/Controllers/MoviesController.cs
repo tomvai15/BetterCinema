@@ -47,7 +47,7 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPatch("{movieId}")]
-        public async Task<IActionResult> PutMovie(int theaterId, int movieId, UpdateMovieRequest updateMovieRequest)
+        public async Task<IActionResult> PatchMovie(int theaterId, int movieId, UpdateMovieRequest updateMovieRequest)
         {
             try
             {
