@@ -29,6 +29,11 @@ namespace BetterCinema.Api.Controllers
         {
             IEnumerable<Movie> movies = await moviesHandler.GetMovies(theaterId);
 
+            if (movies == null)
+            {
+                return NotFound();
+            }
+
             IEnumerable<GetMovieResponse> getMovies = mapper.Map<IEnumerable<GetMovieResponse>>(movies);
             return new GetMoviesResponse { Movies = getMovies };
         }

@@ -54,9 +54,16 @@ namespace BetterCinema.Api.Handlers
                 return null;
             }
 
+
+
             var movie = await context.Movies.Where(m => m.MovieId == movieId)
                 .Include(m => m.Sessions)
                 .FirstAsync();
+
+            if (movie.TheaterId != theaterId)
+            {
+                return null;
+            }
 
             return movie;
         }
