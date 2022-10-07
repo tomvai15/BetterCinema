@@ -63,7 +63,7 @@ namespace BetterCinema.Api.Data
                  // First theater
                  new Movie {
                     Title = $"Amsterdam",
-                    RealeaseDate = new DateTime(2022,10,7),
+                    ReleaseDate = new DateTime(2022,10,7),
                     Description = "Trys draugai – gydytojas, medicinos sesuo ir advokatas – tampa žmogžudystės liudininkais, o galiausiai ir įtariamaisiais. Tuomet jie atsiduria slapčiausio Amerikos istorijoje sąmokslo epicentre.",
                     Genre = "Drama",
                     Director = "David O. Russell",
@@ -71,7 +71,7 @@ namespace BetterCinema.Api.Data
                  },
                  new Movie {
                     Title = $"Nesijaudink, brangioji",
-                    RealeaseDate = new DateTime(2022,9,2),
+                    ReleaseDate = new DateTime(2022,9,2),
                     Description = "Aktorės ir režisierės Olivijos Wilde seksualaus psichologinio trilerio „Nesijaudink, brangioji“ centre – Alisa ir Džekas Čeimbersai (aktoriai Florence Pugh ir Harry Styles). Vyrui pakeitus darbą, jauna šeima persikelia į naujojo darbdavio įkurtą uždarą kompanijos miestelį Kalifornijoje. Čia vadžias tvirtai savo rankose laiko charizmatiškas kompanijos vadovas Frenkas (akt. Chris Pine).",
                     Genre = "Trileris",
                     Director = "Olivia Wilde",
@@ -80,7 +80,7 @@ namespace BetterCinema.Api.Data
                  // Second theater
                  new Movie {
                     Title = $"Šypsena",
-                    RealeaseDate = new DateTime(2022,10,7),
+                    ReleaseDate = new DateTime(2022,10,7),
                     Description = "Tapusi keisto, traumuojančio incidento, susijusio su paciente, liudininke, daktarė Rouzė Cotter (akt. Sosie Bacon) pradeda patirti bauginančius įvykius, kurių ji niekaip negali paaiškinti.",
                     Genre = "Siaubo",
                     Director = "Edgar Whrite",
@@ -88,7 +88,7 @@ namespace BetterCinema.Api.Data
                  },
                   new Movie {
                     Title = $"Ten, kur gieda vėžiai",
-                    RealeaseDate = new DateTime(2021,10,7),
+                    ReleaseDate = new DateTime(2021,10,7),
                     Description = "Kaja Klark (aktorė Daisy Edgar-Jones) savo gimtojo miestelio Šiaurės Karolinoje gyventojams visuomet kėlė prieštaringus jausmus, iš kurių stipriausi – nepasitikėjimas, įtarumas ir panieka. Mergaitė gimė šalia miestelio tyvuliuojančiose pelkėse, kur buvo įsikūrusi jos šeima. Pirmiausiai kelerių metų dukrą paliko motina, tuomet vienas po kito išvyko vyresnieji broliai ir seserys, o galiausiai pradingo ir tėvas. Nuo tada Kaja pelkėse augo viena.\r\n",
                     Genre = "Drama",
                     Director = "Daisy Edgar-Jones",
@@ -96,7 +96,7 @@ namespace BetterCinema.Api.Data
                  },
                    new Movie {
                     Title = $"Pakalikai 2",
-                    RealeaseDate = new DateTime(2022,6,15),
+                    ReleaseDate = new DateTime(2022,6,15),
                     Description = "Animacinės franšizės „Bjaurusis Aš“ skyriaus „Pakalikai“ tęsinys atskleis draugiškojo piktadario Felonijaus Gru kilmės istoriją.\r\n",
                     Genre = "Komedija",
                     Director = "David O. Russell",

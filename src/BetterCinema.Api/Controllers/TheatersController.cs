@@ -53,10 +53,10 @@ namespace BetterCinema.Api.Controllers
                 return NotFound(); 
             }  
 
-            if (updateTheaterRequest.Name!=null)
-            {
-                theater.Name = updateTheaterRequest.Name;
-            }
+            theater.Name = updateTheaterRequest.Name;
+            theater.Description = updateTheaterRequest.Description;
+            theater.Address = updateTheaterRequest.Address;
+            theater.IsConfimed = updateTheaterRequest.IsConfimed;
 
             context.Entry(theater).State = EntityState.Modified;
 

@@ -11,7 +11,7 @@ namespace BetterCinema.Api.Contracts.Movies
 
         public string Genre { get; set; }
 
-        public DateTime RealeaseDate { get; set; }
+        public DateTime ReleaseDate { get; set; }
 
         public string Director { get; set; }
 

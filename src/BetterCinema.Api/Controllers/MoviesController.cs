@@ -74,6 +74,11 @@ namespace BetterCinema.Api.Controllers
         public async Task<ActionResult<Movie>> PostMovie(int theaterId, CreateMovieRequest createMovieRequest)
         {
             Movie movie = await moviesHandler.CreateMovie(theaterId, createMovieRequest);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
             return CreatedAtAction("GetMovie", new { theaterId = theaterId, movieId = movie.MovieId }, movie);
         }
 

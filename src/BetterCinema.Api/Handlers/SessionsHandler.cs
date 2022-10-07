@@ -51,6 +51,10 @@ namespace BetterCinema.Api.Handlers
                 return null;
             }
             Session session = await context.Sessions.FindAsync(sessionId);
+            if (session == null)
+            {
+                return null;
+            }
 
             if (session.MovieId != movie.MovieId)
             {
@@ -83,9 +87,14 @@ namespace BetterCinema.Api.Handlers
             {
                 return null;
             }
+            if ( session.MovieId != movieId)
+            {
+                return null;
+            }
 
             session.Start = updateSessionRequest.Start;
             session.End = updateSessionRequest.End;
+            session.Hall = updateSessionRequest.Hall;
 
             context.Entry(session).State = EntityState.Modified;
 

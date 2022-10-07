@@ -54,8 +54,6 @@ namespace BetterCinema.Api.Handlers
                 return null;
             }
 
-
-
             var movie = await context.Movies.Where(m => m.MovieId == movieId)
                 .Include(m => m.Sessions)
                 .FirstAsync();
@@ -70,6 +68,13 @@ namespace BetterCinema.Api.Handlers
 
         public async Task<Movie> CreateMovie(int theaterId, CreateMovieRequest createMovieRequest)
         {
+            Theater theater = await context.Theaters.FindAsync(theaterId);
+
+            if (theater == null)
+            {
+                return null;
+            }
+
             Movie newMovie = mapper.Map<Movie>(createMovieRequest);
             newMovie.TheaterId = theaterId;
             var movie = context.Movies.Add(newMovie);
@@ -86,6 +91,10 @@ namespace BetterCinema.Api.Handlers
             }
 
             movie.Title = updateMovieRequest.Title;
+            movie.Description = updateMovieRequest.Description;
+            movie.Genre = updateMovieRequest.Genre;
+            movie.Director = updateMovieRequest.Director;
+            movie.ReleaseDate = updateMovieRequest.ReleaseDate;
 
             context.Entry(movie).State = EntityState.Modified;
 

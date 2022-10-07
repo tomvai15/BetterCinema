@@ -69,6 +69,12 @@ namespace BetterCinema.Api.Controllers
         public async Task<ActionResult<Session>> PostSession(int theaterId, int movieId, CreateSessionRequest createSessionRequest)
         {
             Session session = await sessionsHandler.CreateSession(theaterId, movieId, createSessionRequest);
+
+            if (session == null)
+            {
+                return NotFound();
+            }
+
             return CreatedAtAction("GetSession", new { theaterId = theaterId, movieId = movieId, sessionId = session.SessionId }, session);
         }
 
