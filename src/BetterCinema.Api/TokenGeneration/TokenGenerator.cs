@@ -29,7 +29,7 @@ namespace BetterCinema.Api.TokenGeneration
                     new Claim("UserId", user.UserId.ToString()),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = securityTokenHandler.CreateToken(tokenDescriptor);

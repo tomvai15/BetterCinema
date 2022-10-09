@@ -1,4 +1,5 @@
 ﻿using BetterCinema.Api.Bootstrap;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace BetterCinema.Api
 {
@@ -12,6 +13,8 @@ namespace BetterCinema.Api
                 .AddMappingProfiles();
 
             services.AddControllers();
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 

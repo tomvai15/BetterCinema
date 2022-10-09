@@ -1,4 +1,7 @@
-﻿using BetterCinema.Api.Data;
+﻿using BetterCinema.Api.Contracts;
+using BetterCinema.Api.Contracts.Auth;
+using BetterCinema.Api.Data;
+using BetterCinema.Api.Handlers;
 using BetterCinema.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,28 +11,38 @@ namespace BetterCinema.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly CinemaDbContext _context;
+        private readonly IUserAuthHandler userAuthHandler;
+        private readonly IUsersHandler usersHandler;
 
-        public UsersController(CinemaDbContext context)
+        public UsersController(IUserAuthHandler userAuthHandler, IUsersHandler usersHandler)
         {
-            _context = context;
+            this.userAuthHandler = userAuthHandler;
+            this.usersHandler = usersHandler;
         }
 
-        [HttpPost("login")]
-        public async Task<ActionResult<User>> LoginUser(User user)
+        [HttpPost]
+        public async Task<ActionResult> CreateUser(CreateUserRequest createUserRequest)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            bool isUserAdded = await userAuthHandler.TryCreateUser(createUserRequest);
 
-            return CreatedAtAction("GetUser", new { userUd = user.UserId }, user);
+            if (!isUserAdded)
+            {
+                return BadRequest(new { message = "Username is already taken" });
+            }
+            return NoContent();
         }
-        [HttpPost("register")]
-        public async Task<ActionResult<User>> RegisterUser(User user)
-        {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { userUd = user.UserId }, user);
+        [HttpPost("token")]
+        public async Task<ActionResult<LoginResponse>> GetCredentials(LoginRequest loginRequest)
+        {
+            LoginResponse loginResponse = await userAuthHandler.LoginUser(loginRequest);
+
+            if (loginResponse == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(loginResponse);
         }
     }
 }

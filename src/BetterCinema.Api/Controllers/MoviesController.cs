@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using BetterCinema.Api.Constants;
 using BetterCinema.Api.Contracts.Movies;
 using BetterCinema.Api.Contracts.Theaters;
 using BetterCinema.Api.Data;
 using BetterCinema.Api.Handlers;
 using BetterCinema.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +54,8 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPatch("{movieId}")]
+        [Authorize(Roles = Role.Owner)]
+        [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
         public async Task<IActionResult> PatchMovie(int theaterId, int movieId, UpdateMovieRequest updateMovieRequest)
         {
             try
@@ -71,6 +75,7 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.Owner)]
         public async Task<ActionResult<Movie>> PostMovie(int theaterId, CreateMovieRequest createMovieRequest)
         {
             Movie movie = await moviesHandler.CreateMovie(theaterId, createMovieRequest);
@@ -83,6 +88,8 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpDelete("{movieId}")]
+        [Authorize(Roles = Role.Owner)]
+        [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
         public async Task<IActionResult> DeleteMovie(int theaterId, int movieId)
         {
             try

@@ -15,6 +15,10 @@ namespace BetterCinema.Api.Data
             modelBuilder.Entity<Theater>()
                 .HasMany(c => c.Movies)
                 .WithOne(e => e.Theater);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Theaters)
+                .WithOne(t => t.User);
         }
 
         public DbSet<Theater> Theaters { get; set; }

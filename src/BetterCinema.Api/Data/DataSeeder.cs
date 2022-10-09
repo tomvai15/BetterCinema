@@ -1,4 +1,5 @@
-﻿using BetterCinema.Api.Models;
+﻿using BetterCinema.Api.Constants;
+using BetterCinema.Api.Models;
 
 namespace BetterCinema.Api.Data
 {
@@ -17,11 +18,30 @@ namespace BetterCinema.Api.Data
                 return;
             }
 
-            dbContext.AddTheaters();
-            dbContext.AddMovies();
-            dbContext.AddSessions();
+            dbContext.AddUsers()
+                .AddTheaters()
+                .AddMovies()
+                .AddSessions();
 
             dbContext.SaveChanges();
+        }
+
+        public static CinemaDbContext AddUsers(this CinemaDbContext dbContext)
+        {
+            User[] users = new[]
+            {
+               new User
+               {
+                   UserName="Admin",
+                   HashedPassword ="password",
+                   Role = Role.Admin
+               }
+            };
+
+            dbContext.Users.AddRange(users);
+            dbContext.SaveChanges();
+
+            return dbContext;
         }
 
         public static CinemaDbContext AddTheaters(this CinemaDbContext dbContext)
@@ -34,18 +54,21 @@ namespace BetterCinema.Api.Data
                     Address = "Savanorių pr. 4, Kaunas",
                     Description = "Neseniai duris Kaune atvėręs kino teatras.",
                     IsConfimed = true,
+                    UserId = 1
                  },
                  new Theater {
                     Name = $"AMC",
                     Address = "Karaliaus Mindaugo g. 5, Kaunas",
                     Description = "Pats seniausiaias kino teatras Kaune.",
                     IsConfimed = true,
+                    UserId = 1
                 },
                 new Theater {
                     Name = $"Vilniaus kino teatras",
                     Address = "Pylimo g. 8, Vilnius",
                     Description = "Kino teatras Viniuje",
                     IsConfimed = true,
+                    UserId = 1
                 }
             };
 
@@ -103,7 +126,7 @@ namespace BetterCinema.Api.Data
                     TheaterId = 2
                  },
             };
-  
+
             dbContext.Movies.AddRange(movies);
             dbContext.SaveChanges();
             return dbContext;
@@ -117,7 +140,7 @@ namespace BetterCinema.Api.Data
                        Start = DateTime.Now.AddHours(5),
                        End = DateTime.Now.AddHours(7),
                        Hall = "1",
-                       MovieId = 1,           
+                       MovieId = 1,
                   },
                   new Session {
                        Start = DateTime.Now.AddHours(7),

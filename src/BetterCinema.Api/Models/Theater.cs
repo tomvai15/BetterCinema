@@ -14,5 +14,10 @@ namespace BetterCinema.Api.Models
 
         [JsonIgnore]
         public ICollection<Movie> Movies { get; set; }
+
+        public int UserId { get; set; }
+
+        [JsonIgnore]
+        public User User { get; set; }
     }
 }

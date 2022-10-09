@@ -1,6 +1,10 @@
 ﻿using BetterCinema.Api.Constants;
+using BetterCinema.Api.Providers;
 using BetterCinema.Api.TokenGeneration;
+using BetterCinema.Api.Validation.Handlers;
+using BetterCinema.Api.Validation.Requirements;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -38,6 +42,7 @@ namespace BetterCinema.Api.Bootstrap
                 });
             });
 
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -51,8 +56,21 @@ namespace BetterCinema.Api.Bootstrap
                     };
                 });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(AuthPolicy.Owner, policy =>
+                    policy.RequireRole(Role.Owner));
+
+                options.AddPolicy(AuthPolicy.TheaterIdInRouteValidation, policy =>
+                    policy.Requirements.Add(new TheaterIdInRouteRequirement()));
+            });
+
+
+
             services.AddTransient<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddTransient<SecurityTokenHandler, JwtSecurityTokenHandler>();
+            services.AddTransient<IClaimsProvider, ClaimsProvider>();
+            services.AddTransient<IAuthorizationHandler, TheaterIdInRouteValidationHandler>();
 
             return services;
         }

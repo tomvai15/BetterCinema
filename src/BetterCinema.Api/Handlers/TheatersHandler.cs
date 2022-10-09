@@ -9,15 +9,21 @@ namespace BetterCinema.Api.Handlers
     public interface ITheatersHandler
     {
         public Task<GetTheatersResponse> GetTheaters(int limit, int offset);
+        public Task<Theater> GetTheater(int theaterId);
     }
 
-    public class TheatersHandler: ITheatersHandler
+    public class TheatersHandler : ITheatersHandler
     {
         private readonly CinemaDbContext context;
 
         public TheatersHandler(CinemaDbContext context)
         {
             this.context = context;
+        }
+
+        public async Task<Theater> GetTheater(int theaterId)
+        {
+            return await context.Theaters.FirstOrDefaultAsync(t => t.TheaterId == theaterId);
         }
 
         public async Task<GetTheatersResponse> GetTheaters(int limit, int offset)

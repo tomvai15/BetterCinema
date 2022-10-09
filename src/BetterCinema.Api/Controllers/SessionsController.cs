@@ -3,6 +3,8 @@ using BetterCinema.Api.Models;
 using AutoMapper;
 using BetterCinema.Api.Handlers;
 using BetterCinema.Api.Contracts.Sessions;
+using BetterCinema.Api.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BetterCinema.Api.Controllers
 {
@@ -47,6 +49,8 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPatch("{sessionId}")]
+        [Authorize(Roles = Role.Owner)]
+        [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
         public async Task<IActionResult> PatchSession(int theaterId, int movieId, int sessionId, UpdateSessionRequest updateSessionRequest)
         {
             try
@@ -66,6 +70,8 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.Owner)]
+        [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
         public async Task<ActionResult<Session>> PostSession(int theaterId, int movieId, CreateSessionRequest createSessionRequest)
         {
             Session session = await sessionsHandler.CreateSession(theaterId, movieId, createSessionRequest);
@@ -79,6 +85,8 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpDelete("{sessionId}")]
+        [Authorize(Roles = Role.Owner)]
+        [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
         public async Task<IActionResult> DeleteSession(int theaterId, int movieId, int sessionId)
         {
             try
