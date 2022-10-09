@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,6 +11,8 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import userService from '../../services/user-service';
+import { CreateUserRequest } from '../../contracts/auth/CreateUserRequest';
 
 function Copyright(props: any) {
 	return (
@@ -26,14 +28,22 @@ function Copyright(props: any) {
 }
 
 export default function SignUp() {
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-		});
-	};
+
+	const [email, setEmail] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+
+
+	async function handleSubmit () {
+		const createUserRequest: CreateUserRequest = {
+			userName: email,
+			password: password
+		};
+
+		console.log(createUserRequest);
+		const isRegistered = await userService.register(createUserRequest);
+
+		console.log(isRegistered);
+	}
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -52,7 +62,7 @@ export default function SignUp() {
 				<Typography component="h1" variant="h5">
         Sign up
 				</Typography>
-				<Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+				<Box sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={6}>
 							<TextField
@@ -66,7 +76,7 @@ export default function SignUp() {
 							/>
 						</Grid>
 						<Grid item xs={12} sm={6}>
-							<TextField
+							<TextField 
 								required
 								fullWidth
 								id="lastName"
@@ -76,7 +86,7 @@ export default function SignUp() {
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
+							<TextField onChange={(e) => setEmail(e.target.value)}
 								required
 								fullWidth
 								id="email"
@@ -86,7 +96,7 @@ export default function SignUp() {
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<TextField
+							<TextField onChange={(e) => setPassword(e.target.value)}
 								required
 								fullWidth
 								name="password"
@@ -97,7 +107,7 @@ export default function SignUp() {
 							/>
 						</Grid>
 					</Grid>
-					<Button
+					<Button onClick={handleSubmit}
 						type="submit"
 						fullWidth
 						variant="contained"

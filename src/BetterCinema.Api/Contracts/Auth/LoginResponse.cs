@@ -1,4 +1,4 @@
-﻿namespace BetterCinema.Api.Contracts
+﻿namespace BetterCinema.Api.Contracts.Auth
 {
     public class LoginResponse
     {

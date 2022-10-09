@@ -1,5 +1,4 @@
-﻿using BetterCinema.Api.Contracts;
-using BetterCinema.Api.Contracts.Auth;
+﻿using BetterCinema.Api.Contracts.Auth;
 using BetterCinema.Api.Data;
 using BetterCinema.Api.Handlers;
 using BetterCinema.Api.Models;
