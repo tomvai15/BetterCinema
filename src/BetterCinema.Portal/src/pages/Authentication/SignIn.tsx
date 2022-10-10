@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,6 +11,12 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import userService from '../../services/user-service';
+import { useNavigate } from 'react-router-dom';
+import { LoginRequest } from '../../contracts/auth/LoginRequest';
+import { setToken } from '../../features/user-slice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+
 
 function Copyright(props: any) {
 	return (
@@ -26,15 +32,28 @@ function Copyright(props: any) {
 }
 
 export default function SignIn() {
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		console.log({
-			email: data.get('email'),
-			password: data.get('password'),
-		});
-	};
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 
+	const [email, setEmail] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+	const [error, setError] = useState<string>('');
+
+	async function handleSubmit () {
+		const loginUserRequest: LoginRequest = {
+			userName: email,
+			password: password
+		};
+		
+		const loginResponse = await userService.login(loginUserRequest);
+
+		if (loginResponse.token) {
+			dispatch(setToken(loginResponse.token));
+			navigate('/theaters');
+		} else {
+			setError('El.paštas arba slaptažodis yra netesingas');
+		}
+	}
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
@@ -52,28 +71,31 @@ export default function SignIn() {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-					<TextField
+				<Box sx={{ mt: 1 }}>
+					<TextField onChange={(e) => setEmail(e.target.value)}
 						margin="normal"
 						required
 						fullWidth
 						id="email"
-						label="Email Address"
+						label="El. Paštas"
 						name="email"
 						autoComplete="email"
 						autoFocus
 					/>
-					<TextField
+					<TextField onChange={(e) => setPassword(e.target.value)}
 						margin="normal"
 						required
 						fullWidth
 						name="password"
-						label="Password"
+						label="Slaptažodis"
 						type="password"
 						id="password"
 						autoComplete="current-password"
 					/>
-					<Button
+					<Typography fontSize={20} color={'red'}>
+						{error}
+					</Typography>
+					<Button onClick={handleSubmit}
 						type="submit"
 						fullWidth
 						variant="contained"

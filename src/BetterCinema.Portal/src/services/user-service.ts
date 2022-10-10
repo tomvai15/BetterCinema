@@ -1,5 +1,9 @@
 import axios, { AxiosError } from 'axios';
 import { CreateUserRequest } from '../contracts/auth/CreateUserRequest';
+import { LoginRequest } from '../contracts/auth/LoginRequest';
+import { setToken } from '../features/user-slice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { LoginResponse } from '../contracts/auth/LoginResponse';
 
 const API_URL = process.env.REACT_APP_BACKEND;
 
@@ -26,6 +30,25 @@ class UserService {
 				console.log(err.response?.data.message);
 			}
 			return false;
+		}
+	} 
+	async login(loginRequest: LoginRequest): Promise<LoginResponse>
+	{
+		let loginResponse: LoginResponse = { token:'', userName: ''};
+		const loginUrl = `${userUri}/token`;
+		try {
+			const res = await axios.post(loginUrl, loginRequest, {headers:{'Content-Type': 'application/json'}}); 
+			loginResponse = res.data;
+			if (isExpectedStatus(res.status, 200)) {
+				return loginResponse;
+			} else {
+				return loginResponse;
+			}
+		} catch (err) {
+			if (err instanceof AxiosError) {
+				console.log(err.response?.data.message);
+			}
+			return loginResponse;
 		}
 	} 
 }

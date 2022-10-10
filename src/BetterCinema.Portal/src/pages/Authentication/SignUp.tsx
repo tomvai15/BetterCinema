@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import userService from '../../services/user-service';
 import { CreateUserRequest } from '../../contracts/auth/CreateUserRequest';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props: any) {
 	return (
@@ -27,10 +28,17 @@ function Copyright(props: any) {
 	);
 }
 
+function doPasswordsMatch(password: string, confirmPassword: string): boolean {
+	return password == confirmPassword || confirmPassword == '';
+}
+
 export default function SignUp() {
+	const navigate = useNavigate();
 
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
+	const [confirmPassword, setConfirmPassword] = useState<string>('');
+	const [error, setError] = useState<string>('');
 
 
 	async function handleSubmit () {
@@ -39,10 +47,13 @@ export default function SignUp() {
 			password: password
 		};
 
-		console.log(createUserRequest);
 		const isRegistered = await userService.register(createUserRequest);
 
-		console.log(isRegistered);
+		if (isRegistered) {
+			navigate('/sign-in');
+		} else {
+			setError('El.paštas jau naudojamas');
+		}
 	}
 
 	return (
@@ -71,7 +82,7 @@ export default function SignUp() {
 								required
 								fullWidth
 								id="firstName"
-								label="First Name"
+								label="Vardas"
 								autoFocus
 							/>
 						</Grid>
@@ -80,7 +91,7 @@ export default function SignUp() {
 								required
 								fullWidth
 								id="lastName"
-								label="Last Name"
+								label="Pavardė"
 								name="lastName"
 								autoComplete="family-name"
 							/>
@@ -90,7 +101,7 @@ export default function SignUp() {
 								required
 								fullWidth
 								id="email"
-								label="Email Address"
+								label="El. Paštas"
 								name="email"
 								autoComplete="email"
 							/>
@@ -100,13 +111,31 @@ export default function SignUp() {
 								required
 								fullWidth
 								name="password"
-								label="Password"
+								label="Slaptažodis"
 								type="password"
 								id="password"
+								error={false}
+								helperText=""
+								autoComplete="new-password"
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField onChange={(e) => setConfirmPassword(e.target.value)}
+								required
+								fullWidth
+								name="password"
+								label="Patvirtinti Slaptažodį"
+								type="password"
+								id="password"
+								error={!doPasswordsMatch(password, confirmPassword)}
+								helperText={!doPasswordsMatch(password, confirmPassword) ? 'Slaptažodžiai nesutampa' : ''}
 								autoComplete="new-password"
 							/>
 						</Grid>
 					</Grid>
+					<Typography fontSize={20} color={'red'}>
+						{error}
+					</Typography>
 					<Button onClick={handleSubmit}
 						type="submit"
 						fullWidth
