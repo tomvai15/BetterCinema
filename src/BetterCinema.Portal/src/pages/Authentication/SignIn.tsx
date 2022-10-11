@@ -41,7 +41,7 @@ export default function SignIn() {
 
 	async function handleSubmit () {
 		const loginUserRequest: LoginRequest = {
-			userName: email,
+			email: email,
 			password: password
 		};
 		

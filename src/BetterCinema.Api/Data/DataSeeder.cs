@@ -32,7 +32,9 @@ namespace BetterCinema.Api.Data
             {
                new User
                {
-                   UserName="Admin",
+                   Email="admin@gmail.com",
+                   Name="Jonas",
+                   Surname="Jonavičius",
                    HashedPassword ="password",
                    Role = Role.Admin
                }

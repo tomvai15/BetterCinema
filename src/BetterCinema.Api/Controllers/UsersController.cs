@@ -1,4 +1,5 @@
-﻿using BetterCinema.Api.Contracts.Auth;
+﻿using AutoMapper;
+using BetterCinema.Api.Contracts.Auth;
 using BetterCinema.Api.Data;
 using BetterCinema.Api.Handlers;
 using BetterCinema.Api.Models;
@@ -11,12 +12,12 @@ namespace BetterCinema.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserAuthHandler userAuthHandler;
-        private readonly IUsersHandler usersHandler;
+        private readonly IMapper mapper;
 
-        public UsersController(IUserAuthHandler userAuthHandler, IUsersHandler usersHandler)
+        public UsersController(IUserAuthHandler userAuthHandler, IMapper mapper)
         {
             this.userAuthHandler = userAuthHandler;
-            this.usersHandler = usersHandler;
+            this.mapper = mapper;
         }
 
         [HttpPost]

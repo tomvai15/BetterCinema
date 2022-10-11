@@ -1,8 +1,8 @@
-﻿using BetterCinema.Api.Constants;
+﻿using AutoMapper;
+using BetterCinema.Api.Constants;
 using BetterCinema.Api.Contracts.Auth;
 using BetterCinema.Api.Models;
-using BetterCinema.Api.TokenGeneration;
-using BCryptNet = BCrypt.Net.BCrypt;
+using BetterCinema.Api.Cryptography;
 
 namespace BetterCinema.Api.Handlers
 {
@@ -15,20 +15,22 @@ namespace BetterCinema.Api.Handlers
     {
         private readonly IJwtTokenGenerator jwtTokenGenerator;
         private readonly IUsersHandler usersHandler;
+        private readonly IMapper mapper;
+        private readonly IHasherAdapter hasherAdapter;
 
-        public UserAuthHandler(IJwtTokenGenerator jwtTokenGenerator, IUsersHandler usersHandler)
+        public UserAuthHandler(IJwtTokenGenerator jwtTokenGenerator, IUsersHandler usersHandler, IMapper mapper, IHasherAdapter hasherAdapter)
         {
             this.jwtTokenGenerator = jwtTokenGenerator;
             this.usersHandler = usersHandler;
+            this.mapper = mapper;
+            this.hasherAdapter = hasherAdapter;
         }
         public async Task<bool> TryCreateUser(CreateUserRequest createUserRequest)
         {
-            User user = new User
-            {
-                UserName = createUserRequest.UserName,
-                HashedPassword = BCryptNet.HashPassword(createUserRequest.Password),
-                Role = Role.Owner.ToString()
-            };
+            User user = mapper.Map<User>(createUserRequest);
+
+            user.HashedPassword = hasherAdapter.HashPassword(createUserRequest.Password);
+            user.Role =  Role.Owner.ToString();
 
             user = await usersHandler.AddUser(user);
 
@@ -38,21 +40,20 @@ namespace BetterCinema.Api.Handlers
             }
 
             return true;
-
         }
 
         public async Task<LoginResponse> LoginUser(LoginRequest loginRequest)
         {
-            User user = await usersHandler.GetUserByName(loginRequest.UserName);
+            User user = await usersHandler.GetUserByName(loginRequest.Email);
 
             if (user == null)
             {
                 return null;
             }
 
-            bool isCorrectPassword = BCryptNet.Verify(loginRequest.Password, user.HashedPassword);
-            
-            if (!isCorrectPassword)
+            bool isPasswordCorrect = hasherAdapter.VerifyPassword(loginRequest.Password, user.HashedPassword);
+
+            if (!isPasswordCorrect)
             {
                 return null;
             }
@@ -60,7 +61,7 @@ namespace BetterCinema.Api.Handlers
 
             return new LoginResponse
             {
-                UserName = user.UserName,
+                Email = user.Email,
                 Token = token
             };
         }

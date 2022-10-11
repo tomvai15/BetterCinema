@@ -1,6 +1,6 @@
 ﻿using BetterCinema.Api.Constants;
 using BetterCinema.Api.Providers;
-using BetterCinema.Api.TokenGeneration;
+using BetterCinema.Api.Cryptography;
 using BetterCinema.Api.Validation.Handlers;
 using BetterCinema.Api.Validation.Requirements;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -68,6 +68,7 @@ namespace BetterCinema.Api.Bootstrap
 
 
             services.AddTransient<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddTransient<IHasherAdapter, HasherAdapter>();
             services.AddTransient<SecurityTokenHandler, JwtSecurityTokenHandler>();
             services.AddTransient<IClaimsProvider, ClaimsProvider>();
             services.AddTransient<IAuthorizationHandler, TheaterIdInRouteValidationHandler>();

@@ -10,12 +10,12 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Theater } from '../../models/Theater';
 import theaterService from '../../services/theater-service';
-
+import { useNavigate } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
 const Theaters = () => {
-
+	const navigate = useNavigate();
 	const [theaters, setTheaters] = useState<Theater[]>([]);
 	const [currentpage, setCurrentPage] = useState<number>(1);
 	const [totalCount, setTotalCount] = useState<number>(0);
@@ -37,8 +37,12 @@ const Theaters = () => {
 		setCurrentPage(page);
 	}
 
+	function navigateToTheater (id: number) {
+		navigate(`/theaters/${id}`);
+	}
+
 	return (
-		<main>			
+		<main>	
 			{/* Hero unit */}
 			<Box
 				sx={{
@@ -79,7 +83,7 @@ const Theaters = () => {
 									</Typography>
 								</CardContent>
 								<CardActions>
-									<Button size="small">Peržiūrėti</Button>
+									<Button onClick={()=>navigateToTheater(theater.theaterId)} size="small">Peržiūrėti</Button>
 								</CardActions>
 							</Card>
 						</Grid>

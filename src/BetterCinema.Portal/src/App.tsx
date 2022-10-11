@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import './App.css';
 import Movie from './pages/Movie/Movie';
 import Movies from './pages/Movie/Movies';
@@ -11,15 +11,17 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from './components/Header';
 import SignUp from './pages/Authentication/SignUp';
 import SignIn from './pages/Authentication/SignIn';
+import Home from './pages/Home/Home';
 
 const theme = createTheme();
 
 function App() {
 	return (
 		<ThemeProvider theme={theme}>
-			<Header/>
 			<Routes>
-				<Route path='/theaters'>
+				<Route index element={<Home/>} />
+				<Route path='/home' element={<Home/>}/>
+				<Route path='/theaters' element={<><Header/> <Outlet /></>}>
 					<Route index element={<Theaters/>}/>
 					<Route path=':theaterId'>
 						<Route index element={<Theater/>}/>

@@ -43,7 +43,7 @@ export default function SignUp() {
 
 	async function handleSubmit () {
 		const createUserRequest: CreateUserRequest = {
-			userName: email,
+			email: email,
 			password: password
 		};
 

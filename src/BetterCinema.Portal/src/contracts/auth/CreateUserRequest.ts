@@ -1,4 +1,4 @@
 export type CreateUserRequest = {
-    userName: string,
+    email: string,
     password: string
 }

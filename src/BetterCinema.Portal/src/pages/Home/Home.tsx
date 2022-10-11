@@ -8,8 +8,24 @@ import Header from '../../components/Header';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 
-const Theater = () => {
+interface MainFeaturedPostProps {
+post: {
+description: string;
+image: string;
+imageText: string;
+linkText: string;
+title: string;
+};
+}
+
+export default function Home () {
+	const navigate = useNavigate();
+
+	function goToTheaters () {
+		navigate('/theaters');
+	}
 	return <main>
+		<Header/>
 		<Box
 			sx={{
 				bgcolor: 'background.paper',
@@ -50,14 +66,19 @@ const Theater = () => {
 								pr: { md: 0 },
 							}}
 						>
+							<Typography onClick={goToTheaters} component="h1" variant="h3" color="inherit" gutterBottom>
+                                Peržiūrėti kino teatrus
+							</Typography>
+							<Typography variant="h5" color="inherit" paragraph>
+                                test
+							</Typography>
+							<Link variant="subtitle1" href="#">
+                                test
+							</Link>
 						</Box>
 					</Grid>
 				</Grid>
 			</Paper>
-			<Typography component="h1" variant="h3" color="inherit" gutterBottom>
-                    Amsterdam
-			</Typography>
 		</Container>
 	</main>;
-};
-export default Theater;
+}

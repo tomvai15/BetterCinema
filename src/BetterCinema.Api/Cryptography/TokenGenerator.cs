@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 
-namespace BetterCinema.Api.TokenGeneration
+namespace BetterCinema.Api.Cryptography
 {
     public interface IJwtTokenGenerator
     {
