@@ -1,11 +1,11 @@
 import React from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
 import './App.css';
-import Movie from './pages/Movie/Movie';
+import MovieInfo from './pages/Movie/MovieInfo';
 import Movies from './pages/Movie/Movies';
 import Session from './pages/Session/Session';
 import Sessions from './pages/Session/Sessions';
-import Theater from './pages/Theater/Theater';
+import TheaterInfo from './pages/Theater/TheaterInfo';
 import Theaters from './pages/Theater/Theaters';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header from './components/Header';
@@ -24,11 +24,11 @@ function App() {
 				<Route path='/theaters' element={<><Header/> <Outlet /></>}>
 					<Route index element={<Theaters/>}/>
 					<Route path=':theaterId'>
-						<Route index element={<Theater/>}/>
+						<Route index element={<TheaterInfo/>}/>
 						<Route path='movies'>
 							<Route index element={<Movies/>}/>
 							<Route path=':movieId'>
-								<Route index element={<Movie/>}/>
+								<Route index element={<MovieInfo/>}/>
 								<Route path='sessions'>
 									<Route index element={<Sessions/>}/>
 									<Route path=':sessionId' element={<Session/>}/>

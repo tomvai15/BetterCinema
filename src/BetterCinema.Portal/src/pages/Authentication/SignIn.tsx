@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -15,7 +13,7 @@ import userService from '../../services/user-service';
 import { useNavigate } from 'react-router-dom';
 import { LoginRequest } from '../../contracts/auth/LoginRequest';
 import { setToken } from '../../features/user-slice';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 
 
 function Copyright(props: any) {

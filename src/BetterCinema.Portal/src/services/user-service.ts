@@ -1,8 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { CreateUserRequest } from '../contracts/auth/CreateUserRequest';
 import { LoginRequest } from '../contracts/auth/LoginRequest';
-import { setToken } from '../features/user-slice';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { LoginResponse } from '../contracts/auth/LoginResponse';
 
 const API_URL = process.env.REACT_APP_BACKEND;
