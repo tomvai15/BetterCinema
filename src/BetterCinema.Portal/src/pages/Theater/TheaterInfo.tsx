@@ -41,8 +41,11 @@ const TheaterInfo = () => {
 		navigate(`/theaters/${theaterId}/movies`);
 	}
 
-	function deleteTheater() {
-		theaterService.deleteTheater(Number(theaterId));
+	async function deleteTheater() {
+		const isDeleted = await theaterService.deleteTheater(Number(theaterId));
+		if (isDeleted) {
+			navigate('/theaters');
+		}
 	}
 
 	const handleClickOpen = () => {

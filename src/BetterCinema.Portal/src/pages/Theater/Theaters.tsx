@@ -60,34 +60,40 @@ const Theaters = () => {
 				</Grid>
 				{/* End hero unit */}
 				<Grid container spacing={4}>
-					{theaters.map((theater) => (
-						<Grid item key={theater.theaterId} xs={12} sm={6} md={4}>
-							<Card
-								sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-							>
-								<CardMedia
-									component="img"
-									sx={{
-										// 16:9
-										pt: '10.25%',
-									}}
-									image="https://media.npr.org/assets/img/2020/05/05/plazamarqueeduringclosure_custom-965476b67c1a760bdb3e16991ce8d65098605f62-s1100-c50.jpeg"
-									alt="random"
-								/>
-								<CardContent sx={{ flexGrow: 1 }}>
-									<Typography gutterBottom variant="h5" component="h2">
-										{theater.name}
-									</Typography>
-									<Typography>
-										{theater.description}
-									</Typography>
-								</CardContent>
-								<CardActions>
-									<Button onClick={()=>navigateToTheater(theater.theaterId)} size="small">Peržiūrėti</Button>
-								</CardActions>
-							</Card>
-						</Grid>
-					))}
+					{ theaters.length > 0 ?
+						theaters.map((theater: Theater) => (
+							<Grid item key={theater.theaterId} xs={12} sm={6} md={4}>
+								<Card
+									sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+								>
+									<CardMedia
+										component="img"
+										sx={{
+											// 16:9
+											pt: '10.25%',
+										}}
+										image="https://media.npr.org/assets/img/2020/05/05/plazamarqueeduringclosure_custom-965476b67c1a760bdb3e16991ce8d65098605f62-s1100-c50.jpeg"
+										alt="random"
+									/>
+									<CardContent sx={{ flexGrow: 1 }}>
+										<Typography gutterBottom variant="h5" component="h2">
+											{theater.name}
+										</Typography>
+										<Typography>
+											{theater.description}
+										</Typography>
+									</CardContent>
+									<CardActions>
+										<Button onClick={()=>navigateToTheater(theater.theaterId)} size="small">Peržiūrėti</Button>
+									</CardActions>
+								</Card>
+							</Grid>
+						))
+						:
+						<Typography gutterBottom variant="h5" component="h2">
+							Nėra kino teatrų
+						</Typography>
+					}
 				</Grid>
 			</Container>
 		</main>    

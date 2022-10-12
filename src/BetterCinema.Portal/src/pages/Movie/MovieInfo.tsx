@@ -9,12 +9,19 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import movieService from '../../services/movie-service';
 import { GetMovieResponse } from '../../contracts/movie/GetMovieResponse';
+import Stack from '@mui/material/Stack';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const MovieInfo = () => {
 
 	const navigate = useNavigate();
 	const { theaterId, movieId } = useParams();
 
+	const [open, setOpen] = React.useState(false);
 	const [movie, setMovie] = useState<GetMovieResponse>();
 
 	useEffect(() => {		
@@ -42,6 +49,21 @@ const MovieInfo = () => {
 		return '2022-09-03';
 
 	}
+
+	async function deleteMovie() {
+		const isDeleted = await movieService.deleteMovie(Number(theaterId), Number(movieId));
+		if (isDeleted) {
+			navigate(`/theaters/${theaterId}/movies`);
+		}
+	}
+
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+	
+	const handleClose = () => {
+		setOpen(false);
+	};
 
 	return <main>
 		<Box
@@ -121,13 +143,39 @@ const MovieInfo = () => {
 					</Paper>
 				</Grid>
 			</Grid>
-			<Button onClick={navigateToSessions}
-				type="submit"
-				variant="contained"
-				sx={{ mt: 3, mb: 2 }}
+			<Stack direction={'row'} spacing={2}>
+				<Button onClick={navigateToSessions}
+					type="submit"
+					variant="contained"
+				>
+					Peržiūrėti seansus
+				</Button>
+				<Button onClick={handleClickOpen} color="error"
+					type="submit"
+					variant="contained"
+				>
+					Pašalinti
+				</Button>
+			</Stack>
+			<Dialog
+				open={open}
+				onClose={handleClose}
+				aria-labelledby="alert-dialog-title"
+				aria-describedby="alert-dialog-description"
 			>
-				Peržiūrėti seansus
-			</Button>
+				<DialogTitle id="alert-dialog-title">
+					{'Ar tikrai norite pašalinti filmą'}
+				</DialogTitle>
+				<DialogContent>
+					<DialogContentText id="alert-dialog-description">
+						Pašalinus filmą bus pašalinti visi jo seansai.
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleClose}>Atšaukti</Button>
+					<Button onClick={() => {handleClose();deleteMovie();}} autoFocus>Pašalinit</Button>
+				</DialogActions>
+			</Dialog>
 		</Container>
 	</main>;
 };

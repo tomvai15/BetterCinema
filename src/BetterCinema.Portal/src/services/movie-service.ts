@@ -42,12 +42,12 @@ class MovieService {
 
 		return isExpectedStatus(res.status, 201);
 	}
-	async deleteTheater(id: number): Promise<boolean>
+	async deleteMovie(theaterId: number, movieId: number): Promise<boolean>
 	{
-		const uri = `${theaterUri}/${id}`;
-		const res = await axios.delete(uri, { headers: {} });
+		const moviesUrl = `${theaterUri}/${theaterId}/movies/${movieId}`;
+		const res = await axios.delete(moviesUrl, { headers: {} });
 
-		return isExpectedStatus(res.status, 201);
+		return isExpectedStatus(res.status, 204);
 	}
 }
 export default new MovieService ();

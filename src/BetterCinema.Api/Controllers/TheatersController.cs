@@ -89,8 +89,8 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpDelete("{theaterId}")]
-        [Authorize(Policy = AuthPolicy.Owner)]
-        [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
+        ///[Authorize(Policy = AuthPolicy.Owner)]
+        //[Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
         public async Task<IActionResult> DeleteTheater(int theaterId)
         {
             var theater = await context.Theaters.FindAsync(theaterId);

@@ -46,7 +46,7 @@ class TheaterService {
 		const uri = `${theaterUri}/${id}`;
 		const res = await axios.delete(uri, { headers: {} });
 
-		return isExpectedStatus(res.status, 201);
+		return isExpectedStatus(res.status, 204);
 	}
 }
 export default new TheaterService ();
