@@ -1,5 +1,6 @@
 ﻿using BetterCinema.Api.Constants;
 using BetterCinema.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BetterCinema.Api.Data
 {
@@ -10,13 +11,29 @@ namespace BetterCinema.Api.Data
             using var scope = app.Services.CreateScope();
 
             var dbContext = scope.ServiceProvider.GetRequiredService<CinemaDbContext>();
-
             bool wasCreated = dbContext.Database.EnsureCreated();
+
 
             if (!wasCreated)
             {
-                return;
+               // return;
             }
+
+
+            dbContext.Users.RemoveRange(dbContext.Users);
+            dbContext.Theaters.RemoveRange(dbContext.Theaters);
+            dbContext.Sessions.RemoveRange(dbContext.Sessions);
+            dbContext.Movies.RemoveRange(dbContext.Movies);
+
+
+            dbContext.SaveChanges();
+
+            dbContext.Database.ExecuteSqlRaw("DBCC CHECKIDENT('Users', RESEED, 0);");
+            dbContext.Database.ExecuteSqlRaw("DBCC CHECKIDENT('Theaters', RESEED, 0);");
+            dbContext.Database.ExecuteSqlRaw("DBCC CHECKIDENT('Movies', RESEED, 0);");
+            dbContext.Database.ExecuteSqlRaw("DBCC CHECKIDENT('Sessions', RESEED, 0);");
+
+            dbContext.SaveChanges();
 
             dbContext.AddUsers()
                 .AddTheaters()
@@ -32,10 +49,18 @@ namespace BetterCinema.Api.Data
             {
                new User
                {
+                   Email="owner@gmail.com",
+                   Name="Petras",
+                   Surname="Petravičius",
+                   HashedPassword ="$2a$11$ktu80VJa3SexNZl76PQENOogwKBCcSWnFv.GC2/jZylN8ukZ/QZ0a",
+                   Role = Role.Owner
+               },
+               new User
+               {
                    Email="admin@gmail.com",
                    Name="Jonas",
                    Surname="Jonavičius",
-                   HashedPassword ="password",
+                   HashedPassword ="$2a$11$ktu80VJa3SexNZl76PQENOogwKBCcSWnFv.GC2/jZylN8ukZ/QZ0a",
                    Role = Role.Admin
                }
             };
@@ -56,6 +81,7 @@ namespace BetterCinema.Api.Data
                     Address = "Savanorių pr. 4, Kaunas",
                     Description = "Neseniai duris Kaune atvėręs kino teatras.",
                     IsConfimed = true,
+                    ImageUrl = "",
                     UserId = 1
                  },
                  new Theater {
@@ -63,12 +89,14 @@ namespace BetterCinema.Api.Data
                     Address = "Karaliaus Mindaugo g. 5, Kaunas",
                     Description = "Pats seniausiaias kino teatras Kaune.",
                     IsConfimed = true,
+                    ImageUrl = "",
                     UserId = 1
                 },
                 new Theater {
                     Name = $"Vilniaus kino teatras",
                     Address = "Pylimo g. 8, Vilnius",
                     Description = "Kino teatras Viniuje",
+                    ImageUrl = "",
                     IsConfimed = true,
                     UserId = 1
                 }

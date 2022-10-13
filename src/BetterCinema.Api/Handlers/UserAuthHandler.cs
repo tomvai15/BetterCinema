@@ -50,9 +50,16 @@ namespace BetterCinema.Api.Handlers
             {
                 return null;
             }
+            bool isPasswordCorrect = true;
+            try
+            {
 
-            bool isPasswordCorrect = hasherAdapter.VerifyPassword(loginRequest.Password, user.HashedPassword);
-
+                isPasswordCorrect = hasherAdapter.VerifyPassword(loginRequest.Password, user.HashedPassword);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
             if (!isPasswordCorrect)
             {
                 return null;

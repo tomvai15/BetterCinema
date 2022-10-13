@@ -35,14 +35,21 @@ namespace BetterCinema.Api.Controllers
         [HttpPost("token")]
         public async Task<ActionResult<LoginResponse>> GetCredentials(LoginRequest loginRequest)
         {
-            LoginResponse loginResponse = await userAuthHandler.LoginUser(loginRequest);
-
-            if (loginResponse == null)
+            try
             {
-                return Unauthorized();
-            }
+                LoginResponse loginResponse = await userAuthHandler.LoginUser(loginRequest);
 
-            return Ok(loginResponse);
+                if (loginResponse == null)
+                {
+                    return Unauthorized();
+                }
+
+                return Ok(loginResponse);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

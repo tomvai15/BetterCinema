@@ -22,6 +22,12 @@ namespace BetterCinema.Api.Controllers
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IMapper mapper;
 
+        [HttpGet("test")]
+        public async Task<IActionResult> Test()
+        {
+            return NoContent();
+        }
+
         public TheatersController(CinemaDbContext context, ITheatersHandler theatersHandler, IMapper mapper, IClaimsProvider claimsProvider, IHttpContextAccessor httpContextAccessor)
         {
             this.context = context;
