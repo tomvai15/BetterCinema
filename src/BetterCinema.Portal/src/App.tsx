@@ -12,6 +12,7 @@ import Header from './components/Header';
 import SignUp from './pages/Authentication/SignUp';
 import SignIn from './pages/Authentication/SignIn';
 import Home from './pages/Home/Home';
+import CreateTheater from './pages/Theater/CreateTheater';
 
 const theme = createTheme();
 
@@ -23,6 +24,7 @@ function App() {
 				<Route path='/home' element={<Home/>}/>
 				<Route path='/theaters' element={<><Header/> <Outlet /></>}>
 					<Route index element={<Theaters/>}/>
+					<Route path='create' element={<CreateTheater/>}/>
 					<Route path=':theaterId'>
 						<Route index element={<TheaterInfo/>}/>
 						<Route path='movies'>

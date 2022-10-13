@@ -13,12 +13,15 @@ import theaterService from '../../services/theater-service';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
 
 const Theaters = () => {
 	const navigate = useNavigate();
 	const [theaters, setTheaters] = useState<Theater[]>([]);
 	const [currentpage, setCurrentPage] = useState<number>(1);
 	const [totalCount, setTotalCount] = useState<number>(0);
+	const [imageUrl, setImageUrl] = useState<string>('');
 	const theatersPerPage = 5;
 	
 	useEffect(() => {		
@@ -41,24 +44,26 @@ const Theaters = () => {
 		navigate(`/theaters/${id}`);
 	}
 
+
 	return (
 		<main>	
 			{/* Hero unit */}
 			<Box
 				sx={{
 					bgcolor: 'background.paper',
-					pt: 8,
+					pt: 2,
 					pb: 6,
 				}}
 			>
 			</Box>
 			<Container sx={{ py: 1 }} maxWidth="md">
-				<Grid container justifyContent="center">
-					<Stack spacing={2}>
-						<Pagination onChange={onPageChange} page={currentpage} count={Math.ceil(totalCount/theatersPerPage)} variant="outlined" shape="rounded" />
-					</Stack>
-				</Grid>
-				{/* End hero unit */}
+				<Button onClick={()=>{navigate('/theaters/create');}}
+					type="submit"
+					variant="contained"
+					sx={{ mt: 3, mb: 2 }}
+				>
+					Naujas teatras
+				</Button>	
 				<Grid container spacing={4}>
 					{ theaters.length > 0 ?
 						theaters.map((theater: Theater) => (
@@ -72,7 +77,7 @@ const Theaters = () => {
 											// 16:9
 											pt: '10.25%',
 										}}
-										image="https://media.npr.org/assets/img/2020/05/05/plazamarqueeduringclosure_custom-965476b67c1a760bdb3e16991ce8d65098605f62-s1100-c50.jpeg"
+										image={theater.imageUrl}
 										alt="random"
 									/>
 									<CardContent sx={{ flexGrow: 1 }}>

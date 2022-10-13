@@ -33,6 +33,8 @@ function doPasswordsMatch(password: string, confirmPassword: string): boolean {
 export default function SignUp() {
 	const navigate = useNavigate();
 
+	const [name, setName] = useState<string>('');
+	const [surname, setSurname] = useState<string>('');
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 	const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -42,7 +44,9 @@ export default function SignUp() {
 	async function handleSubmit () {
 		const createUserRequest: CreateUserRequest = {
 			email: email,
-			password: password
+			password: password,
+			name: name,
+			surname: surname
 		};
 
 		const isRegistered = await userService.register(createUserRequest);
@@ -74,7 +78,7 @@ export default function SignUp() {
 				<Box sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={6}>
-							<TextField
+							<TextField onChange={(e) => setName(e.target.value)}
 								autoComplete="given-name"
 								name="firstName"
 								required
@@ -85,7 +89,7 @@ export default function SignUp() {
 							/>
 						</Grid>
 						<Grid item xs={12} sm={6}>
-							<TextField 
+							<TextField onChange={(e) => setSurname(e.target.value)}
 								required
 								fullWidth
 								id="lastName"

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { GetTheatersResponse } from '../contracts/GetTheatersResponse';
+import { CreateTheaterRequest } from '../contracts/theater/CreateTheaterRequest';
 import {Theater} from '../models/Theater';
+import { store } from '../app/store';
 
 const API_URL = process.env.REACT_APP_BACKEND;
 
@@ -28,16 +30,20 @@ class TheaterService {
 
 		return response.data;
 	}    
-	async addTheater(theater: Theater): Promise<boolean>
+	async addTheater(createTheaterRequest: CreateTheaterRequest): Promise<boolean>
 	{
-		const res = await axios.post(theaterUri, {body: theater, headers: {} });
+		const reduxStore = store.getState();
+		const token = reduxStore.user.token;
+		const res = await axios.post(theaterUri, createTheaterRequest, { headers: {Authorization: `Bearer ${token}`} });
 
 		return isExpectedStatus(res.status, 201);
 	} 
 	async updateTheater(theater: Theater): Promise<boolean>
 	{
+		const reduxStore = store.getState();
+		const token = reduxStore.user.token;
 		const uri = `${theaterUri}/${theater.theaterId}`;
-		const res = await axios.put(uri, {body: theater, headers: {} });
+		const res = await axios.put(uri, {body: theater, headers: {Authorization: `Bearer ${token}`} });
 
 		return isExpectedStatus(res.status, 201);
 	}

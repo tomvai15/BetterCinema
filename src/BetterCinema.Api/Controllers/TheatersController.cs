@@ -8,6 +8,7 @@ using AutoMapper;
 using BetterCinema.Api.Contracts.Theaters;
 using BetterCinema.Api.Constants;
 using Microsoft.AspNetCore.Authorization;
+using BetterCinema.Api.Providers;
 
 namespace BetterCinema.Api.Controllers
 {
@@ -17,15 +18,17 @@ namespace BetterCinema.Api.Controllers
     {
         private readonly CinemaDbContext context;
         private readonly ITheatersHandler theatersHandler;
+        private readonly IClaimsProvider claimsProvider;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IMapper mapper;
 
-        public TheatersController(CinemaDbContext context, ITheatersHandler theatersHandler, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public TheatersController(CinemaDbContext context, ITheatersHandler theatersHandler, IMapper mapper, IClaimsProvider claimsProvider, IHttpContextAccessor httpContextAccessor)
         {
             this.context = context;
             this.theatersHandler = theatersHandler;
             this.mapper = mapper;
             this.httpContextAccessor = httpContextAccessor;
+            this.claimsProvider = claimsProvider;
         }
 
         [HttpGet]
@@ -73,13 +76,13 @@ namespace BetterCinema.Api.Controllers
 
         [HttpPost]
         [Authorize(Roles = Role.Owner)]
-        [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
+       // [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
         public async Task<ActionResult<Theater>> PostTheater(CreateTheaterRequest createTheaterRequest)
         {
             Theater newTheater = mapper.Map<Theater>(createTheaterRequest);
+            newTheater.IsConfimed = false;
 
-            var claim = httpContextAccessor.HttpContext.User.Claims.Where(c => c.Type == "UserId").FirstOrDefault();       
-            int userId = int.Parse(claim.Value);
+            claimsProvider.TryGetUserId(out int userId);
 
             newTheater.UserId = userId;
             var addedTheater = context.Theaters.Add(newTheater);
@@ -89,8 +92,8 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpDelete("{theaterId}")]
-        ///[Authorize(Policy = AuthPolicy.Owner)]
-        //[Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
+        [Authorize(Policy = AuthPolicy.Owner)]
+        [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
         public async Task<IActionResult> DeleteTheater(int theaterId)
         {
             var theater = await context.Theaters.FindAsync(theaterId);

@@ -48,7 +48,6 @@ const Header = () => {
 
 	function logOut(): void
 	{
-		console.log('res');
 		dispatch(logOutUser());
 	}
 
@@ -62,7 +61,7 @@ const Header = () => {
 				{isLoggedIn() ?
 					<Box sx={{ flexGrow: 0 }}>
 						<Typography onClick={handleOpenUserMenu}  variant="h6" color="inherit" noWrap>
-							Jonas
+							{user.name}
 						</Typography>
 						<Menu
 							sx={{ mt: '45px' }}

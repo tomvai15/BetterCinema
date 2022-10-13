@@ -12,7 +12,7 @@ import Container from '@mui/material/Container';
 import userService from '../../services/user-service';
 import { useNavigate } from 'react-router-dom';
 import { LoginRequest } from '../../contracts/auth/LoginRequest';
-import { setToken } from '../../features/user-slice';
+import { setToken, setName } from '../../features/user-slice';
 import { useAppDispatch } from '../../app/hooks';
 
 
@@ -47,6 +47,7 @@ export default function SignIn() {
 
 		if (loginResponse.token) {
 			dispatch(setToken(loginResponse.token));
+			dispatch(setName(loginResponse.name));
 			navigate('/theaters');
 		} else {
 			setError('El.paštas arba slaptažodis yra netesingas');

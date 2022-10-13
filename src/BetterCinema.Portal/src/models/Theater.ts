@@ -3,4 +3,5 @@ export type Theater = {
     name: string
     description: string,
     address: string
+    imageUrl: string
 }

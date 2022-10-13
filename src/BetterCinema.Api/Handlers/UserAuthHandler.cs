@@ -61,7 +61,7 @@ namespace BetterCinema.Api.Handlers
 
             return new LoginResponse
             {
-                Email = user.Email,
+                Name = user.Name,
                 Token = token
             };
         }
