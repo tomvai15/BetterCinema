@@ -3,6 +3,15 @@ import { GetTheatersResponse } from '../contracts/GetTheatersResponse';
 import { CreateTheaterRequest } from '../contracts/theater/CreateTheaterRequest';
 import {Theater} from '../models/Theater';
 import { store } from '../app/store';
+import { UpdateTheaterRequest } from '../contracts/theater/UpdateTheaterRequest';
+
+axios.interceptors.request.use(function (config) {
+	const token = store.getState().user.token;
+	if (!(config.headers && token)) return config;
+	config.headers.Authorization =  `Bearer ${token}`;
+
+	return config;
+});
 
 const API_URL = process.env.REACT_APP_BACKEND;
 
@@ -18,9 +27,9 @@ function isExpectedStatus(status: number, expectedStatus: number)
 }
 
 class TheaterService {
-	async getTheaters (limit: number, offset: number): Promise<GetTheatersResponse>
+	async getTheaters (): Promise<GetTheatersResponse>
 	{
-		const response = await axios.get(theaterUri,  { params: { limit: limit, offset: offset  }, headers: {} });
+		const response = await axios.get(theaterUri, { headers: {} });
 		return response.data;
 	}
 	async getTheater(id: number): Promise<Theater>
@@ -34,23 +43,22 @@ class TheaterService {
 	{
 		const reduxStore = store.getState();
 		const token = reduxStore.user.token;
-		const res = await axios.post(theaterUri, createTheaterRequest, { headers: {Authorization: `Bearer ${token}`} });
+		const res = await axios.post(theaterUri, createTheaterRequest);
 
 		return isExpectedStatus(res.status, 201);
 	} 
-	async updateTheater(theater: Theater): Promise<boolean>
+	async updateTheater(theaterId: number, updateTheaterRequest: UpdateTheaterRequest): Promise<boolean>
 	{
 		const reduxStore = store.getState();
-		const token = reduxStore.user.token;
-		const uri = `${theaterUri}/${theater.theaterId}`;
-		const res = await axios.put(uri, {body: theater, headers: {Authorization: `Bearer ${token}`} });
+		const uri = `${theaterUri}/${theaterId}`;
+		const res = await axios.patch(uri, updateTheaterRequest);
 
-		return isExpectedStatus(res.status, 201);
+		return isExpectedStatus(res.status, 204);
 	}
 	async deleteTheater(id: number): Promise<boolean>
 	{
 		const uri = `${theaterUri}/${id}`;
-		const res = await axios.delete(uri, { headers: {} });
+		const res = await axios.delete(uri);
 
 		return isExpectedStatus(res.status, 204);
 	}

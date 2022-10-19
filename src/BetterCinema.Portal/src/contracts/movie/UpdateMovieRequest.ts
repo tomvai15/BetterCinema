@@ -1,8 +1,7 @@
-export type GetMovieResponse = {
+export type UpdateMovieRequest = {
     movieId: number,
     description: string,
     title: string,
     genre: string,
-    director: string,
     releaseDate: Date
 }

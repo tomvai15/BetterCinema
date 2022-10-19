@@ -150,6 +150,12 @@ const MovieInfo = () => {
 				>
 					Peržiūrėti seansus
 				</Button>
+				<Button onClick={()=>navigate(`/theaters/${theaterId}/movies/${movieId}/edit`)} color="success"
+					type="submit"
+					variant="contained"
+				>
+					Redaguoti
+				</Button>
 				<Button onClick={handleClickOpen} color="error"
 					type="submit"
 					variant="contained"

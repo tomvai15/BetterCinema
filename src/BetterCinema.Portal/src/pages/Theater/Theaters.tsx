@@ -19,31 +19,20 @@ import Paper from '@mui/material/Paper';
 const Theaters = () => {
 	const navigate = useNavigate();
 	const [theaters, setTheaters] = useState<Theater[]>([]);
-	const [currentpage, setCurrentPage] = useState<number>(1);
-	const [totalCount, setTotalCount] = useState<number>(0);
-	const [imageUrl, setImageUrl] = useState<string>('');
-	const theatersPerPage = 5;
 	
 	useEffect(() => {		
-		fetchTheaters(theatersPerPage, (currentpage-1)*theatersPerPage);
-	}, [currentpage]);
+		fetchTheaters();
+	}, []);
 
 	// methods
-	async function fetchTheaters(limit: number, offset: number) {
-		const response = await theaterService.getTheaters(limit, offset);
-		setTotalCount(response.totalCount);
+	async function fetchTheaters() {
+		const response = await theaterService.getTheaters();
 		setTheaters(response.theaters);
-	}
-
-	function onPageChange(e: React.ChangeEvent<any>, page:number)
-	{
-		setCurrentPage(page);
 	}
 
 	function navigateToTheater (id: number) {
 		navigate(`/theaters/${id}`);
 	}
-
 
 	return (
 		<main>	

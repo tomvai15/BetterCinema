@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using BetterCinema.Api.Constants;
 using BetterCinema.Api.Contracts.Auth;
 using BetterCinema.Api.Data;
 using BetterCinema.Api.Handlers;
 using BetterCinema.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BetterCinema.Api.Controllers
@@ -13,11 +15,36 @@ namespace BetterCinema.Api.Controllers
     {
         private readonly IUserAuthHandler userAuthHandler;
         private readonly IMapper mapper;
+        private readonly CinemaDbContext cinemaDbContext;
 
-        public UsersController(IUserAuthHandler userAuthHandler, IMapper mapper)
+        public UsersController(IUserAuthHandler userAuthHandler, IMapper mapper, CinemaDbContext cinemaDbContext)
         {
             this.userAuthHandler = userAuthHandler;
             this.mapper = mapper;
+            this.cinemaDbContext = cinemaDbContext;
+        }
+
+        [HttpGet]
+        [Authorize(Policy = AuthPolicy.Admin)]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        {
+            return cinemaDbContext.Users.ToList();
+        }
+
+        [HttpDelete("{userId}")]
+        [Authorize(Policy = AuthPolicy.Admin)]
+        public async Task<ActionResult<IEnumerable<User>>> DeleteUser(int userId)
+        {
+            var user = await cinemaDbContext.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            cinemaDbContext.Users.Remove(user);
+            await cinemaDbContext.SaveChangesAsync();
+
+            return NoContent();
         }
 
         [HttpPost]

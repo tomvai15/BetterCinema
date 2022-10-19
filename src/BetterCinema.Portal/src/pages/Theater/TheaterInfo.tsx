@@ -81,7 +81,7 @@ const TheaterInfo = () => {
 					backgroundSize: 'cover',
 					backgroundRepeat: 'no-repeat',
 					backgroundPosition: 'center',
-					backgroundImage: 'url(https://source.unsplash.com/random)'
+					backgroundImage: `url(${theater?.imageUrl})`
 				}}
 			>
 				{<img style={{ display: 'none' }} src="https://media.npr.org/assets/img/2020/05/05/plazamarqueeduringclosure_custom-965476b67c1a760bdb3e16991ce8d65098605f62-s1100-c50.jpeg" alt="test" />}
@@ -134,6 +134,12 @@ const TheaterInfo = () => {
 					variant="contained"
 				>
 					Peržiūrėti filmus
+				</Button>
+				<Button onClick={()=>navigate(`/theaters/${theaterId}/edit`)} color="success"
+					type="submit"
+					variant="contained"
+				>
+					Redaguoti
 				</Button>
 				<Button onClick={handleClickOpen} color="error"
 					type="submit"

@@ -60,6 +60,13 @@ const Movies = () => {
 				>
 					Grįžti atgal
 				</Button>
+				<Button onClick={()=>{navigate(`/theaters/${theaterId}/movies/create`);}}
+					type="submit"
+					variant="contained"
+					sx={{ mt: 3, mb: 2 }}
+				>
+					Naujas filmas
+				</Button>
 				<Grid container spacing={4}>
 					{movies.map((movie) => (
 						<Grid item key={movie.movieId} xs={12} sm={6} md={4}>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
+import { useParams } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -16,8 +17,10 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import { CreateTheaterRequest } from '../../contracts/theater/CreateTheaterRequest';
+import { UpdateTheaterRequest } from '../../contracts/theater/UpdateTheaterRequest';
 
-const CreateTheater = () => {
+const EditTheater = () => {
+	const { theaterId } = useParams();
 	const navigate = useNavigate();
 
 	const [name, setName] = useState<string>('');
@@ -26,22 +29,30 @@ const CreateTheater = () => {
 	const [imageUrl, setImageUrl] = useState<string>('');
 	const [successMessage, setSuccessMessage] = useState<string>('');
 
-	async function creteTheater() {
-		const createTheaterRequest: CreateTheaterRequest = {
+	useEffect(() => {		
+		fetchAndSetTheater();
+	}, []);
+
+	async function fetchAndSetTheater() {
+		const theater = await theaterService.getTheater(Number(theaterId));
+		setName(theater.name);
+		setAddress(theater.address);
+		setDescription(theater.description);
+		setImageUrl(theater.imageUrl);
+	}
+
+	async function updateTheater() {
+		const updateTheaterRequest: UpdateTheaterRequest = {
 			name: name,
 			description: address,
 			address: description,
 			imageUrl: imageUrl
 
 		};
-		const isCreated = await theaterService.addTheater(createTheaterRequest);
+		const isCreated = await theaterService.updateTheater(Number(theaterId), updateTheaterRequest);
 
 		if (isCreated) {
-			setName('');
-			setAddress('');
-			setDescription('');
-			setImageUrl('');
-			setSuccessMessage('Kino tetras buvo sukurtas');
+			setSuccessMessage('Kino tetras buvo atnaujintas');
 		}
 	}
 
@@ -57,7 +68,7 @@ const CreateTheater = () => {
 			>
 			</Box>
 			<Container sx={{ py: 1 }} maxWidth="md">
-				<Button onClick={()=>{navigate('/theaters');}}
+				<Button onClick={()=>{navigate(`/theaters/${theaterId}`);}}
 					type="submit"
 					variant="contained"
 					sx={{ mt: 3, mb: 2 }}
@@ -65,7 +76,7 @@ const CreateTheater = () => {
 					Grįžti į teatrų sąrašą
 				</Button>
 				<Typography  variant="h4">
-					Naujas kino teatras
+					Redaguoti kino teatrą
 				</Typography>	
 				<Box sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
@@ -113,16 +124,16 @@ const CreateTheater = () => {
 					<Typography fontSize={20} color={'green'}>
 						{successMessage}
 					</Typography>
-					<Button onClick={creteTheater} disabled={!(name && description && address && imageUrl)}
+					<Button onClick={updateTheater} disabled={!(name && description && address && imageUrl)}
 						type="submit"						
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
-						Sukurti
+						Atnaujinti
 					</Button>					
 				</Box>
 			</Container>
 		</main>    
 	);
 };
-export default CreateTheater;
+export default EditTheater;

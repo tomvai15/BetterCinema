@@ -19,7 +19,7 @@ namespace BetterCinema.Api.Data
                // return;
             }
 
-
+         
             dbContext.Users.RemoveRange(dbContext.Users);
             dbContext.Theaters.RemoveRange(dbContext.Theaters);
             dbContext.Sessions.RemoveRange(dbContext.Sessions);
