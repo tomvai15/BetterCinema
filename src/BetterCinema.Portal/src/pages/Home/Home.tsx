@@ -1,24 +1,10 @@
 import React from 'react';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import Header from '../../components/Header';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, styled, Typography } from '@mui/material';
-import { url } from 'inspector';
-
-interface MainFeaturedPostProps {
-post: {
-description: string;
-image: string;
-imageText: string;
-linkText: string;
-title: string;
-};
-}
 
 const Home = () => {	
+
 	const navigate = useNavigate();
 
 	function goToTheaters () {

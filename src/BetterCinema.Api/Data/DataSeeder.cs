@@ -120,6 +120,7 @@ namespace BetterCinema.Api.Data
                     Description = "Trys draugai – gydytojas, medicinos sesuo ir advokatas – tampa žmogžudystės liudininkais, o galiausiai ir įtariamaisiais. Tuomet jie atsiduria slapčiausio Amerikos istorijoje sąmokslo epicentre.",
                     Genre = "Drama",
                     Director = "David O. Russell",
+                    ImageUrl = "",
                     TheaterId = 1
                  },
                  new Movie {
@@ -127,6 +128,7 @@ namespace BetterCinema.Api.Data
                     ReleaseDate = new DateTime(2022,9,2),
                     Description = "Aktorės ir režisierės Olivijos Wilde seksualaus psichologinio trilerio „Nesijaudink, brangioji“ centre – Alisa ir Džekas Čeimbersai (aktoriai Florence Pugh ir Harry Styles). Vyrui pakeitus darbą, jauna šeima persikelia į naujojo darbdavio įkurtą uždarą kompanijos miestelį Kalifornijoje. Čia vadžias tvirtai savo rankose laiko charizmatiškas kompanijos vadovas Frenkas (akt. Chris Pine).",
                     Genre = "Trileris",
+                    ImageUrl = "",
                     Director = "Olivia Wilde",
                     TheaterId = 1
                  },
@@ -137,6 +139,7 @@ namespace BetterCinema.Api.Data
                     Description = "Tapusi keisto, traumuojančio incidento, susijusio su paciente, liudininke, daktarė Rouzė Cotter (akt. Sosie Bacon) pradeda patirti bauginančius įvykius, kurių ji niekaip negali paaiškinti.",
                     Genre = "Siaubo",
                     Director = "Edgar Whrite",
+                    ImageUrl = "",
                     TheaterId = 2
                  },
                   new Movie {
@@ -145,6 +148,7 @@ namespace BetterCinema.Api.Data
                     Description = "Kaja Klark (aktorė Daisy Edgar-Jones) savo gimtojo miestelio Šiaurės Karolinoje gyventojams visuomet kėlė prieštaringus jausmus, iš kurių stipriausi – nepasitikėjimas, įtarumas ir panieka. Mergaitė gimė šalia miestelio tyvuliuojančiose pelkėse, kur buvo įsikūrusi jos šeima. Pirmiausiai kelerių metų dukrą paliko motina, tuomet vienas po kito išvyko vyresnieji broliai ir seserys, o galiausiai pradingo ir tėvas. Nuo tada Kaja pelkėse augo viena.\r\n",
                     Genre = "Drama",
                     Director = "Daisy Edgar-Jones",
+                    ImageUrl = "",
                     TheaterId = 2
                  },
                    new Movie {
@@ -153,6 +157,7 @@ namespace BetterCinema.Api.Data
                     Description = "Animacinės franšizės „Bjaurusis Aš“ skyriaus „Pakalikai“ tęsinys atskleis draugiškojo piktadario Felonijaus Gru kilmės istoriją.\r\n",
                     Genre = "Komedija",
                     Director = "David O. Russell",
+                    ImageUrl = "",
                     TheaterId = 2
                  },
             };

@@ -11,12 +11,11 @@ import Container from '@mui/material/Container';
 import { Theater } from '../../models/Theater';
 import theaterService from '../../services/theater-service';
 import { useNavigate } from 'react-router-dom';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
+import { useAppSelector } from '../../app/hooks';
 
 const Theaters = () => {
+
+	const user  = useAppSelector((state) => state.user);
 	const navigate = useNavigate();
 	const [theaters, setTheaters] = useState<Theater[]>([]);
 	
@@ -46,13 +45,16 @@ const Theaters = () => {
 			>
 			</Box>
 			<Container sx={{ py: 1 }} maxWidth="md">
-				<Button onClick={()=>{navigate('/theaters/create');}}
-					type="submit"
-					variant="contained"
-					sx={{ mt: 3, mb: 2 }}
-				>
-					Naujas teatras
-				</Button>	
+				{
+					user.role == 'Owner' &&
+					<Button onClick={()=>{navigate('/theaters/create');}}
+						type="submit"
+						variant="contained"
+						sx={{ mt: 3, mb: 2 }}
+					>
+						Naujas teatras
+					</Button>	
+				}
 				<Grid container spacing={4}>
 					{ theaters.length > 0 ?
 						theaters.map((theater: Theater) => (

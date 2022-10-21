@@ -16,6 +16,9 @@ import CreateTheater from './pages/Theater/CreateTheater';
 import EditTheater from './pages/Theater/EditTheater';
 import Footer from './components/Footer';
 import CreateMovie from './pages/Movie/CreateMovie';
+import EditMovie from './pages/Movie/EditMovie';
+import CreateSession from './pages/Session/CreateSession';
+import Users from './pages/Users/Users';
 
 const theme = createTheme();
 
@@ -25,6 +28,7 @@ function App() {
 			<Routes>
 				<Route index element={<><Header/> <Home /><Footer /></>} />
 				<Route path='/home' element={<><Header/> <Home /></>}/>
+				<Route path='/users' element={<><Header/> <Users /></>}/>
 				<Route path='/theaters' element={<><Header/> <Outlet /></>}>
 					<Route index element={<Theaters/>}/>
 					<Route path='create' element={<CreateTheater/>}/>
@@ -36,8 +40,10 @@ function App() {
 							<Route path='create' element={<CreateMovie/>}/>
 							<Route path=':movieId'>
 								<Route index element={<MovieInfo/>}/>
+								<Route path='edit' element={<EditMovie/>}/>
 								<Route path='sessions'>
 									<Route index element={<Sessions/>}/>
+									<Route path='create' element={<CreateSession/>}/>
 									<Route path=':sessionId' element={<Session/>}/>
 								</Route>
 							</Route>

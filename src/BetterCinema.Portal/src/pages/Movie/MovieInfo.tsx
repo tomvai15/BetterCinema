@@ -15,9 +15,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useAppSelector } from '../../app/hooks';
 
 const MovieInfo = () => {
 
+
+	const user  = useAppSelector((state) => state.user);
 	const navigate = useNavigate();
 	const { theaterId, movieId } = useParams();
 
@@ -90,7 +93,7 @@ const MovieInfo = () => {
 					backgroundSize: 'cover',
 					backgroundRepeat: 'no-repeat',
 					backgroundPosition: 'center',
-					backgroundImage: 'url(https://source.unsplash.com/random)'
+					backgroundImage:  `url(${movie?.imageUrl})`
 				}}
 			>
 				{<img style={{ display: 'none' }} src="https://media.npr.org/assets/img/2020/05/05/plazamarqueeduringclosure_custom-965476b67c1a760bdb3e16991ce8d65098605f62-s1100-c50.jpeg" alt="test" />}
@@ -140,6 +143,10 @@ const MovieInfo = () => {
 							Žanras
 						</Typography>
 						<Typography>{movie?.genre}</Typography>
+						<Typography variant="h6" gutterBottom>
+							Režisierius
+						</Typography>
+						<Typography>{movie?.director}</Typography>
 					</Paper>
 				</Grid>
 			</Grid>
@@ -150,18 +157,23 @@ const MovieInfo = () => {
 				>
 					Peržiūrėti seansus
 				</Button>
-				<Button onClick={()=>navigate(`/theaters/${theaterId}/movies/${movieId}/edit`)} color="success"
-					type="submit"
-					variant="contained"
-				>
-					Redaguoti
-				</Button>
-				<Button onClick={handleClickOpen} color="error"
-					type="submit"
-					variant="contained"
-				>
-					Pašalinti
-				</Button>
+				{
+					user.role == 'Owner' &&
+					<>
+						<Button onClick={()=>navigate(`/theaters/${theaterId}/movies/${movieId}/edit`)} color="success"
+							type="submit"
+							variant="contained"
+						>
+							Redaguoti
+						</Button>
+						<Button onClick={handleClickOpen} color="error"
+							type="submit"
+							variant="contained"
+						>
+							Pašalinti
+						</Button>
+					</>
+				}
 			</Stack>
 			<Dialog
 				open={open}

@@ -1,47 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Theater } from '../../models/Theater';
-import theaterService from '../../services/theater-service';
 import { useNavigate } from 'react-router-dom';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
-import { CreateTheaterRequest } from '../../contracts/theater/CreateTheaterRequest';
+import { useParams } from 'react-router-dom';
+import movieService from '../../services/movie-service';
+import { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { UpdateMovieRequest } from '../../contracts/movie/UpdateMovieRequest';
 
-const CreateTheater = () => {
+const EditMovie = () => {
+
+	const { theaterId, movieId } = useParams();
+
 	const navigate = useNavigate();
 
-	const [name, setName] = useState<string>('');
-	const [address, setAddress] = useState<string>('');
+	const [title, setTitle] = useState<string>('');
+	const [director, setDirector] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
+	const [genre, setGenre] = useState<string>('');
 	const [imageUrl, setImageUrl] = useState<string>('');
+	const [value, setValue] = React.useState<Dayjs | null>(null);
 	const [successMessage, setSuccessMessage] = useState<string>('');
 
+	useEffect(() => {		
+		fetchAndSetMovie();
+	}, []);
+
+	// methods
+	async function fetchAndSetMovie() {
+		const movie = await movieService.getMovie(Number(theaterId), Number(movieId));
+		setTitle(movie.title);
+		setDirector(movie.director);
+		setDescription(movie.description);
+		setGenre(movie.genre);
+		setImageUrl(movie.imageUrl);
+		setValue(new Dayjs(movie.releaseDate));
+	}
+
 	async function creteTheater() {
-		const createTheaterRequest: CreateTheaterRequest = {
-			name: name,
-			description: address,
-			address: description,
+		const updateMovieRequest: UpdateMovieRequest = {
+			title: title,
+			description: description,
+			director: director,
+			genre: genre,
+			releaseDate: value ? value.toISOString() : '',
 			imageUrl: imageUrl
 
 		};
-		const isCreated = await theaterService.addTheater(createTheaterRequest);
+		const isCreated = await movieService.updateMovie(Number(theaterId), Number(movieId), updateMovieRequest);
 
 		if (isCreated) {
-			setName('');
-			setAddress('');
-			setDescription('');
-			setImageUrl('');
-			setSuccessMessage('Kino tetras buvo sukurtas');
+			setSuccessMessage('Filmas buvo atnaujintas');
 		}
 	}
 
@@ -57,33 +73,33 @@ const CreateTheater = () => {
 			>
 			</Box>
 			<Container sx={{ py: 1 }} maxWidth="md">
-				<Button onClick={()=>{navigate('/theaters');}}
+				<Button onClick={()=>{navigate(`/theaters/${theaterId}/movies/${movieId}`);}}
 					type="submit"
 					variant="contained"
 					sx={{ mt: 3, mb: 2 }}
 				>
-					Grįžti į teatrų sąrašą
+					Grįžti į filmo informaciją
 				</Button>
 				<Typography  variant="h4">
-					Naujas kino teatras
+					Atnaujinti filmą
 				</Typography>	
 				<Box sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={6}>
-							<TextField onChange={(e) => {setName(e.target.value);setSuccessMessage('');}}
+							<TextField onChange={(e) => {setTitle(e.target.value);setSuccessMessage('');}}
 								required
 								fullWidth
 								label="Pavadinimas"
 								autoFocus
-								value={name}
+								value={title}
 							/>
 						</Grid>
 						<Grid item xs={12} sm={6}>
-							<TextField onChange={(e) => {setAddress(e.target.value);setSuccessMessage('');}}
+							<TextField onChange={(e) => {setDirector(e.target.value);setSuccessMessage('');}}
 								required
 								fullWidth
-								label="Adresas"
-								value={address}
+								label="Režisierius"
+								value={director}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -96,13 +112,34 @@ const CreateTheater = () => {
 							/>
 						</Grid>
 						<Grid item xs={12}>
+							<TextField onChange={(e) => {setGenre(e.target.value);setSuccessMessage('');}}
+								multiline
+								required
+								fullWidth
+								label="Žanras"
+								value={genre}
+							/>
+						</Grid>
+						<Grid item xs={12}>
 							<TextField onChange={(e) => {setImageUrl(e.target.value);setSuccessMessage('');}}
 								required
 								fullWidth
 								label="Paveikslėlio nuoroda"
 								value={imageUrl}
 							/>
-						</Grid>			
+						</Grid>	
+						<Grid item xs={12}>
+							<LocalizationProvider dateAdapter={AdapterDayjs}>
+								<DatePicker
+									label="Išleidimo data"
+									value={value}
+									onChange={(newValue) => {
+										setValue(newValue);
+									}}
+									renderInput={(params) => <TextField {...params} />}
+								/>
+							</LocalizationProvider>	
+						</Grid>		
 					</Grid>
 					<Paper variant="outlined">
 						<img src={imageUrl} />
@@ -113,16 +150,16 @@ const CreateTheater = () => {
 					<Typography fontSize={20} color={'green'}>
 						{successMessage}
 					</Typography>
-					<Button onClick={creteTheater} disabled={!(name && description && address && imageUrl)}
+					<Button onClick={creteTheater} disabled={!(title && description && director && genre && imageUrl)}
 						type="submit"						
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
-						Sukurti
+						Atnaujinti
 					</Button>					
 				</Box>
 			</Container>
 		</main>    
 	);
 };
-export default CreateTheater;
+export default EditMovie;

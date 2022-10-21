@@ -1,7 +1,8 @@
 export type UpdateMovieRequest = {
-    movieId: number,
     description: string,
     title: string,
     genre: string,
-    releaseDate: Date
+    releaseDate: string,
+    director: string,
+    imageUrl: string
 }

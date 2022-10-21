@@ -44,7 +44,7 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpGet("{theaterId}")]
-        public async Task<ActionResult<Theater>> GetTheater(int theaterId)
+        public async Task<ActionResult<GetTheaterResponse>> GetTheater(int theaterId)
         {
             var theater = await context.Theaters.FindAsync(theaterId);
 
@@ -53,7 +53,8 @@ namespace BetterCinema.Api.Controllers
                 return NotFound();
             }
 
-            return theater;
+
+            return mapper.Map<GetTheaterResponse>(theater);
         }
 
         [HttpPatch("{theaterId}")]

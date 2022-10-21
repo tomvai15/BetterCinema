@@ -5,4 +5,5 @@ export type GetMovieResponse = {
     genre: string,
     director: string,
     releaseDate: Date
+    imageUrl: string
 }

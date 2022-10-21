@@ -15,8 +15,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useAppSelector } from '../../app/hooks';
 
 const TheaterInfo = () => {
+
+	const user  = useAppSelector((state) => state.user);
 	const navigate = useNavigate();
 	const { theaterId } = useParams();
 
@@ -135,18 +138,23 @@ const TheaterInfo = () => {
 				>
 					Peržiūrėti filmus
 				</Button>
-				<Button onClick={()=>navigate(`/theaters/${theaterId}/edit`)} color="success"
-					type="submit"
-					variant="contained"
-				>
-					Redaguoti
-				</Button>
-				<Button onClick={handleClickOpen} color="error"
-					type="submit"
-					variant="contained"
-				>
-					Pašalinti
-				</Button>
+				{
+					user.role == 'Owner' &&
+					<>
+						<Button onClick={()=>navigate(`/theaters/${theaterId}/edit`)} color="success"
+							type="submit"
+							variant="contained"
+						>
+							Redaguoti
+						</Button>
+						<Button onClick={handleClickOpen} color="error"
+							type="submit"
+							variant="contained"
+						>
+							Pašalinti
+						</Button>
+					</>
+				}
 			</Stack>
 			<Dialog
 				open={open}

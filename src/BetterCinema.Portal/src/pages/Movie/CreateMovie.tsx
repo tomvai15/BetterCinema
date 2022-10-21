@@ -1,25 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Theater } from '../../models/Theater';
-import theaterService from '../../services/theater-service';
 import { useNavigate } from 'react-router-dom';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
-import { CreateTheaterRequest } from '../../contracts/theater/CreateTheaterRequest';
 import { CreateMovieRequest } from '../../contracts/movie/CreateMovieRequest';
 import movieService from '../../services/movie-service';
-
 import { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -27,7 +17,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const CreateMovie = () => {
 
-	const [value, setValue] = React.useState<Dayjs | null>(null);
 	const { theaterId } = useParams();
 
 	const navigate = useNavigate();
@@ -36,8 +25,8 @@ const CreateMovie = () => {
 	const [director, setDirector] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
 	const [genre, setGenre] = useState<string>('');
-	const [releaseDate, setReleaseDate] = useState<string>('2022-10-06T17:39:13.438Z');
 	const [imageUrl, setImageUrl] = useState<string>('');
+	const [value, setValue] = React.useState<Dayjs | null>(null);
 	const [successMessage, setSuccessMessage] = useState<string>('');
 
 	async function creteTheater() {
@@ -57,7 +46,6 @@ const CreateMovie = () => {
 			setDirector('');
 			setDescription('');
 			setGenre('');
-			setReleaseDate('');
 			setImageUrl('');
 			setSuccessMessage('Filmas buvo sukurtas');
 		}

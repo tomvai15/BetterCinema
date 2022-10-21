@@ -41,15 +41,12 @@ class TheaterService {
 	}    
 	async addTheater(createTheaterRequest: CreateTheaterRequest): Promise<boolean>
 	{
-		const reduxStore = store.getState();
-		const token = reduxStore.user.token;
 		const res = await axios.post(theaterUri, createTheaterRequest);
 
 		return isExpectedStatus(res.status, 201);
 	} 
 	async updateTheater(theaterId: number, updateTheaterRequest: UpdateTheaterRequest): Promise<boolean>
 	{
-		const reduxStore = store.getState();
 		const uri = `${theaterUri}/${theaterId}`;
 		const res = await axios.patch(uri, updateTheaterRequest);
 

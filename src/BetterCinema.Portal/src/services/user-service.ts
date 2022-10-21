@@ -32,7 +32,7 @@ class UserService {
 	} 
 	async login(loginRequest: LoginRequest): Promise<LoginResponse>
 	{
-		let loginResponse: LoginResponse = { token:'', name: ''};
+		let loginResponse: LoginResponse = { token:'', name: '', role: ''};
 		const loginUrl = `${userUri}/token`;
 		try {
 			const res = await axios.post(loginUrl, loginRequest, {headers:{'Content-Type': 'application/json'}}); 

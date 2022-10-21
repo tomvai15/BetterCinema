@@ -12,22 +12,8 @@ import Container from '@mui/material/Container';
 import userService from '../../services/user-service';
 import { useNavigate } from 'react-router-dom';
 import { LoginRequest } from '../../contracts/auth/LoginRequest';
-import { setToken, setName } from '../../features/user-slice';
+import { setToken, setName, setRole } from '../../features/user-slice';
 import { useAppDispatch } from '../../app/hooks';
-
-
-function Copyright(props: any) {
-	return (
-		<Typography variant="body2" color="text.secondary" align="center" {...props}>
-			{'Copyright © '}
-			<Link color="inherit" href="https://mui.com/">
-        Your Website
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
 
 export default function SignIn() {
 	const dispatch = useAppDispatch();
@@ -40,7 +26,7 @@ export default function SignIn() {
 	async function handleSubmit () {
 		const loginUserRequest: LoginRequest = {
 			email: email,
-			password: password
+			password: password,
 		};
 		
 		const loginResponse = await userService.login(loginUserRequest);
@@ -48,6 +34,7 @@ export default function SignIn() {
 		if (loginResponse.token) {
 			dispatch(setToken(loginResponse.token));
 			dispatch(setName(loginResponse.name));
+			dispatch(setRole(loginResponse.role));
 			navigate('/theaters');
 		} else {
 			setError('El.paštas arba slaptažodis yra netesingas');
@@ -95,6 +82,7 @@ export default function SignIn() {
 						{error}
 					</Typography>
 					<Button onClick={handleSubmit}
+						disabled={!(email && password)}
 						type="submit"
 						fullWidth
 						variant="contained"
@@ -113,7 +101,6 @@ export default function SignIn() {
 					</Grid>
 				</Box>
 			</Box>
-			<Copyright sx={{ mt: 8, mb: 4 }} />
 		</Container>
 	);
 }

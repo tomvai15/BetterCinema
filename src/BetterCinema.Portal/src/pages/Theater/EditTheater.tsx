@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Theater } from '../../models/Theater';
 import theaterService from '../../services/theater-service';
 import { useNavigate } from 'react-router-dom';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
-import { CreateTheaterRequest } from '../../contracts/theater/CreateTheaterRequest';
 import { UpdateTheaterRequest } from '../../contracts/theater/UpdateTheaterRequest';
 
 const EditTheater = () => {

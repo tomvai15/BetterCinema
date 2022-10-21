@@ -10,6 +10,7 @@ namespace BetterCinema.Api.Mapping
         {
             CreateMap<CreateTheaterRequest, Theater>();
             CreateMap<UpdateTheaterRequest, Theater>();
+            CreateMap<Theater, GetTheaterResponse>();
         }
     }
 }

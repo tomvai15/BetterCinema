@@ -13,19 +13,6 @@ import userService from '../../services/user-service';
 import { CreateUserRequest } from '../../contracts/auth/CreateUserRequest';
 import { useNavigate } from 'react-router-dom';
 
-function Copyright(props: any) {
-	return (
-		<Typography variant="body2" color="text.secondary" align="center" {...props}>
-			{'Copyright © '}
-			<Link color="inherit" href="https://mui.com/">
-        Your Website
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
-
 function doPasswordsMatch(password: string, confirmPassword: string): boolean {
 	return password == confirmPassword || confirmPassword == '';
 }
@@ -139,6 +126,7 @@ export default function SignUp() {
 						{error}
 					</Typography>
 					<Button onClick={handleSubmit}
+						disabled={!(name && surname && email && password && confirmPassword)}
 						type="submit"
 						fullWidth
 						variant="contained"
@@ -155,7 +143,6 @@ export default function SignUp() {
 					</Grid>
 				</Box>
 			</Box>
-			<Copyright sx={{ mt: 5 }} />
 		</Container>
 	);
 }
