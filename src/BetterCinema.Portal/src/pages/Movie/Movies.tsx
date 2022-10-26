@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import { useAppSelector } from '../../app/hooks';
+import theaterService from '../../services/theater-service';
 
 const Movies = () => {
 
@@ -22,17 +23,23 @@ const Movies = () => {
 	const navigate = useNavigate();
 	const { theaterId } = useParams();
 
+	const [isOwnedTheater, setIsOwnedTheater] = useState<boolean>(false);
 	const [movies, setTheaters] = useState<GetMovieResponse[]>([]);
-	
 	
 	useEffect(() => {		
 		fetchMovies();
+		checkIfOwnedTheater();
 	}, []);
 
 	// methods
 	async function fetchMovies() {
 		const response = await movieService.getMovies(Number(theaterId));
 		setTheaters(response.movies);
+	}
+
+	async function checkIfOwnedTheater() {
+		const isOwned = await theaterService.isOwnedTheater(Number(theaterId));
+		setIsOwnedTheater(isOwned);
 	}
 
 	function navigateToTheater () {
@@ -62,7 +69,7 @@ const Movies = () => {
 						Grįžti atgal
 					</Button>
 					{
-						user.role == 'Owner' &&
+						isOwnedTheater && user.role == 'Owner' &&
 						<Button onClick={()=>{navigate(`/theaters/${theaterId}/movies/create`);}}
 							type="submit"
 							variant="contained"
@@ -71,7 +78,7 @@ const Movies = () => {
 						</Button>
 					}
 				</Stack>
-				<Grid container spacing={4}>
+				<Grid sx={{ py: 4 }} container spacing={4}>
 					{movies.map((movie) => (
 						<Grid item key={movie.movieId} xs={12} sm={6} md={4}>
 							<Card

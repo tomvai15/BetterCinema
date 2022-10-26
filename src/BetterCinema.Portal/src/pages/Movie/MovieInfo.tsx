@@ -16,6 +16,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAppSelector } from '../../app/hooks';
+import theaterService from '../../services/theater-service';
 
 const MovieInfo = () => {
 
@@ -24,17 +25,24 @@ const MovieInfo = () => {
 	const navigate = useNavigate();
 	const { theaterId, movieId } = useParams();
 
+	const [isOwnedTheater, setIsOwnedTheater] = useState<boolean>(false);
 	const [open, setOpen] = React.useState(false);
 	const [movie, setMovie] = useState<GetMovieResponse>();
 
 	useEffect(() => {		
 		fetchMovie();
+		checkIfOwnedTheater();
 	}, []);
 
 	// methods
 	async function fetchMovie() {
 		const response = await movieService.getMovie(Number(theaterId), Number(movieId));
 		setMovie(response);
+	}
+
+	async function checkIfOwnedTheater() {
+		const isOwned = await theaterService.isOwnedTheater(Number(theaterId));
+		setIsOwnedTheater(isOwned);
 	}
 
 	async function navigateToMovies() {
@@ -76,7 +84,7 @@ const MovieInfo = () => {
 				pb: 6,
 			}}>
 		</Box>
-		<Container maxWidth="lg">
+		<Container  maxWidth="lg">
 			<Button onClick={navigateToMovies}
 				type="submit"
 				variant="contained"
@@ -158,7 +166,7 @@ const MovieInfo = () => {
 					Peržiūrėti seansus
 				</Button>
 				{
-					user.role == 'Owner' &&
+					isOwnedTheater && user.role == 'Owner' &&
 					<>
 						<Button onClick={()=>navigate(`/theaters/${theaterId}/movies/${movieId}/edit`)} color="success"
 							type="submit"

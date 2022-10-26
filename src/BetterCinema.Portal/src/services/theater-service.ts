@@ -27,6 +27,17 @@ function isExpectedStatus(status: number, expectedStatus: number)
 }
 
 class TheaterService {
+
+	async isOwnedTheater(id: number): Promise<boolean>
+	{
+		const uri = `${theaterUri}/${id}`;
+		const response = await axios.get(uri, { headers: {} });
+
+		const theater: Theater = response.data;
+
+		return theater.userId == store.getState().user.userId;
+	}   
+
 	async getTheaters (): Promise<GetTheatersResponse>
 	{
 		const response = await axios.get(theaterUri, { headers: {} });

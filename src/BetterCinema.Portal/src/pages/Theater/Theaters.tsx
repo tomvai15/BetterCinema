@@ -39,8 +39,8 @@ const Theaters = () => {
 			<Box
 				sx={{
 					bgcolor: 'background.paper',
-					pt: 2,
-					pb: 6,
+					pt: 3,
+					pb: 4,
 				}}
 			>
 			</Box>
@@ -55,7 +55,7 @@ const Theaters = () => {
 						Naujas teatras
 					</Button>	
 				}
-				<Grid container spacing={4}>
+				<Grid sx={{ py: 4 }} container spacing={4}>
 					{ theaters.length > 0 ?
 						theaters.map((theater: Theater) => (
 							<Grid item key={theater.theaterId} xs={12} sm={6} md={4}>

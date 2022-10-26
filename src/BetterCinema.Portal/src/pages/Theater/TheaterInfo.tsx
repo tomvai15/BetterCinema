@@ -23,6 +23,7 @@ const TheaterInfo = () => {
 	const navigate = useNavigate();
 	const { theaterId } = useParams();
 
+	const [isOwnedTheater, setIsOwnedTheater] = useState<boolean>(false);
 	const [theater, setTheater] = useState<Theater>();
 	const [open, setOpen] = React.useState(false);
 
@@ -33,6 +34,9 @@ const TheaterInfo = () => {
 	// methods
 	async function fetchTheater() {
 		const response = await theaterService.getTheater(Number(theaterId));
+		if (response.userId == user.userId) {
+			setIsOwnedTheater(true);
+		}
 		setTheater(response);
 	}
 
@@ -67,7 +71,7 @@ const TheaterInfo = () => {
 				pb: 6,
 			}}>
 		</Box>
-		<Container maxWidth="lg">
+		<Container sx={{ py: 1 }} maxWidth="lg">
 			<Button onClick={navigateToTheaters}
 				type="submit"
 				variant="contained"
@@ -139,7 +143,7 @@ const TheaterInfo = () => {
 					Peržiūrėti filmus
 				</Button>
 				{
-					user.role == 'Owner' &&
+					isOwnedTheater && user.role == 'Owner' &&
 					<>
 						<Button onClick={()=>navigate(`/theaters/${theaterId}/edit`)} color="success"
 							type="submit"

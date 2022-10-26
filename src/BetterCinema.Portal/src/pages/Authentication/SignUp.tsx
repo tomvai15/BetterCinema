@@ -137,7 +137,7 @@ export default function SignUp() {
 					<Grid container justifyContent="flex-end">
 						<Grid item>
 							<Link href="/sign-in" variant="body2">
-                Already have an account? Sign in
+								Jau turi paskyrą? Prisijunk
 							</Link>
 						</Grid>
 					</Grid>

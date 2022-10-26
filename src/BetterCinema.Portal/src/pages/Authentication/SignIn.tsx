@@ -12,7 +12,7 @@ import Container from '@mui/material/Container';
 import userService from '../../services/user-service';
 import { useNavigate } from 'react-router-dom';
 import { LoginRequest } from '../../contracts/auth/LoginRequest';
-import { setToken, setName, setRole } from '../../features/user-slice';
+import { setUser } from '../../features/user-slice';
 import { useAppDispatch } from '../../app/hooks';
 
 export default function SignIn() {
@@ -32,9 +32,7 @@ export default function SignIn() {
 		const loginResponse = await userService.login(loginUserRequest);
 
 		if (loginResponse.token) {
-			dispatch(setToken(loginResponse.token));
-			dispatch(setName(loginResponse.name));
-			dispatch(setRole(loginResponse.role));
+			dispatch(setUser(loginResponse));
 			navigate('/theaters');
 		} else {
 			setError('El.paštas arba slaptažodis yra netesingas');
@@ -95,7 +93,7 @@ export default function SignIn() {
 						</Grid>
 						<Grid item>
 							<Link href="/sign-up" variant="body2">
-								{'Don\'t have an account? Sign Up'}
+								{'Neturi paskyros? Prisiregistruok čia'}
 							</Link>
 						</Grid>
 					</Grid>

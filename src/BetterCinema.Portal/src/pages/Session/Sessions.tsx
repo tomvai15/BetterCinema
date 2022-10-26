@@ -18,6 +18,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAppSelector } from '../../app/hooks';
+import theaterService from '../../services/theater-service';
 
 
 const Sessions = () => {
@@ -27,12 +28,14 @@ const Sessions = () => {
 	const { theaterId, movieId } = useParams();
 
 	const [open, setOpen] = React.useState(false);
+	const [isOwnedTheater, setIsOwnedTheater] = useState<boolean>(false);
 	const [sessionToDelete, setSessionToDelete] = React.useState<number>(0);
 	const [sessions, setSessions] = useState<GetSessionResponse[]>([]);
 	
 	
 	useEffect(() => {		
 		fetchMovies();
+		checkIfOwnedTheater();
 	}, []);
 
 	// methods
@@ -40,6 +43,12 @@ const Sessions = () => {
 		const response = await sessionsService.getSessions(Number(theaterId), Number(movieId));
 		setSessions(response.sessions);
 	}
+
+	async function checkIfOwnedTheater() {
+		const isOwned = await theaterService.isOwnedTheater(Number(theaterId));
+		setIsOwnedTheater(isOwned);
+	}
+
 
 	async function navigateToMovie() {
 		navigate(`/theaters/${theaterId}/movies/${movieId}`);
@@ -79,7 +88,7 @@ const Sessions = () => {
 						Grįžti filmo informaciją
 					</Button>
 					{
-						user.role== 'Owner' &&
+						isOwnedTheater && user.role== 'Owner' &&
 						<Button onClick={ ()=>{navigate(`/theaters/${theaterId}/movies/${movieId}/sessions/create`);}}
 							type="submit"
 							variant="contained"
@@ -111,7 +120,7 @@ const Sessions = () => {
 								<CardActions>
 									<Stack direction={'row'} spacing={2}>
 										{
-											user.role== 'Owner' &&
+											isOwnedTheater && user.role== 'Owner' &&
 											<>
 												<Button onClick={()=>navigate(`/theaters/${theaterId}/movies/${movieId}/sessions/${session.sessionId}/edit`)} color="success"
 													type="submit"

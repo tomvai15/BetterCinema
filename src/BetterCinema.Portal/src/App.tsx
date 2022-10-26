@@ -3,7 +3,6 @@ import { Routes, Route, Outlet } from 'react-router-dom';
 import './App.css';
 import MovieInfo from './pages/Movie/MovieInfo';
 import Movies from './pages/Movie/Movies';
-import Session from './pages/Session/Session';
 import Sessions from './pages/Session/Sessions';
 import TheaterInfo from './pages/Theater/TheaterInfo';
 import Theaters from './pages/Theater/Theaters';
@@ -19,6 +18,8 @@ import CreateMovie from './pages/Movie/CreateMovie';
 import EditMovie from './pages/Movie/EditMovie';
 import CreateSession from './pages/Session/CreateSession';
 import Users from './pages/Users/Users';
+import NotFound from './components/NotFound';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const theme = createTheme();
 
@@ -33,8 +34,10 @@ function App() {
 					<Route index element={<Theaters/>}/>
 					<Route path='create' element={<CreateTheater/>}/>
 					<Route path=':theaterId'>
-						<Route index element={<TheaterInfo/>}/>
-						<Route path='edit' element={<EditTheater/>}/>
+						<Route index element={ <TheaterInfo/>}/>
+						<Route path='edit' element={<ProtectedRoute/>}>
+							<Route index element={<EditTheater/>}/>
+						</Route>
 						<Route path='movies'>
 							<Route index element={<Movies/>}/>
 							<Route path='create' element={<CreateMovie/>}/>
@@ -44,7 +47,6 @@ function App() {
 								<Route path='sessions'>
 									<Route index element={<Sessions/>}/>
 									<Route path='create' element={<CreateSession/>}/>
-									<Route path=':sessionId' element={<Session/>}/>
 								</Route>
 							</Route>
 						</Route>
@@ -52,6 +54,7 @@ function App() {
 				</Route>
 				<Route path='/sign-up' element={<SignUp/>} />
 				<Route path='/sign-in' element={<SignIn/>} />
+				<Route path='*' element={<><Header/> <NotFound /></>} />
 			</Routes>
 		</ThemeProvider>
 	);
