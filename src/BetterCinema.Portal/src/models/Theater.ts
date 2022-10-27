@@ -4,5 +4,6 @@ export type Theater = {
     description: string,
     address: string,
     imageUrl: string,
-    userId: number
+    userId: number,
+    isConfirmed: boolean
 }

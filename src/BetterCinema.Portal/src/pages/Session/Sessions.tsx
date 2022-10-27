@@ -98,29 +98,30 @@ const Sessions = () => {
 					}
 				</Stack>
 				<Grid container spacing={4}>
-					{sessions.map((session) => (
-						<Grid item key={session.sessionId} xs={12} sm={6} md={4}>
-							<Card
-								sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-							>
-								<CardContent sx={{ flexGrow: 1 }}>
-									<Typography gutterBottom variant="h5" component="h2">
-										{`Salė ${session.hall}`}
-									</Typography>
-									<Typography>
-										{`Data: ${session.start.toISOString().split('T')[0]}`}
-									</Typography>
-									<Typography>
-										{`Pradžia: ${session.start.getHours()}:${session.start.getMinutes()}`}
-									</Typography>
-									<Typography>
-										{`Pabaiga: ${session.end.getHours()}:${session.end.getMinutes()}`}
-									</Typography>
-								</CardContent>
-								<CardActions>
-									<Stack direction={'row'} spacing={2}>
-										{
-											isOwnedTheater && user.role== 'Owner' &&
+					{ sessions.length!=0 ?
+						sessions.map((session) => (
+							<Grid item key={session.sessionId} xs={12} sm={6} md={4}>
+								<Card
+									sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+								>
+									<CardContent sx={{ flexGrow: 1 }}>
+										<Typography gutterBottom variant="h5" component="h2">
+											{`Salė ${session.hall}`}
+										</Typography>
+										<Typography>
+											{`Data: ${session.start.toISOString().split('T')[0]}`}
+										</Typography>
+										<Typography>
+											{`Pradžia: ${session.start.getHours()}:${session.start.getMinutes()}`}
+										</Typography>
+										<Typography>
+											{`Pabaiga: ${session.end.getHours()}:${session.end.getMinutes()}`}
+										</Typography>
+									</CardContent>
+									<CardActions>
+										<Stack direction={'row'} spacing={2}>
+											{
+												isOwnedTheater && user.role== 'Owner' &&
 											<>
 												<Button onClick={()=>navigate(`/theaters/${theaterId}/movies/${movieId}/sessions/${session.sessionId}/edit`)} color="success"
 													type="submit"
@@ -135,12 +136,19 @@ const Sessions = () => {
 													Pašalinti
 												</Button>
 											</>
-										}
-									</Stack>
-								</CardActions>
-							</Card>
+											}
+										</Stack>
+									</CardActions>
+								</Card>
+							</Grid>
+						)) :
+						<Grid item sm={12} container justifyContent="center">
+							<Typography variant="h5" component="h2">
+								Nėra seansų
+							</Typography>
 						</Grid>
-					))}
+					}
+					
 				</Grid>
 			</Container>
 			<Dialog

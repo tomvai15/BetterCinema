@@ -4,6 +4,7 @@ import { CreateTheaterRequest } from '../contracts/theater/CreateTheaterRequest'
 import {Theater} from '../models/Theater';
 import { store } from '../app/store';
 import { UpdateTheaterRequest } from '../contracts/theater/UpdateTheaterRequest';
+import { ConfirmTheaterRequest } from '../contracts/theater/ConfirmTheaterRequest';
 
 axios.interceptors.request.use(function (config) {
 	const token = store.getState().user.token;
@@ -60,6 +61,13 @@ class TheaterService {
 	{
 		const uri = `${theaterUri}/${theaterId}`;
 		const res = await axios.patch(uri, updateTheaterRequest);
+
+		return isExpectedStatus(res.status, 204);
+	}
+	async confirmTheater(theaterId: number, confirmTheaterRequest: ConfirmTheaterRequest): Promise<boolean>
+	{
+		const uri = `${theaterUri}/${theaterId}`;
+		const res = await axios.patch(uri, confirmTheaterRequest);
 
 		return isExpectedStatus(res.status, 204);
 	}

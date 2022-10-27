@@ -10,12 +10,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import userService from '../../services/user-service';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginRequest } from '../../contracts/auth/LoginRequest';
 import { setUser } from '../../features/user-slice';
 import { useAppDispatch } from '../../app/hooks';
 
 export default function SignIn() {
+	const location = useLocation();
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -53,7 +54,10 @@ export default function SignIn() {
 					<LockOutlinedIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					Sign in
+					Prisijungimas
+				</Typography>
+				<Typography fontSize={15} color={'green'}>
+					{location.state?.message}
 				</Typography>
 				<Box sx={{ mt: 1 }}>
 					<TextField onChange={(e) => setEmail(e.target.value)}
@@ -86,7 +90,7 @@ export default function SignIn() {
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
-						Sign In
+						Prisijungti
 					</Button>
 					<Grid container>
 						<Grid item xs>

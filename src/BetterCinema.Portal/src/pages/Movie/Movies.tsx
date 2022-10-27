@@ -79,41 +79,58 @@ const Movies = () => {
 					}
 				</Stack>
 				<Grid sx={{ py: 4 }} container spacing={4}>
-					{movies.map((movie) => (
-						<Grid item key={movie.movieId} xs={12} sm={6} md={4}>
-							<Card
-								sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-							>
-								<CardMedia
-									component="img"
-									sx={{
-										// 16:9
-										pt: '10.25%',
-									}}
-									image={movie.imageUrl}
-									alt="random"
-								/>
-								<CardContent sx={{ flexGrow: 1 }}>
-									<Typography gutterBottom variant="h5" component="h2">
-										{movie.title}
-									</Typography>
-									<Typography sx={{
-										display: '-webkit-box',
-										overflow: 'hidden',
-										WebkitBoxOrient: 'vertical',
-										WebkitLineClamp: 3,
-									}}>
-										{`${movie.description}`}
-									</Typography>
-								</CardContent>
-								<CardActions>
-									<Button onClick={()=>navigateToMovie(movie.movieId)} size="small">Peržiūrėti</Button>
-								</CardActions>
-							</Card>
-						</Grid>
-					))}
+					{
+						movies.length != 0 ?
+							movies.map((movie) => (
+								<Grid item key={movie.movieId} xs={12} sm={6} md={4}>
+									<Card 
+										sx={{ height: '100%', display: 'flex', flexDirection: 'column'}}
+									>
+										<CardMedia
+											height='200'
+											component="img"
+											sx={{
+												16:9
+											}}
+											image={movie.imageUrl}
+											alt="random"
+										/>
+										<CardContent sx={{ flexGrow: 1 }}>
+											<Typography gutterBottom variant="h5" component="h2">
+												{movie.title}
+											</Typography>
+											<Typography sx={{
+												display: '-webkit-box',
+												overflow: 'hidden',
+												WebkitBoxOrient: 'vertical',
+												WebkitLineClamp: 3,
+											}}>
+												{`${movie.description}`}
+											</Typography>
+										</CardContent>
+										<CardActions>
+											<Button onClick={()=>navigateToMovie(movie.movieId)} size="small">Peržiūrėti</Button>
+										</CardActions>
+									</Card>
+								</Grid>
+							))
+							:
+							<Grid item sm={12} container justifyContent="center">
+								<Typography variant="h5" component="h2">
+							Nėra filmų
+								</Typography>
+							</Grid>
+					}
 				</Grid>
 			</Container>
+			<Box
+				sx={{
+					bgcolor: 'background.paper',
+					pt: 10,
+					pb: 10,
+				}}
+			>
+			</Box>
 		</main>
 	);
 };

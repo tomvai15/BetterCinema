@@ -8,25 +8,22 @@ import IconButton from '@mui/material/IconButton';
 
 const Footer = () => {
 	return (
-		<footer>
-			<Box  bgcolor={'#E6F0FF'} sx={{ alignItems: 'center', minHeight: '18vh' }}>
-				<Box sx={{ mt: 3, width: '10v', alignItems: 'center' }}>
-					<Grid container spacing={2} >
-						<Grid item xs={6} sm={6}>
-							<IconButton href='https://github.com/tomvai15/BetterCinema'><GitHubIcon/></IconButton>
-						</Grid>
-						<Grid item xs={6} sm={6}>
-							<IconButton href='https://github.com/tomvai15/BetterCinema'>
-								<GitHubIcon/>
-							</IconButton>
-						</Grid>
-						<Grid item xs={12}>
-							<Typography textAlign="center">2022 Tomas Vainors</Typography>
-						</Grid>
-					</Grid>
-				</Box>
-			</Box>
-		</footer>
+		<Box bgcolor={'#a2afb8'}  sx={{marginTop: 'calc(10% + 60px)',
+			width: '100%',
+			position: 'fixed',
+			bottom: 0
+		}}>
+			<Grid  alignItems="center" container spacing={2} justifyContent="center" >
+				<Grid item sm={3} container justifyContent="center">
+					<IconButton href='https://github.com/tomvai15/BetterCinema' >
+						<GitHubIcon/>
+					</IconButton>
+				</Grid>
+				<Grid item xs={12}>
+					<Typography textAlign="center">2022 Tomas Vainors</Typography>
+				</Grid>
+			</Grid>
+		</Box>
 	);
 };
 

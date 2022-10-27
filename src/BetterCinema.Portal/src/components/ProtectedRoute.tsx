@@ -5,7 +5,7 @@ import theaterService from '../services/theater-service';
 
 const ProtectedRoute = () => {
 	const { theaterId } = useParams();
-	const [isOwnedTheater, setIsOwnedTheater] = useState<boolean>(false);
+	const [isOwnedTheater, setIsOwnedTheater] = useState<boolean>(true);
 	
 	useEffect(() => {		
 		checkIfOwnedTheater();

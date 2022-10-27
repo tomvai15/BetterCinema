@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using BetterCinema.Api.Constants;
 using BetterCinema.Api.Contracts.Auth;
+using BetterCinema.Api.Contracts.Theaters;
 using BetterCinema.Api.Data;
 using BetterCinema.Api.Handlers;
 using BetterCinema.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BetterCinema.Api.Controllers
 {

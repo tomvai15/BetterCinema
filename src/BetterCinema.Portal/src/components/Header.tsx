@@ -38,6 +38,7 @@ const Header = () => {
 
 	function logOut(): void
 	{
+		navigate('/home');
 		dispatch(logOutUser());
 	}
 
@@ -75,10 +76,7 @@ const Header = () => {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
 						>
-							<MenuItem key={1} onClick={handleCloseUserMenu}>
-								<Typography textAlign="center">Profilis</Typography>
-							</MenuItem>
-							<MenuItem key={2} onClick={logOut}>
+							<MenuItem key={1} onClick={logOut}>
 								<Typography textAlign="center">Atsijungti</Typography>
 							</MenuItem>
 						</Menu>

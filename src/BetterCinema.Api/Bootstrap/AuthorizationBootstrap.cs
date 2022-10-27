@@ -34,11 +34,10 @@ namespace BetterCinema.Api.Bootstrap
             {
                 options.AddPolicy(Policy.DevelopmentCors, builder =>
                 {
-                    builder.WithOrigins("https://localhost:3000")
+                    builder.AllowAnyOrigin()
                            .AllowAnyHeader()
                            .AllowAnyMethod()
-                           .SetIsOriginAllowed((x) => true)
-                           .AllowCredentials();
+                           .SetIsOriginAllowed((x) => true);
                 });
             });
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -27,7 +28,6 @@ export default function SignUp() {
 	const [confirmPassword, setConfirmPassword] = useState<string>('');
 	const [error, setError] = useState<string>('');
 
-
 	async function handleSubmit () {
 		const createUserRequest: CreateUserRequest = {
 			email: email,
@@ -39,7 +39,7 @@ export default function SignUp() {
 		const isRegistered = await userService.register(createUserRequest);
 
 		if (isRegistered) {
-			navigate('/sign-in');
+			navigate('/sign-in', {state: { message: 'Registracija buvo sėkminga. Prašome prisijungti'}});
 		} else {
 			setError('El.paštas jau naudojamas');
 		}
@@ -60,7 +60,7 @@ export default function SignUp() {
 					<LockOutlinedIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-        Sign up
+        Registracija
 				</Typography>
 				<Box sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
@@ -93,6 +93,8 @@ export default function SignUp() {
 								label="El. Paštas"
 								name="email"
 								autoComplete="email"
+								error={!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)}
+								helperText={!/[\w-\.]+@([\w-]+\.)+[\w-]{2,4}/.test(email) ? 'El. paštas nėra validus' : ''}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -132,7 +134,7 @@ export default function SignUp() {
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
-            Sign Up
+            Registruotis
 					</Button>
 					<Grid container justifyContent="flex-end">
 						<Grid item>

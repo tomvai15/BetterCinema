@@ -12,6 +12,7 @@ import { Theater } from '../../models/Theater';
 import theaterService from '../../services/theater-service';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
+import Stack from '@mui/material/Stack';
 
 const Theaters = () => {
 
@@ -27,6 +28,10 @@ const Theaters = () => {
 	async function fetchTheaters() {
 		const response = await theaterService.getTheaters();
 		setTheaters(response.theaters);
+	}
+
+	async function navigateToHome() {
+		navigate('/home');
 	}
 
 	function navigateToTheater (id: number) {
@@ -45,25 +50,33 @@ const Theaters = () => {
 			>
 			</Box>
 			<Container sx={{ py: 1 }} maxWidth="md">
-				{
-					user.role == 'Owner' &&
-					<Button onClick={()=>{navigate('/theaters/create');}}
+				<Stack direction={'row'} spacing={2}>
+					<Button onClick={navigateToHome}
 						type="submit"
 						variant="contained"
-						sx={{ mt: 3, mb: 2 }}
 					>
-						Naujas teatras
-					</Button>	
-				}
+							Grįžti į pradinį puslapį
+					</Button>
+					{
+						user.role == 'Owner' &&
+						<Button onClick={()=>{navigate('/theaters/create');}}
+							type="submit"
+							variant="contained"
+						>
+							Naujas teatras
+						</Button>	
+					}
+				</Stack>
 				<Grid sx={{ py: 4 }} container spacing={4}>
 					{ theaters.length > 0 ?
 						theaters.map((theater: Theater) => (
 							<Grid item key={theater.theaterId} xs={12} sm={6} md={4}>
-								<Card
+								<Card style={theater.userId == user.userId ? { border: '1px solid green' } : {}}
 									sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
 								>
 									<CardMedia
 										component="img"
+										height='200'
 										sx={{
 											// 16:9
 											pt: '10.25%',
@@ -81,14 +94,21 @@ const Theaters = () => {
 									</CardContent>
 									<CardActions>
 										<Button onClick={()=>navigateToTheater(theater.theaterId)} size="small">Peržiūrėti</Button>
+										{
+											!theater.isConfirmed &&
+											<Typography color={'red'}>Nepatvirtintas</Typography>
+										}
 									</CardActions>
 								</Card>
 							</Grid>
 						))
 						:
-						<Typography gutterBottom variant="h5" component="h2">
-							Nėra kino teatrų
-						</Typography>
+
+						<Grid item sm={12} container justifyContent="center">
+							<Typography variant="h5" component="h2">
+								Nėra kino teatrų
+							</Typography>
+						</Grid>
 					}
 				</Grid>
 			</Container>

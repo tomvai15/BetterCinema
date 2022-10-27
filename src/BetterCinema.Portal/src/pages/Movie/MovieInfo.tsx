@@ -96,7 +96,7 @@ const MovieInfo = () => {
 				sx={{
 					borderRadius: '16px',
 					position: 'relative',
-					color: '#fff',
+					height: '250px',
 					mb: 4,
 					backgroundSize: 'cover',
 					backgroundRepeat: 'no-repeat',
@@ -112,7 +112,7 @@ const MovieInfo = () => {
 						bottom: 0,
 						right: 0,
 						left: 0,
-						backgroundColor: 'rgba(0,0,0,.3)',
+					//	backgroundColor: 'rgba(0,0,0,.3)',
 					}}
 				/>
 				<Grid container>
@@ -203,6 +203,14 @@ const MovieInfo = () => {
 				</DialogActions>
 			</Dialog>
 		</Container>
+		<Box
+			sx={{
+				bgcolor: 'background.paper',
+				pt: 10,
+				pb: 10,
+			}}
+		>
+		</Box>
 	</main>;
 };
 export default MovieInfo;

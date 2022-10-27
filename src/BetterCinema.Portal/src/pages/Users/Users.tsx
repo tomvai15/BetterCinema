@@ -95,13 +95,7 @@ const Users = () => {
 								<CardActions>
 									{
 										user.role!='Admin' &&
-										<Stack direction={'row'} spacing={2}>
-											<Button onClick={()=>console.log('stuff')} color="success"
-												type="submit"
-												variant="contained"
-											>
-												Pakeisti į administratorių
-											</Button>
+										<Stack direction={'row'} spacing={2}>										
 											<Button onClick={()=>{handleClickOpen();setUserToDelete(user.userId);}} color="error"
 												type="submit"
 												variant="contained"

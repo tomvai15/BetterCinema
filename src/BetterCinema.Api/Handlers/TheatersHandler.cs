@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BetterCinema.Api.Constants;
 using BetterCinema.Api.Contracts;
 using BetterCinema.Api.Contracts.Theaters;
 using BetterCinema.Api.Data;
@@ -38,7 +39,15 @@ namespace BetterCinema.Api.Handlers
         {
             var totalCount = context.Theaters.Count();
 
-            IEnumerable<Theater> theaters = await context.Theaters.GetSetSection(limit, offset).ToListAsync();
+            IEnumerable<Theater> theaters = await context.Theaters.GetSetSection(limit, offset).ToListAsync();     
+
+            claimsProvider.TryGetUserRole(out string role);
+            claimsProvider.TryGetUserId(out int userId);
+
+            if (role != Role.Admin)
+            {
+                theaters = theaters.Where(t => t.IsConfirmed || t.UserId == userId);
+            }
 
             return new GetTheatersResponse { Theaters = mapper.Map<IEnumerable<GetTheaterResponse>>(theaters), TotalCount = totalCount };
         }

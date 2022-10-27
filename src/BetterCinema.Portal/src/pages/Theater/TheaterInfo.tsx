@@ -16,6 +16,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAppSelector } from '../../app/hooks';
+import { ConfirmTheaterRequest } from '../../contracts/theater/ConfirmTheaterRequest';
 
 const TheaterInfo = () => {
 
@@ -26,6 +27,7 @@ const TheaterInfo = () => {
 	const [isOwnedTheater, setIsOwnedTheater] = useState<boolean>(false);
 	const [theater, setTheater] = useState<Theater>();
 	const [open, setOpen] = React.useState(false);
+	const [successMessage, setSuccessMessage] = React.useState<string>('');
 
 	useEffect(() => {		
 		fetchTheater();
@@ -38,6 +40,16 @@ const TheaterInfo = () => {
 			setIsOwnedTheater(true);
 		}
 		setTheater(response);
+	}
+
+	async function confirmTheater() {
+		const confirmTheaterRequest: ConfirmTheaterRequest = {
+			isConfirmed: true
+		};
+
+		await theaterService.confirmTheater(Number(theaterId), confirmTheaterRequest);
+		setSuccessMessage('Kino teatras buvo patvrintintas');
+		fetchTheater();
 	}
 
 	async function navigateToTheaters() {
@@ -159,7 +171,30 @@ const TheaterInfo = () => {
 						</Button>
 					</>
 				}
+				{					
+					user.role == 'Admin' &&
+					<>
+						{
+							theater && !theater.isConfirmed &&
+							<Button onClick={confirmTheater} color="success"
+								type="submit"
+								variant="contained"
+							>
+								Patvritinti
+							</Button>
+						}
+						<Button onClick={handleClickOpen} color="error"
+							type="submit"
+							variant="contained"
+						>
+							Pašalinti
+						</Button>
+					</>
+				}
 			</Stack>
+			<Typography variant="subtitle1" fontSize={20} paragraph color={'green'}>
+				{successMessage}
+			</Typography>
 			<Dialog
 				open={open}
 				onClose={handleClose}

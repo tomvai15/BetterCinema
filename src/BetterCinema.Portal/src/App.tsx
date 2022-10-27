@@ -28,9 +28,9 @@ function App() {
 		<ThemeProvider theme={theme}>
 			<Routes>
 				<Route index element={<><Header/> <Home /><Footer /></>} />
-				<Route path='/home' element={<><Header/> <Home /></>}/>
+				<Route path='/home' element={<><Header/> <Home /><Footer /></>}/>
 				<Route path='/users' element={<><Header/> <Users /></>}/>
-				<Route path='/theaters' element={<><Header/> <Outlet /></>}>
+				<Route path='/theaters' element={<><Header/> <Outlet /><Footer /></>}>
 					<Route index element={<Theaters/>}/>
 					<Route path='create' element={<CreateTheater/>}/>
 					<Route path=':theaterId'>
@@ -40,20 +40,26 @@ function App() {
 						</Route>
 						<Route path='movies'>
 							<Route index element={<Movies/>}/>
-							<Route path='create' element={<CreateMovie/>}/>
+							<Route path='create' element={<ProtectedRoute/>}>
+								<Route index element={<CreateMovie/>}/>
+							</Route>
 							<Route path=':movieId'>
 								<Route index element={<MovieInfo/>}/>
-								<Route path='edit' element={<EditMovie/>}/>
+								<Route path='edit' element={<ProtectedRoute/>}>
+									<Route index element={<EditMovie/>}/>
+								</Route>
 								<Route path='sessions'>
 									<Route index element={<Sessions/>}/>
-									<Route path='create' element={<CreateSession/>}/>
+									<Route path='create' element={<ProtectedRoute/>}>
+										<Route index element={<CreateSession/>}/>
+									</Route>
 								</Route>
 							</Route>
 						</Route>
 					</Route>
 				</Route>
-				<Route path='/sign-up' element={<SignUp/>} />
-				<Route path='/sign-in' element={<SignIn/>} />
+				<Route path='/sign-up' element={<><Header/> <SignUp /></>} />
+				<Route path='/sign-in' element={<><Header/> <SignIn /></>} />
 				<Route path='*' element={<><Header/> <NotFound /></>} />
 			</Routes>
 		</ThemeProvider>

@@ -33,7 +33,7 @@ const Home = () => {
 		},
 	}));
 
-	return <Box sx={{ mt:'5vh', mb:'10vh', backgroundColor: '#E6F0FF', minHeight: '60vh' }}>
+	return <Box sx={{ mt:'5vh', mb:'10vh', backgroundColor: '#E6F0FF', minHeight: '70vh', pb: '10vh' }}>
 		<Container>
 			<CustomBox>
 				<Box sx={{ flex: '1' }}>
@@ -47,17 +47,16 @@ const Home = () => {
 							mb: 4,
 						}}
 					>
-						Welcome to Besnik Agency
+						Sveikas atvykęs į BetterCinema
 					</Typography>
 					<Title variant="h1">
-						Discover a place where you love to live.
+						Atrask naujus kino teatrus
 					</Title>
 					<Typography
 						variant="body2"
 						sx={{ fontSize: '18px', color: '#5A6473', my: 4 }}
 					>
-						Be the first to get the best real estate deals before they hit the
-						mass market! Hot foreclosure deals with one simple search!
+						Šioje svetainėje gali peržiūrėti įvairių kino teatrų siūlomus filmus ir seansus
 					</Typography>
 					<Button variant="contained" onClick={goToTheaters}>Peržiūrėti kino teatrus</Button>
 				</Box>
