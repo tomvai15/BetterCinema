@@ -4,8 +4,13 @@
       "type": "apis"
     },
     "mssql1": {
+      "ignored": "true",
       "type": "mssql",
       "connectionId": "ConnectionStrings:DbContext"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:CinemaDbContext"
     }
   }
 }

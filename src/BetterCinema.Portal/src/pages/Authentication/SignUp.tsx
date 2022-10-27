@@ -93,8 +93,8 @@ export default function SignUp() {
 								label="El. Paštas"
 								name="email"
 								autoComplete="email"
-								error={!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)}
-								helperText={!/[\w-\.]+@([\w-]+\.)+[\w-]{2,4}/.test(email) ? 'El. paštas nėra validus' : ''}
+								error={!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email) && email.length != 0 }
+								helperText={!/[\w-\.]+@([\w-]+\.)+[\w-]{2,4}/.test(email) && email.length != 0 ? 'El. paštas nėra validus' : ''}
 							/>
 						</Grid>
 						<Grid item xs={12}>

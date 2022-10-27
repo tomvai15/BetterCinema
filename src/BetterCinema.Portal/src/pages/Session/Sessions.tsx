@@ -19,7 +19,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAppSelector } from '../../app/hooks';
 import theaterService from '../../services/theater-service';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Sessions = () => {
 
@@ -31,17 +31,18 @@ const Sessions = () => {
 	const [isOwnedTheater, setIsOwnedTheater] = useState<boolean>(false);
 	const [sessionToDelete, setSessionToDelete] = React.useState<number>(0);
 	const [sessions, setSessions] = useState<GetSessionResponse[]>([]);
-	
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	
 	useEffect(() => {		
 		fetchMovies();
-		checkIfOwnedTheater();
 	}, []);
 
 	// methods
 	async function fetchMovies() {
 		const response = await sessionsService.getSessions(Number(theaterId), Number(movieId));
 		setSessions(response.sessions);
+		await checkIfOwnedTheater();
+		setIsLoading(false);
 	}
 
 	async function checkIfOwnedTheater() {
@@ -144,7 +145,7 @@ const Sessions = () => {
 						)) :
 						<Grid item sm={12} container justifyContent="center">
 							<Typography variant="h5" component="h2">
-								Nėra seansų
+								{isLoading ? <CircularProgress /> : 'Nėra seansų'}
 							</Typography>
 						</Grid>
 					}

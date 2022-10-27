@@ -7,7 +7,7 @@
   "parameters": {
     "resourceGroupName": {
       "type": "string",
-      "defaultValue": "BetterCinemaApi20221014091728ResourceGroup",
+      "defaultValue": "better-cinema-web",
       "metadata": {
         "description": "Name of the resource group for the resource. It is recommended to put resources under same resource group for better tracking."
       }
@@ -21,7 +21,7 @@
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "BetterCinemaApi20221014091728",
+      "defaultValue": "BetterCinemaApi20221027235917",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }

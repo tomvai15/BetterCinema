@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import { useAppSelector } from '../../app/hooks';
 import theaterService from '../../services/theater-service';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Movies = () => {
 
@@ -24,22 +25,24 @@ const Movies = () => {
 	const { theaterId } = useParams();
 
 	const [isOwnedTheater, setIsOwnedTheater] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [movies, setTheaters] = useState<GetMovieResponse[]>([]);
 	
 	useEffect(() => {		
 		fetchMovies();
-		checkIfOwnedTheater();
 	}, []);
 
 	// methods
 	async function fetchMovies() {
 		const response = await movieService.getMovies(Number(theaterId));
 		setTheaters(response.movies);
+		await checkIfOwnedTheater();
 	}
 
 	async function checkIfOwnedTheater() {
 		const isOwned = await theaterService.isOwnedTheater(Number(theaterId));
 		setIsOwnedTheater(isOwned);
+		setIsLoading(false);
 	}
 
 	function navigateToTheater () {
@@ -117,7 +120,7 @@ const Movies = () => {
 							:
 							<Grid item sm={12} container justifyContent="center">
 								<Typography variant="h5" component="h2">
-							Nėra filmų
+									{isLoading ? <CircularProgress /> : 'Nėra filmų'}
 								</Typography>
 							</Grid>
 					}

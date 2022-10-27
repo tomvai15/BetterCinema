@@ -13,12 +13,14 @@ import theaterService from '../../services/theater-service';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
 import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Theaters = () => {
 
 	const user  = useAppSelector((state) => state.user);
 	const navigate = useNavigate();
 	const [theaters, setTheaters] = useState<Theater[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	
 	useEffect(() => {		
 		fetchTheaters();
@@ -28,6 +30,7 @@ const Theaters = () => {
 	async function fetchTheaters() {
 		const response = await theaterService.getTheaters();
 		setTheaters(response.theaters);
+		setIsLoading(false);
 	}
 
 	async function navigateToHome() {
@@ -103,10 +106,9 @@ const Theaters = () => {
 							</Grid>
 						))
 						:
-
 						<Grid item sm={12} container justifyContent="center">
 							<Typography variant="h5" component="h2">
-								Nėra kino teatrų
+								{isLoading ? <CircularProgress /> : 'Nėra teatrų'}
 							</Typography>
 						</Grid>
 					}
