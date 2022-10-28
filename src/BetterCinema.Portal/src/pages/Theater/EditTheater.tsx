@@ -36,8 +36,8 @@ const EditTheater = () => {
 	async function updateTheater() {
 		const updateTheaterRequest: UpdateTheaterRequest = {
 			name: name,
-			description: address,
-			address: description,
+			description: description,
+			address: address,
 			imageUrl: imageUrl
 
 		};
