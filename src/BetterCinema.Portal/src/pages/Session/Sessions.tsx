@@ -124,12 +124,6 @@ const Sessions = () => {
 											{
 												isOwnedTheater && user.role== 'Owner' &&
 											<>
-												<Button onClick={()=>navigate(`/theaters/${theaterId}/movies/${movieId}/sessions/${session.sessionId}/edit`)} color="success"
-													type="submit"
-													variant="contained"
-												>
-													Redaguoti
-												</Button>
 												<Button onClick={()=>{handleClickOpen();setSessionToDelete(session.sessionId);}} color="error"
 													type="submit"
 													variant="contained"
