@@ -16,9 +16,9 @@ namespace BetterCinema.Api.Handlers
         private readonly IJwtTokenGenerator jwtTokenGenerator;
         private readonly IUsersHandler usersHandler;
         private readonly IMapper mapper;
-        private readonly IHasherAdapter hasherAdapter;
+        private readonly HasherAdapter hasherAdapter;
 
-        public UserAuthHandler(IJwtTokenGenerator jwtTokenGenerator, IUsersHandler usersHandler, IMapper mapper, IHasherAdapter hasherAdapter)
+        public UserAuthHandler(IJwtTokenGenerator jwtTokenGenerator, IUsersHandler usersHandler, IMapper mapper, HasherAdapter hasherAdapter)
         {
             this.jwtTokenGenerator = jwtTokenGenerator;
             this.usersHandler = usersHandler;
@@ -53,6 +53,7 @@ namespace BetterCinema.Api.Handlers
             bool isPasswordCorrect = true;
             try
             {
+
                 isPasswordCorrect = hasherAdapter.VerifyPassword(loginRequest.Password, user.HashedPassword);
             }
             catch (Exception e)
@@ -68,8 +69,6 @@ namespace BetterCinema.Api.Handlers
             return new LoginResponse
             {
                 Name = user.Name,
-                UserId = user.UserId,
-                Role = user.Role,
                 Token = token
             };
         }
