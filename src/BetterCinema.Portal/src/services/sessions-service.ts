@@ -1,7 +1,17 @@
 import axios from 'axios';
+import { UpdateMovieRequest } from '../contracts/movie/UpdateMovieRequest';
+import { CreateSessionRequest } from '../contracts/session/CreateSessionRequest';
 import { GetSessionResponse } from '../contracts/session/GetSessionResponse';
 import { GetSessionsResponse } from '../contracts/session/GetSessionsResponse';
-import {Theater} from '../models/Theater';
+import { store } from '../app/store';
+
+axios.interceptors.request.use(function (config) {
+	const token = store.getState().user.token;
+	if (!(config.headers && token)) return config;
+	config.headers.Authorization =  `Bearer ${token}`;
+
+	return config;
+});
 
 const API_URL = process.env.REACT_APP_BACKEND;
 
@@ -35,25 +45,26 @@ class SessionService {
 		const response = await axios.get(sessionUrl, { headers: {} });
 		return response.data;      
 	}    
-	async addTheater(theater: Theater): Promise<boolean>
+	async addSession(theaterId: number, movieId: number, createSessionRequest: CreateSessionRequest): Promise<boolean>
 	{
-		const res = await axios.post(theaterUri, {body: theater, headers: {} });
+		const sessionUrl = `${theaterUri}/${theaterId}/movies/${movieId}/sessions`;
+		const res = await axios.post(sessionUrl, createSessionRequest , { headers: {} });
 
 		return isExpectedStatus(res.status, 201);
 	} 
-	async updateTheater(theater: Theater): Promise<boolean>
+	async updateSession(theaterId: number, movieId: number, sessionId: number, updateMovieRequest: UpdateMovieRequest): Promise<boolean>
 	{
-		const uri = `${theaterUri}/${theater.theaterId}`;
-		const res = await axios.put(uri, {body: theater, headers: {} });
+		const sessionUrl = `${theaterUri}/${theaterId}/movies/${movieId}/sessions/${sessionId}`;
+		const res = await axios.patch(sessionUrl, updateMovieRequest , { headers: {} });
 
 		return isExpectedStatus(res.status, 201);
-	}
-	async deleteTheater(id: number): Promise<boolean>
+	} 
+	async deleteSession(theaterId: number, movieId: number, sessionId: number): Promise<boolean>
 	{
-		const uri = `${theaterUri}/${id}`;
-		const res = await axios.delete(uri, { headers: {} });
+		const sessionUrl = `${theaterUri}/${theaterId}/movies/${movieId}/sessions/${sessionId}`;
+		const res = await axios.delete(sessionUrl, { headers: {} });
 
-		return isExpectedStatus(res.status, 201);
+		return isExpectedStatus(res.status, 204);
 	}
 }
 export default new SessionService ();

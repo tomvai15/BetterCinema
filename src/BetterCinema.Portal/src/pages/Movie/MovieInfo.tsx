@@ -15,23 +15,34 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useAppSelector } from '../../app/hooks';
+import theaterService from '../../services/theater-service';
 
 const MovieInfo = () => {
 
+
+	const user  = useAppSelector((state) => state.user);
 	const navigate = useNavigate();
 	const { theaterId, movieId } = useParams();
 
+	const [isOwnedTheater, setIsOwnedTheater] = useState<boolean>(false);
 	const [open, setOpen] = React.useState(false);
 	const [movie, setMovie] = useState<GetMovieResponse>();
 
 	useEffect(() => {		
 		fetchMovie();
+		checkIfOwnedTheater();
 	}, []);
 
 	// methods
 	async function fetchMovie() {
 		const response = await movieService.getMovie(Number(theaterId), Number(movieId));
 		setMovie(response);
+	}
+
+	async function checkIfOwnedTheater() {
+		const isOwned = await theaterService.isOwnedTheater(Number(theaterId));
+		setIsOwnedTheater(isOwned);
 	}
 
 	async function navigateToMovies() {
@@ -73,7 +84,7 @@ const MovieInfo = () => {
 				pb: 6,
 			}}>
 		</Box>
-		<Container maxWidth="lg">
+		<Container  maxWidth="lg">
 			<Button onClick={navigateToMovies}
 				type="submit"
 				variant="contained"
@@ -85,12 +96,12 @@ const MovieInfo = () => {
 				sx={{
 					borderRadius: '16px',
 					position: 'relative',
-					color: '#fff',
+					height: '250px',
 					mb: 4,
 					backgroundSize: 'cover',
 					backgroundRepeat: 'no-repeat',
 					backgroundPosition: 'center',
-					backgroundImage: 'url(https://source.unsplash.com/random)'
+					backgroundImage:  `url(${movie?.imageUrl})`
 				}}
 			>
 				{<img style={{ display: 'none' }} src="https://media.npr.org/assets/img/2020/05/05/plazamarqueeduringclosure_custom-965476b67c1a760bdb3e16991ce8d65098605f62-s1100-c50.jpeg" alt="test" />}
@@ -101,7 +112,7 @@ const MovieInfo = () => {
 						bottom: 0,
 						right: 0,
 						left: 0,
-						backgroundColor: 'rgba(0,0,0,.3)',
+					//	backgroundColor: 'rgba(0,0,0,.3)',
 					}}
 				/>
 				<Grid container>
@@ -140,6 +151,10 @@ const MovieInfo = () => {
 							Žanras
 						</Typography>
 						<Typography>{movie?.genre}</Typography>
+						<Typography variant="h6" gutterBottom>
+							Režisierius
+						</Typography>
+						<Typography>{movie?.director}</Typography>
 					</Paper>
 				</Grid>
 			</Grid>
@@ -150,12 +165,23 @@ const MovieInfo = () => {
 				>
 					Peržiūrėti seansus
 				</Button>
-				<Button onClick={handleClickOpen} color="error"
-					type="submit"
-					variant="contained"
-				>
-					Pašalinti
-				</Button>
+				{
+					isOwnedTheater && user.role == 'Owner' &&
+					<>
+						<Button onClick={()=>navigate(`/theaters/${theaterId}/movies/${movieId}/edit`)} color="success"
+							type="submit"
+							variant="contained"
+						>
+							Redaguoti
+						</Button>
+						<Button onClick={handleClickOpen} color="error"
+							type="submit"
+							variant="contained"
+						>
+							Pašalinti
+						</Button>
+					</>
+				}
 			</Stack>
 			<Dialog
 				open={open}
@@ -177,6 +203,14 @@ const MovieInfo = () => {
 				</DialogActions>
 			</Dialog>
 		</Container>
+		<Box
+			sx={{
+				bgcolor: 'background.paper',
+				pt: 10,
+				pb: 10,
+			}}
+		>
+		</Box>
 	</main>;
 };
 export default MovieInfo;

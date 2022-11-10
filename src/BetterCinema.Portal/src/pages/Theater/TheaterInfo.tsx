@@ -15,13 +15,19 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { useAppSelector } from '../../app/hooks';
+import { ConfirmTheaterRequest } from '../../contracts/theater/ConfirmTheaterRequest';
 
 const TheaterInfo = () => {
+
+	const user  = useAppSelector((state) => state.user);
 	const navigate = useNavigate();
 	const { theaterId } = useParams();
 
+	const [isOwnedTheater, setIsOwnedTheater] = useState<boolean>(false);
 	const [theater, setTheater] = useState<Theater>();
 	const [open, setOpen] = React.useState(false);
+	const [successMessage, setSuccessMessage] = React.useState<string>('');
 
 	useEffect(() => {		
 		fetchTheater();
@@ -30,7 +36,20 @@ const TheaterInfo = () => {
 	// methods
 	async function fetchTheater() {
 		const response = await theaterService.getTheater(Number(theaterId));
+		if (response.userId == user.userId) {
+			setIsOwnedTheater(true);
+		}
 		setTheater(response);
+	}
+
+	async function confirmTheater() {
+		const confirmTheaterRequest: ConfirmTheaterRequest = {
+			isConfirmed: true
+		};
+
+		await theaterService.confirmTheater(Number(theaterId), confirmTheaterRequest);
+		setSuccessMessage('Kino teatras buvo patvrintintas');
+		fetchTheater();
 	}
 
 	async function navigateToTheaters() {
@@ -64,7 +83,7 @@ const TheaterInfo = () => {
 				pb: 6,
 			}}>
 		</Box>
-		<Container maxWidth="lg">
+		<Container sx={{ py: 1 }} maxWidth="lg">
 			<Button onClick={navigateToTheaters}
 				type="submit"
 				variant="contained"
@@ -81,7 +100,7 @@ const TheaterInfo = () => {
 					backgroundSize: 'cover',
 					backgroundRepeat: 'no-repeat',
 					backgroundPosition: 'center',
-					backgroundImage: 'url(https://source.unsplash.com/random)'
+					backgroundImage: `url(${theater?.imageUrl})`
 				}}
 			>
 				{<img style={{ display: 'none' }} src="https://media.npr.org/assets/img/2020/05/05/plazamarqueeduringclosure_custom-965476b67c1a760bdb3e16991ce8d65098605f62-s1100-c50.jpeg" alt="test" />}
@@ -135,13 +154,47 @@ const TheaterInfo = () => {
 				>
 					Peržiūrėti filmus
 				</Button>
-				<Button onClick={handleClickOpen} color="error"
-					type="submit"
-					variant="contained"
-				>
-					Pašalinti
-				</Button>
+				{
+					isOwnedTheater && user.role == 'Owner' &&
+					<>
+						<Button onClick={()=>navigate(`/theaters/${theaterId}/edit`)} color="success"
+							type="submit"
+							variant="contained"
+						>
+							Redaguoti
+						</Button>
+						<Button onClick={handleClickOpen} color="error"
+							type="submit"
+							variant="contained"
+						>
+							Pašalinti
+						</Button>
+					</>
+				}
+				{					
+					user.role == 'Admin' &&
+					<>
+						{
+							theater && !theater.isConfirmed &&
+							<Button onClick={confirmTheater} color="success"
+								type="submit"
+								variant="contained"
+							>
+								Patvritinti
+							</Button>
+						}
+						<Button onClick={handleClickOpen} color="error"
+							type="submit"
+							variant="contained"
+						>
+							Pašalinti
+						</Button>
+					</>
+				}
 			</Stack>
+			<Typography variant="subtitle1" fontSize={20} paragraph color={'green'}>
+				{successMessage}
+			</Typography>
 			<Dialog
 				open={open}
 				onClose={handleClose}

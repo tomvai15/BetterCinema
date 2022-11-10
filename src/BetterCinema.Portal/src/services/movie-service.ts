@@ -1,7 +1,17 @@
 import axios from 'axios';
+import { CreateMovieRequest } from '../contracts/movie/CreateMovieRequest';
 import { GetMovieResponse } from '../contracts/movie/GetMovieResponse';
 import { GetMoviesResponse } from '../contracts/movie/GetMoviesResponse';
-import {Theater} from '../models/Theater';
+import { store } from '../app/store';
+import { UpdateMovieRequest } from '../contracts/movie/UpdateMovieRequest';
+
+axios.interceptors.request.use(function (config) {
+	const token = store.getState().user.token;
+	if (!(config.headers && token)) return config;
+	config.headers.Authorization =  `Bearer ${token}`;
+
+	return config;
+});
 
 const API_URL = process.env.REACT_APP_BACKEND;
 
@@ -29,18 +39,19 @@ class MovieService {
 		const response = await axios.get(moviesUrl, { headers: {} });
 		return response.data;      
 	}    
-	async addTheater(theater: Theater): Promise<boolean>
+	async addMovie(theaterId: number, createMovieRequest: CreateMovieRequest): Promise<boolean>
 	{
-		const res = await axios.post(theaterUri, {body: theater, headers: {} });
+		const moviesUrl = `${theaterUri}/${theaterId}/movies`;
+		const res = await axios.post(moviesUrl, createMovieRequest);
 
 		return isExpectedStatus(res.status, 201);
 	} 
-	async updateTheater(theater: Theater): Promise<boolean>
+	async updateMovie(theaterId: number, movieId: number, updateMovieRequest: UpdateMovieRequest): Promise<boolean>
 	{
-		const uri = `${theaterUri}/${theater.theaterId}`;
-		const res = await axios.put(uri, {body: theater, headers: {} });
+		const moviesUrl = `${theaterUri}/${theaterId}/movies/${movieId}`;
+		const res = await axios.patch(moviesUrl, updateMovieRequest, { headers: {} });
 
-		return isExpectedStatus(res.status, 201);
+		return isExpectedStatus(res.status, 204);
 	}
 	async deleteMovie(theaterId: number, movieId: number): Promise<boolean>
 	{

@@ -12,17 +12,21 @@ import movieService from '../../services/movie-service';
 import { GetMovieResponse } from '../../contracts/movie/GetMovieResponse';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-
-const cards = [1, 2, 3, 4];
-
+import Stack from '@mui/material/Stack';
+import { useAppSelector } from '../../app/hooks';
+import theaterService from '../../services/theater-service';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Movies = () => {
+
+	const user  = useAppSelector((state) => state.user);
 
 	const navigate = useNavigate();
 	const { theaterId } = useParams();
 
+	const [isOwnedTheater, setIsOwnedTheater] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [movies, setTheaters] = useState<GetMovieResponse[]>([]);
-	
 	
 	useEffect(() => {		
 		fetchMovies();
@@ -32,6 +36,13 @@ const Movies = () => {
 	async function fetchMovies() {
 		const response = await movieService.getMovies(Number(theaterId));
 		setTheaters(response.movies);
+		await checkIfOwnedTheater();
+	}
+
+	async function checkIfOwnedTheater() {
+		const isOwned = await theaterService.isOwnedTheater(Number(theaterId));
+		setIsOwnedTheater(isOwned);
+		setIsLoading(false);
 	}
 
 	function navigateToTheater () {
@@ -53,49 +64,76 @@ const Movies = () => {
 			>
 			</Box>
 			<Container sx={{ py: 1 }} maxWidth="md">
-				<Button onClick={navigateToTheater}
-					type="submit"
-					variant="contained"
-					sx={{ mt: 3, mb: 2 }}
-				>
-					Grįžti atgal
-				</Button>
-				<Grid container spacing={4}>
-					{movies.map((movie) => (
-						<Grid item key={movie.movieId} xs={12} sm={6} md={4}>
-							<Card
-								sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-							>
-								<CardMedia
-									component="img"
-									sx={{
-										// 16:9
-										pt: '10.25%',
-									}}
-									image="https://media.npr.org/assets/img/2020/05/05/plazamarqueeduringclosure_custom-965476b67c1a760bdb3e16991ce8d65098605f62-s1100-c50.jpeg"
-									alt="random"
-								/>
-								<CardContent sx={{ flexGrow: 1 }}>
-									<Typography gutterBottom variant="h5" component="h2">
-										{movie.title}
-									</Typography>
-									<Typography sx={{
-										display: '-webkit-box',
-										overflow: 'hidden',
-										WebkitBoxOrient: 'vertical',
-										WebkitLineClamp: 3,
-									}}>
-										{`${movie.description}`}
-									</Typography>
-								</CardContent>
-								<CardActions>
-									<Button onClick={()=>navigateToMovie(movie.movieId)} size="small">Peržiūrėti</Button>
-								</CardActions>
-							</Card>
-						</Grid>
-					))}
+				<Stack direction={'row'} spacing={2}>
+					<Button onClick={navigateToTheater}
+						type="submit"
+						variant="contained"
+					>
+						Grįžti atgal
+					</Button>
+					{
+						isOwnedTheater && user.role == 'Owner' &&
+						<Button onClick={()=>{navigate(`/theaters/${theaterId}/movies/create`);}}
+							type="submit"
+							variant="contained"
+						>
+							Naujas filmas
+						</Button>
+					}
+				</Stack>
+				<Grid sx={{ py: 4 }} container spacing={4}>
+					{
+						movies.length != 0 ?
+							movies.map((movie) => (
+								<Grid item key={movie.movieId} xs={12} sm={6} md={4}>
+									<Card 
+										sx={{ height: '100%', display: 'flex', flexDirection: 'column'}}
+									>
+										<CardMedia
+											height='200'
+											component="img"
+											sx={{
+												16:9
+											}}
+											image={movie.imageUrl}
+											alt="random"
+										/>
+										<CardContent sx={{ flexGrow: 1 }}>
+											<Typography gutterBottom variant="h5" component="h2">
+												{movie.title}
+											</Typography>
+											<Typography sx={{
+												display: '-webkit-box',
+												overflow: 'hidden',
+												WebkitBoxOrient: 'vertical',
+												WebkitLineClamp: 3,
+											}}>
+												{`${movie.description}`}
+											</Typography>
+										</CardContent>
+										<CardActions>
+											<Button onClick={()=>navigateToMovie(movie.movieId)} size="small">Peržiūrėti</Button>
+										</CardActions>
+									</Card>
+								</Grid>
+							))
+							:
+							<Grid item sm={12} container justifyContent="center">
+								<Typography variant="h5" component="h2">
+									{isLoading ? <CircularProgress /> : 'Nėra filmų'}
+								</Typography>
+							</Grid>
+					}
 				</Grid>
 			</Container>
+			<Box
+				sx={{
+					bgcolor: 'background.paper',
+					pt: 10,
+					pb: 10,
+				}}
+			>
+			</Box>
 		</main>
 	);
 };

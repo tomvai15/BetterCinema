@@ -53,7 +53,6 @@ namespace BetterCinema.Api.Handlers
             bool isPasswordCorrect = true;
             try
             {
-
                 isPasswordCorrect = hasherAdapter.VerifyPassword(loginRequest.Password, user.HashedPassword);
             }
             catch (Exception e)
@@ -69,6 +68,8 @@ namespace BetterCinema.Api.Handlers
             return new LoginResponse
             {
                 Name = user.Name,
+                UserId = user.UserId,
+                Role = user.Role,
                 Token = token
             };
         }

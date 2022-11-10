@@ -11,39 +11,35 @@ import Container from '@mui/material/Container';
 import { Theater } from '../../models/Theater';
 import theaterService from '../../services/theater-service';
 import { useNavigate } from 'react-router-dom';
-import Pagination from '@mui/material/Pagination';
+import { useAppSelector } from '../../app/hooks';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import Paper from '@mui/material/Paper';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Theaters = () => {
+
+	const user  = useAppSelector((state) => state.user);
 	const navigate = useNavigate();
 	const [theaters, setTheaters] = useState<Theater[]>([]);
-	const [currentpage, setCurrentPage] = useState<number>(1);
-	const [totalCount, setTotalCount] = useState<number>(0);
-	const [imageUrl, setImageUrl] = useState<string>('');
-	const theatersPerPage = 5;
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	
 	useEffect(() => {		
-		fetchTheaters(theatersPerPage, (currentpage-1)*theatersPerPage);
-	}, [currentpage]);
+		fetchTheaters();
+	}, []);
 
 	// methods
-	async function fetchTheaters(limit: number, offset: number) {
-		const response = await theaterService.getTheaters(limit, offset);
-		setTotalCount(response.totalCount);
+	async function fetchTheaters() {
+		const response = await theaterService.getTheaters();
 		setTheaters(response.theaters);
+		setIsLoading(false);
 	}
 
-	function onPageChange(e: React.ChangeEvent<any>, page:number)
-	{
-		setCurrentPage(page);
+	async function navigateToHome() {
+		navigate('/home');
 	}
 
 	function navigateToTheater (id: number) {
 		navigate(`/theaters/${id}`);
 	}
-
 
 	return (
 		<main>	
@@ -51,28 +47,39 @@ const Theaters = () => {
 			<Box
 				sx={{
 					bgcolor: 'background.paper',
-					pt: 2,
-					pb: 6,
+					pt: 3,
+					pb: 4,
 				}}
 			>
 			</Box>
 			<Container sx={{ py: 1 }} maxWidth="md">
-				<Button onClick={()=>{navigate('/theaters/create');}}
-					type="submit"
-					variant="contained"
-					sx={{ mt: 3, mb: 2 }}
-				>
-					Naujas teatras
-				</Button>	
-				<Grid container spacing={4}>
+				<Stack direction={'row'} spacing={2}>
+					<Button onClick={navigateToHome}
+						type="submit"
+						variant="contained"
+					>
+							Grįžti į pradinį puslapį
+					</Button>
+					{
+						user.role == 'Owner' &&
+						<Button onClick={()=>{navigate('/theaters/create');}}
+							type="submit"
+							variant="contained"
+						>
+							Naujas teatras
+						</Button>	
+					}
+				</Stack>
+				<Grid sx={{ py: 4 }} container spacing={4}>
 					{ theaters.length > 0 ?
 						theaters.map((theater: Theater) => (
 							<Grid item key={theater.theaterId} xs={12} sm={6} md={4}>
-								<Card
+								<Card style={theater.userId == user.userId ? { border: '1px solid green' } : {}}
 									sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
 								>
 									<CardMedia
 										component="img"
+										height='200'
 										sx={{
 											// 16:9
 											pt: '10.25%',
@@ -90,14 +97,20 @@ const Theaters = () => {
 									</CardContent>
 									<CardActions>
 										<Button onClick={()=>navigateToTheater(theater.theaterId)} size="small">Peržiūrėti</Button>
+										{
+											!theater.isConfirmed &&
+											<Typography color={'red'}>Nepatvirtintas</Typography>
+										}
 									</CardActions>
 								</Card>
 							</Grid>
 						))
 						:
-						<Typography gutterBottom variant="h5" component="h2">
-							Nėra kino teatrų
-						</Typography>
+						<Grid item sm={12} container justifyContent="center">
+							<Typography variant="h5" component="h2">
+								{isLoading ? <CircularProgress /> : 'Nėra teatrų'}
+							</Typography>
+						</Grid>
 					}
 				</Grid>
 			</Container>

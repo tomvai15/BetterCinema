@@ -8,6 +8,8 @@ namespace BetterCinema.Api.Models
         public string Email { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
+
+        [JsonIgnore]
         public string HashedPassword { get; set; }
         public string Role { get; set; }
 

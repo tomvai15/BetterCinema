@@ -10,26 +10,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import userService from '../../services/user-service';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginRequest } from '../../contracts/auth/LoginRequest';
-import { setToken, setName } from '../../features/user-slice';
+import { setUser } from '../../features/user-slice';
 import { useAppDispatch } from '../../app/hooks';
 
-
-function Copyright(props: any) {
-	return (
-		<Typography variant="body2" color="text.secondary" align="center" {...props}>
-			{'Copyright © '}
-			<Link color="inherit" href="https://mui.com/">
-        Your Website
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
-
 export default function SignIn() {
+	const location = useLocation();
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -40,14 +27,13 @@ export default function SignIn() {
 	async function handleSubmit () {
 		const loginUserRequest: LoginRequest = {
 			email: email,
-			password: password
+			password: password,
 		};
 		
 		const loginResponse = await userService.login(loginUserRequest);
 
 		if (loginResponse.token) {
-			dispatch(setToken(loginResponse.token));
-			dispatch(setName(loginResponse.name));
+			dispatch(setUser(loginResponse));
 			navigate('/theaters');
 		} else {
 			setError('El.paštas arba slaptažodis yra netesingas');
@@ -68,7 +54,10 @@ export default function SignIn() {
 					<LockOutlinedIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					Sign in
+					Prisijungimas
+				</Typography>
+				<Typography fontSize={15} color={'green'}>
+					{location.state?.message}
 				</Typography>
 				<Box sx={{ mt: 1 }}>
 					<TextField onChange={(e) => setEmail(e.target.value)}
@@ -95,25 +84,25 @@ export default function SignIn() {
 						{error}
 					</Typography>
 					<Button onClick={handleSubmit}
+						disabled={!(email && password)}
 						type="submit"
 						fullWidth
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
-						Sign In
+						Prisijungti
 					</Button>
 					<Grid container>
 						<Grid item xs>
 						</Grid>
 						<Grid item>
 							<Link href="/sign-up" variant="body2">
-								{'Don\'t have an account? Sign Up'}
+								{'Neturi paskyros? Prisiregistruok čia'}
 							</Link>
 						</Grid>
 					</Grid>
 				</Box>
 			</Box>
-			<Copyright sx={{ mt: 8, mb: 4 }} />
 		</Container>
 	);
 }

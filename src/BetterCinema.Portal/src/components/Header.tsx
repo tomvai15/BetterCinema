@@ -6,9 +6,7 @@ import TheatersIcon from '@mui/icons-material/Theaters';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../app/hooks';
-import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import { logOutUser } from '../features/user-slice';
 import MenuItem from '@mui/material/MenuItem';
@@ -19,18 +17,10 @@ const Header = () => {
 	const navigate = useNavigate();
 	const user  = useAppSelector((state) => state.user);
 
-	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-	const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorElNav(event.currentTarget);
-	};
 	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElUser(event.currentTarget);
-	};
-
-	const handleCloseNavMenu = () => {
-		setAnchorElNav(null);
 	};
 
 	const handleCloseUserMenu = () => {
@@ -48,6 +38,7 @@ const Header = () => {
 
 	function logOut(): void
 	{
+		navigate('/home');
 		dispatch(logOutUser());
 	}
 
@@ -55,9 +46,15 @@ const Header = () => {
 		<AppBar position="static">
 			<Toolbar>
 				<TheatersIcon sx={{ mr: 2 }} />
-				<Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-                BetterCinema
+				<Typography onClick={()=>navigate('/home')} variant="h6" color="inherit" noWrap sx={{ pr:1, flexGrow: 1 }} >
+					BetterCinema
 				</Typography>
+				{	
+					user.role == 'Admin' &&
+					<Typography onClick={()=>navigate('/users')} variant="h6" color="inherit" noWrap sx={{ pr:2 }} >
+						Naudotojai
+					</Typography>
+				}
 				{isLoggedIn() ?
 					<Box sx={{ flexGrow: 0 }}>
 						<Typography onClick={handleOpenUserMenu}  variant="h6" color="inherit" noWrap>
@@ -79,10 +76,7 @@ const Header = () => {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
 						>
-							<MenuItem key={1} onClick={handleCloseUserMenu}>
-								<Typography textAlign="center">Profilis</Typography>
-							</MenuItem>
-							<MenuItem key={2} onClick={logOut}>
+							<MenuItem key={1} onClick={logOut}>
 								<Typography textAlign="center">Atsijungti</Typography>
 							</MenuItem>
 						</Menu>

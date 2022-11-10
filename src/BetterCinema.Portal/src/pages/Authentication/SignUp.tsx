@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -13,19 +14,6 @@ import userService from '../../services/user-service';
 import { CreateUserRequest } from '../../contracts/auth/CreateUserRequest';
 import { useNavigate } from 'react-router-dom';
 
-function Copyright(props: any) {
-	return (
-		<Typography variant="body2" color="text.secondary" align="center" {...props}>
-			{'Copyright © '}
-			<Link color="inherit" href="https://mui.com/">
-        Your Website
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</Typography>
-	);
-}
-
 function doPasswordsMatch(password: string, confirmPassword: string): boolean {
 	return password == confirmPassword || confirmPassword == '';
 }
@@ -40,7 +28,6 @@ export default function SignUp() {
 	const [confirmPassword, setConfirmPassword] = useState<string>('');
 	const [error, setError] = useState<string>('');
 
-
 	async function handleSubmit () {
 		const createUserRequest: CreateUserRequest = {
 			email: email,
@@ -52,7 +39,7 @@ export default function SignUp() {
 		const isRegistered = await userService.register(createUserRequest);
 
 		if (isRegistered) {
-			navigate('/sign-in');
+			navigate('/sign-in', {state: { message: 'Registracija buvo sėkminga. Prašome prisijungti'}});
 		} else {
 			setError('El.paštas jau naudojamas');
 		}
@@ -73,7 +60,7 @@ export default function SignUp() {
 					<LockOutlinedIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-        Sign up
+        Registracija
 				</Typography>
 				<Box sx={{ mt: 3 }}>
 					<Grid container spacing={2}>
@@ -106,6 +93,8 @@ export default function SignUp() {
 								label="El. Paštas"
 								name="email"
 								autoComplete="email"
+								error={!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email) && email.length != 0 }
+								helperText={!/[\w-\.]+@([\w-]+\.)+[\w-]{2,4}/.test(email) && email.length != 0 ? 'El. paštas nėra validus' : ''}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -139,23 +128,23 @@ export default function SignUp() {
 						{error}
 					</Typography>
 					<Button onClick={handleSubmit}
+						disabled={!(name && surname && email && password && confirmPassword)}
 						type="submit"
 						fullWidth
 						variant="contained"
 						sx={{ mt: 3, mb: 2 }}
 					>
-            Sign Up
+            Registruotis
 					</Button>
 					<Grid container justifyContent="flex-end">
 						<Grid item>
 							<Link href="/sign-in" variant="body2">
-                Already have an account? Sign in
+								Jau turi paskyrą? Prisijunk
 							</Link>
 						</Grid>
 					</Grid>
 				</Box>
 			</Box>
-			<Copyright sx={{ mt: 5 }} />
 		</Container>
 	);
 }

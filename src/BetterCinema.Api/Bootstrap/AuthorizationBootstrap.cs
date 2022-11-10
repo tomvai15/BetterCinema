@@ -34,11 +34,10 @@ namespace BetterCinema.Api.Bootstrap
             {
                 options.AddPolicy(Policy.DevelopmentCors, builder =>
                 {
-                    builder.WithOrigins("https://localhost:3000")
+                    builder.AllowAnyOrigin()
                            .AllowAnyHeader()
                            .AllowAnyMethod()
-                           .SetIsOriginAllowed((x) => true)
-                           .AllowCredentials();
+                           .SetIsOriginAllowed((x) => true);
                 });
             });
 
@@ -60,6 +59,8 @@ namespace BetterCinema.Api.Bootstrap
             {
                 options.AddPolicy(AuthPolicy.Owner, policy =>
                     policy.RequireRole(Role.Owner));
+                options.AddPolicy(AuthPolicy.Admin, policy =>
+                    policy.RequireRole(Role.Admin));
 
                 options.AddPolicy(AuthPolicy.TheaterIdInRouteValidation, policy =>
                     policy.Requirements.Add(new TheaterIdInRouteRequirement()));

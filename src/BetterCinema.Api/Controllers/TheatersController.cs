@@ -40,11 +40,11 @@ namespace BetterCinema.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<GetTheatersResponse>> GetTheaters([FromQuery] int limit, [FromQuery]  int offset )
         {
-            return await theatersHandler.GetTheaters(limit, offset);           
+            return await theatersHandler.GetTheaters(limit, offset);
         }
 
         [HttpGet("{theaterId}")]
-        public async Task<ActionResult<Theater>> GetTheater(int theaterId)
+        public async Task<ActionResult<GetTheaterResponse>> GetTheater(int theaterId)
         {
             var theater = await context.Theaters.FindAsync(theaterId);
 
@@ -53,12 +53,13 @@ namespace BetterCinema.Api.Controllers
                 return NotFound();
             }
 
-            return theater;
+
+            return mapper.Map<GetTheaterResponse>(theater);
         }
 
         [HttpPatch("{theaterId}")]
-        [Authorize(Roles = Role.Owner)]
-        [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
+        [Authorize(Roles = $"{Role.Owner},{Role.Admin}")]
+        //[Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
         public async Task<IActionResult> PutTheater(int theaterId, UpdateTheaterRequest updateTheaterRequest)
         {
             Theater theater = await context.Theaters.Where(t => t.TheaterId == theaterId).FirstAsync();
@@ -68,10 +69,11 @@ namespace BetterCinema.Api.Controllers
                 return NotFound(); 
             }  
 
-            theater.Name = updateTheaterRequest.Name;
-            theater.Description = updateTheaterRequest.Description;
-            theater.Address = updateTheaterRequest.Address;
-            theater.IsConfimed = updateTheaterRequest.IsConfimed;
+            theater.Name = updateTheaterRequest.Name ?? theater.Name;
+            theater.Description = updateTheaterRequest.Description ?? theater.Description;
+            theater.Address = updateTheaterRequest.Address ?? theater.Address;
+            theater.ImageUrl = updateTheaterRequest.ImageUrl ?? theater.ImageUrl;
+            theater.IsConfirmed = updateTheaterRequest.IsConfirmed ?? theater.IsConfirmed;
 
             context.Entry(theater).State = EntityState.Modified;
 
@@ -86,11 +88,12 @@ namespace BetterCinema.Api.Controllers
         public async Task<ActionResult<Theater>> PostTheater(CreateTheaterRequest createTheaterRequest)
         {
             Theater newTheater = mapper.Map<Theater>(createTheaterRequest);
-            newTheater.IsConfimed = false;
+            newTheater.IsConfirmed = false;
 
             claimsProvider.TryGetUserId(out int userId);
 
             newTheater.UserId = userId;
+            newTheater.IsConfirmed = false;
             var addedTheater = context.Theaters.Add(newTheater);
             await context.SaveChangesAsync();
 
@@ -98,8 +101,7 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpDelete("{theaterId}")]
-        [Authorize(Policy = AuthPolicy.Owner)]
-        [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
+        [Authorize(Roles = $"{Role.Owner},{Role.Admin}")]
         public async Task<IActionResult> DeleteTheater(int theaterId)
         {
             var theater = await context.Theaters.FindAsync(theaterId);

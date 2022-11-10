@@ -21,6 +21,8 @@ namespace BetterCinema.Api.Models
 
         public int TheaterId { get; set; }
 
+        public string ImageUrl { get; set; }
+
         [JsonIgnore]
         public Theater Theater { get; set; }
 
