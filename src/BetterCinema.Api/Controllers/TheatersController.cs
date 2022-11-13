@@ -58,7 +58,6 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPatch("{theaterId}")]
-        [Authorize(Roles = $"{Role.Owner},{Role.Admin}")]
         //[Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
         public async Task<IActionResult> PutTheater(int theaterId, UpdateTheaterRequest updateTheaterRequest)
         {
@@ -83,14 +82,13 @@ namespace BetterCinema.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = Role.Owner)]
-       // [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
+        // [Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
         public async Task<ActionResult<Theater>> PostTheater(CreateTheaterRequest createTheaterRequest)
         {
             Theater newTheater = mapper.Map<Theater>(createTheaterRequest);
             newTheater.IsConfirmed = false;
-
-            claimsProvider.TryGetUserId(out int userId);
+            int userId = 1;
+           // claimsProvider.TryGetUserId(out int userId);
 
             newTheater.UserId = userId;
             newTheater.IsConfirmed = false;

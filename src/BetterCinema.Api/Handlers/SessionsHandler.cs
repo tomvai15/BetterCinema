@@ -11,7 +11,7 @@ namespace BetterCinema.Api.Handlers
     {
         Task<IEnumerable<Session>> GetSessions(int theaterId, int movieId);
         Task<Session> GetSession(int theaterId, int movieId, int sessionId);
-        Task<Session> UpdateSession(int theaterId, int movieId, int sessionId, UpdateSessionRequest updateSessionRequest);
+        Task<bool> UpdateSession(int theaterId, int movieId, int sessionId, UpdateSessionRequest updateSessionRequest);
         Task<Session> CreateSession(int theaterId, int movieId, CreateSessionRequest createSessionRequest);
         Task<bool> DeleteSession(int theaterId, int movieId, int sessionId);
     }
@@ -32,10 +32,7 @@ namespace BetterCinema.Api.Handlers
         {
             bool movieExists = (await moviesHandler.GetMovie(theaterId, movieId)) != null;
 
-            if (!movieExists)
-            {
-                return null;
-            }
+            if (!movieExists) return null;
 
             Movie movie = await context.Movies.Where(t => t.MovieId == movieId)
                 .Include(t => t.Sessions)
@@ -46,20 +43,12 @@ namespace BetterCinema.Api.Handlers
         public async Task<Session> GetSession(int theaterId, int movieId, int sessionId)
         {
             Movie movie = await moviesHandler.GetMovie(theaterId, movieId);
-            if (movie == null)
-            {
-                return null;
-            }
+            if (movie == null) return null;
+            
             Session session = await context.Sessions.FindAsync(sessionId);
-            if (session == null)
-            {
-                return null;
-            }
-
-            if (session.MovieId != movie.MovieId)
-            {
-                return null;
-            }
+            if (session == null) return null;
+            
+            if (session.MovieId != movie.MovieId) return null;
 
             return session;
         }
@@ -68,10 +57,7 @@ namespace BetterCinema.Api.Handlers
         {
             Movie movie = await moviesHandler.GetMovie(theaterId, movieId);
 
-            if (movie == null)
-            {
-                return null;
-            }
+            if (movie == null) return null;
 
             Session newSession = mapper.Map<Session>(createSessionRequest);
             newSession.MovieId = movieId;
@@ -80,17 +66,13 @@ namespace BetterCinema.Api.Handlers
             return session.Entity;
         }
 
-        public async Task<Session> UpdateSession(int theaterId, int movieId, int sessionId, UpdateSessionRequest updateSessionRequest)
+        public async Task<bool> UpdateSession(int theaterId, int movieId, int sessionId, UpdateSessionRequest updateSessionRequest)
         {
             Session session = await GetSession(theaterId, movieId, sessionId);
-            if (session == null)
-            {
-                return null;
-            }
-            if ( session.MovieId != movieId)
-            {
-                return null;
-            }
+
+            if (session == null) return false;
+
+            if (session.MovieId != movieId) return false;
 
             session.Start = updateSessionRequest.Start;
             session.End = updateSessionRequest.End;
@@ -99,16 +81,13 @@ namespace BetterCinema.Api.Handlers
             context.Entry(session).State = EntityState.Modified;
 
             await context.SaveChangesAsync();
-            return session;
+            return true;
         }
 
         public async Task<bool> DeleteSession(int theaterId, int movieId, int sessionId)
         {
             Session session = await GetSession(theaterId, movieId, sessionId);
-            if (session == null)
-            {
-                return false;
-            }
+            if (session == null) return false;
 
             context.Sessions.Remove(session);
             await context.SaveChangesAsync();

@@ -21,9 +21,9 @@ namespace BetterCinema.Api.Data
                 .WithOne(t => t.User);
         }
 
-        public DbSet<Theater> Theaters { get; set; }
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Session> Sessions { get; set; }
-        public DbSet<User> Users { get; set; }
+        public virtual DbSet<Theater> Theaters { get; set; }
+        public virtual DbSet<Movie> Movies { get; set; }
+        public virtual DbSet<Session> Sessions { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

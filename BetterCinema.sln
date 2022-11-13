@@ -11,7 +11,9 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "BetterCinema.Portal", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{BE02CB8A-0B66-430E-9892-9A063616B8A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterCinema.UnitTests", "tests\BetterCinema.UnitTests\BetterCinema.UnitTests.csproj", "{5BB40283-6D2C-435B-A732-5F91E8341D3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetterCinema.UnitTests", "tests\BetterCinema.UnitTests\BetterCinema.UnitTests.csproj", "{5BB40283-6D2C-435B-A732-5F91E8341D3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterCinema.IntegrationTests", "tests\BetterCinema.IntegrationTests\BetterCinema.IntegrationTests.csproj", "{C76648BC-EEF3-4E59-9358-9E0F46B40C4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{5BB40283-6D2C-435B-A732-5F91E8341D3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BB40283-6D2C-435B-A732-5F91E8341D3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BB40283-6D2C-435B-A732-5F91E8341D3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C76648BC-EEF3-4E59-9358-9E0F46B40C4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C76648BC-EEF3-4E59-9358-9E0F46B40C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C76648BC-EEF3-4E59-9358-9E0F46B40C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C76648BC-EEF3-4E59-9358-9E0F46B40C4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +47,7 @@ Global
 		{8917C27D-42BA-451E-9B19-FDD97E213165} = {CEAD4795-9D8D-4771-A088-EE47AC914690}
 		{9AD514DF-13A9-4C1C-8C65-40165197A8BB} = {CEAD4795-9D8D-4771-A088-EE47AC914690}
 		{5BB40283-6D2C-435B-A732-5F91E8341D3B} = {BE02CB8A-0B66-430E-9892-9A063616B8A8}
+		{C76648BC-EEF3-4E59-9358-9E0F46B40C4E} = {BE02CB8A-0B66-430E-9892-9A063616B8A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {02CE0CDB-9889-4154-9122-4F37EC2BC333}

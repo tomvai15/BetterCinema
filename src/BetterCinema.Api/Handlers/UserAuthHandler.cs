@@ -29,41 +29,25 @@ namespace BetterCinema.Api.Handlers
         {
             User user = mapper.Map<User>(createUserRequest);
 
-            user.HashedPassword = hasherAdapter.HashPassword(createUserRequest.Password);
+            user.HashedPassword = hasherAdapter.HashText(createUserRequest.Password);
             user.Role =  Role.Owner.ToString();
 
-            user = await usersHandler.AddUser(user);
+            user = await usersHandler.AddNewUser(user);
 
-            if (user == null)
-            {
-                return false;
-            }
-
-            return true;
+            bool isUserCreated = user != null;
+            return isUserCreated;
         }
 
         public async Task<LoginResponse> LoginUser(LoginRequest loginRequest)
         {
-            User user = await usersHandler.GetUserByName(loginRequest.Email);
+            User user = await usersHandler.GetUserByEmail(loginRequest.Email);
 
-            if (user == null)
-            {
-                return null;
-            }
-            bool isPasswordCorrect = true;
-            try
-            {
+            if (user == null) return null;
 
-                isPasswordCorrect = hasherAdapter.VerifyPassword(loginRequest.Password, user.HashedPassword);
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-            if (!isPasswordCorrect)
-            {
-                return null;
-            }
+            bool isPasswordCorrect = hasherAdapter.VerifyHashedText(loginRequest.Password, user.HashedPassword);
+            
+            if (!isPasswordCorrect) return null;
+
             string token = jwtTokenGenerator.GenerateToken(user);
 
             return new LoginResponse

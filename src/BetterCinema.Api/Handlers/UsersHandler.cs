@@ -6,8 +6,8 @@ namespace BetterCinema.Api.Handlers
 {
     public interface IUsersHandler
     {
-        Task<User> GetUserByName(string email);
-        Task<User> AddUser(User userToAdd);
+        Task<User> GetUserByEmail(string email);
+        Task<User> AddNewUser(User userToAdd);
     }
 
     public class UsersHandler : IUsersHandler
@@ -19,7 +19,7 @@ namespace BetterCinema.Api.Handlers
             this.context = context;
         }
 
-        public async Task<User> GetUserByName(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
             if (!context.Users.Any(u => u.Email==email))
             {
@@ -37,11 +37,12 @@ namespace BetterCinema.Api.Handlers
             return await context.Users.Where(u => u.UserId == userId).FirstAsync();
         }
 
-        public async Task<User> AddUser(User userToAdd)
+        public async Task<User> AddNewUser(User userToAdd)
         {
-            User user = await GetUserByName(userToAdd.Email);
+            User user = await GetUserByEmail(userToAdd.Email);
 
-            if (user != null)
+            bool userExists = user != null;
+            if (userExists)
             {
                 return null;
             }
