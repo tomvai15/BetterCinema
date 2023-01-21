@@ -34,10 +34,11 @@ namespace BetterCinema.Api.Bootstrap
             {
                 options.AddPolicy(Policy.DevelopmentCors, builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder.WithOrigins("https://localhost:3000")
                            .AllowAnyHeader()
                            .AllowAnyMethod()
-                           .SetIsOriginAllowed((x) => true);
+                           .SetIsOriginAllowed((x) => true)
+                           .AllowCredentials();
                 });
             });
 
@@ -69,7 +70,7 @@ namespace BetterCinema.Api.Bootstrap
 
 
             services.AddTransient<IJwtTokenGenerator, JwtTokenGenerator>();
-            services.AddTransient<IHasherAdapter, HasherAdapter>();
+            services.AddTransient<HasherAdapter, HasherAdapter>();
             services.AddTransient<SecurityTokenHandler, JwtSecurityTokenHandler>();
             services.AddTransient<IClaimsProvider, ClaimsProvider>();
             services.AddTransient<IAuthorizationHandler, TheaterIdInRouteValidationHandler>();

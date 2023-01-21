@@ -1,6 +1,6 @@
-﻿using AutoMapper;
-using BetterCinema.Api.Data;
-using BetterCinema.Api.Handlers;
+﻿using BetterCinema.Api.Constants;
+using BetterCinema.Api.Models;
+using System.Security.Claims;
 
 namespace BetterCinema.Api.Providers
 {
@@ -19,27 +19,33 @@ namespace BetterCinema.Api.Providers
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        public bool TryGetUserId(out int userId)
+        public bool TryGetClaim(string type, out string value)
         {
-            var claim = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            value = "";
+            var claim = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == type);
             if (claim == null)
             {
-                userId = -1;
                 return false;
             }
-            return int.TryParse(claim.Value, out userId);
+            value = claim.Value;
+            return true;
+        }
+
+        public bool TryGetUserId(out int userId)
+        {
+            userId = 0;
+            bool wasFound =  TryGetClaim(CustomClaim.UserId, out string value);
+            if (!wasFound)
+            {
+                return false;
+            }
+            return int.TryParse(value, out userId);
         }
 
         public bool TryGetUserRole(out string role)
         {
-            var claim = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
-            if (claim == null)
-            {
-                role = "";
-                return false;
-            }
-            role = claim.Value.ToString();
-            return true;
+            role = "";
+            return TryGetClaim(ClaimTypes.Role, out role);
         }
     }
 }

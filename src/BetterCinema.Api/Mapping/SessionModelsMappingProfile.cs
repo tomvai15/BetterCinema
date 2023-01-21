@@ -11,6 +11,7 @@ namespace BetterCinema.Api.Mapping
             CreateMap<CreateSessionRequest, Session>();
             CreateMap<UpdateSessionRequest, Session>();
             CreateMap<Session, GetSessionResponse>();
+            CreateMap<Session, CreateSessionRequest>();
         }
     }
 }
