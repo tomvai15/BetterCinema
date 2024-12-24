@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  webapp:
+    image: betterCinema/api   # Replace with the actual image name or build step
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile       # Dockerfile for the .NET app
+    ports:
+      - "5001:443"                  # Map host port 8080 to container port 80
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=mydb;User=root;Password=rootpassword;
+        
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest  # SQL Server version
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourStrong!Password"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"                # Map host port 1433 to container port 1433
+    volumes:
+      - db_data:/var/opt/mssql     # Persistent storage for SQL Server data
+
+volumes:
+  db_data:
