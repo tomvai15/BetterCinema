@@ -7,7 +7,7 @@ namespace BetterCinema.Api.Bootstrap
     {
         public static IServiceCollection AddCinemaDbServices(this IServiceCollection services, IConfiguration config)
         {
-            var connectionStringSectionName = "CinemaDbContext";
+            const string connectionStringSectionName = "CinemaDbContext";
             services.AddDbContext<CinemaDbContext>(options =>
                 options.UseSqlServer(config.GetConnectionString(connectionStringSectionName)));
 
