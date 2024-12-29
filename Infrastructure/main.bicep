@@ -1,33 +1,24 @@
-@minLength(3)
-@maxLength(11)
-param storagePrefix string
+@minLength(5)
+@maxLength(50)
+@description('Provide a globally unique name of your Azure Container Registry')
+param acrName string = 'acr${uniqueString(resourceGroup().id)}'
 
-@allowed([
-  'Standard_LRS'
-  'Standard_GRS'
-  'Standard_RAGRS'
-  'Standard_ZRS'
-  'Premium_LRS'
-  'Premium_ZRS'
-  'Standard_GZRS'
-  'Standard_RAGZRS'
-])
-param storageSKU string = 'Standard_LRS'
-
+@description('Provide a location for the registry.')
 param location string = resourceGroup().location
 
-var uniqueStorageName = '${storagePrefix}${uniqueString(resourceGroup().id)}'
+@description('Provide a tier of your Azure Container Registry.')
+param acrSku string = 'Basic'
 
-resource stg 'Microsoft.Storage/storageAccounts@2023-04-01' = {
-  name: uniqueStorageName
+resource acrResource 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' = {
+  name: acrName
   location: location
   sku: {
-    name: storageSKU
+    name: acrSku
   }
-  kind: 'StorageV2'
   properties: {
-    supportsHttpsTrafficOnly: true
+    adminUserEnabled: false
   }
 }
 
-output storageEndpoint object = stg.properties.primaryEndpoints
+@description('Output the login server property for later use')
+output loginServer string = acrResource.properties.loginServer
