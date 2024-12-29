@@ -19,5 +19,5 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
         template: ./Infrastructure/main.bicep
-        parameters: 'acrName=better-cinema-CR'
+        parameters: 'acrName=betterCinemaCR'
         failOnStdErr: false
