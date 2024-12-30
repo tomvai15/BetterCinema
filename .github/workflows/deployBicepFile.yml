@@ -1,4 +1,8 @@
 name: Deploy Bicep file
+on:
+  push:
+    paths:
+      - 'Infrastructure/**'
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
