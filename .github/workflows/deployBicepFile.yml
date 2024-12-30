@@ -17,13 +17,15 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Deploy Recource Group
-      uses: azure/arm-deploy@v1
+      uses: azure/cli@v1
       with:
-        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ secrets.AZURE_RG }}
-        template: ./Infrastructure/resource-group.bicep
-        parameters: 'resourceGroupName=${{ secrets.AZURE_RG }} resourceGroupLocation=${{ secrets.AZURE_LOCATION }}'
-        failOnStdErr: false
+        inlineScript: |
+          az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION }}
+          
+          az deployment sub create \
+            --location ${{ secrets.AZURE_LOCATION }} \
+            --template-file './Infrastructure/resource-group.bicep' \
+            --parameters 'resourceGroupName=${{ secrets.AZURE_RG }} resourceGroupLocation=${{ secrets.AZURE_LOCATION }}'
 
     - name: Deploy Container Registry
       uses: azure/arm-deploy@v1
