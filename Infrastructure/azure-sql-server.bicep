@@ -2,7 +2,7 @@
 param serverName string = uniqueString('sql', resourceGroup().id)
 
 @description('The name of the SQL Database.')
-param sqlDBName string = 'SampleDB'
+param sqlDBName string = 'CinemaDb'
 
 @description('Location for all resources.')
 param location string = resourceGroup().location
