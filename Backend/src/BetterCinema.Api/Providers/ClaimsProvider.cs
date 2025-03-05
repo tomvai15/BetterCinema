@@ -5,6 +5,7 @@ namespace BetterCinema.Api.Providers
 {
     public interface IClaimsProvider
     {
+        int GetUserId();
         bool TryGetUserId(out int userId);
         bool TryGetUserRole(out string role);
     }
@@ -21,6 +22,16 @@ namespace BetterCinema.Api.Providers
             }
             value = claim.Value;
             return true;
+        }
+
+        public int GetUserId()
+        {
+            if (TryGetUserId(out int userId))
+            {
+                return userId;
+            }
+
+            throw new InvalidOperationException();
         }
 
         public bool TryGetUserId(out int userId)

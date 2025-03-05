@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterCinema.Infrastructure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterCinema.Application", "src\BetterCinema.Application\BetterCinema.Application.csproj", "{09130D29-86F5-4CD1-89E5-90263FAD4A5D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterCinema.Api.Contracts", "src\BetterCinema.Api.Contracts\BetterCinema.Api.Contracts.csproj", "{8A85B94D-BCB9-4B3A-AA05-BBDDE47816CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{09130D29-86F5-4CD1-89E5-90263FAD4A5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09130D29-86F5-4CD1-89E5-90263FAD4A5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09130D29-86F5-4CD1-89E5-90263FAD4A5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A85B94D-BCB9-4B3A-AA05-BBDDE47816CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A85B94D-BCB9-4B3A-AA05-BBDDE47816CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A85B94D-BCB9-4B3A-AA05-BBDDE47816CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A85B94D-BCB9-4B3A-AA05-BBDDE47816CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{B604C9D8-73F5-4D60-8B78-2E64E7146A58} = {CEAD4795-9D8D-4771-A088-EE47AC914690}
 		{BB1C3EFD-8934-4950-9083-A33EC25850C2} = {CEAD4795-9D8D-4771-A088-EE47AC914690}
 		{09130D29-86F5-4CD1-89E5-90263FAD4A5D} = {CEAD4795-9D8D-4771-A088-EE47AC914690}
+		{8A85B94D-BCB9-4B3A-AA05-BBDDE47816CB} = {CEAD4795-9D8D-4771-A088-EE47AC914690}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {02CE0CDB-9889-4154-9122-4F37EC2BC333}

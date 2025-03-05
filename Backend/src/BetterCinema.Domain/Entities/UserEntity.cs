@@ -16,5 +16,6 @@ namespace BetterCinema.Domain.Entities
 
         [JsonIgnore]
         public ICollection<TheaterEntity>? Theaters { get; set; }
+        public ICollection<UserRoleEntity>? UserRoles { get; set; }
     }
 }

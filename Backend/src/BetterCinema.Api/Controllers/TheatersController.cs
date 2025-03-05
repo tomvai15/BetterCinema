@@ -43,7 +43,7 @@ namespace BetterCinema.Api.Controllers
             return mapper.Map<GetTheaterResponse>(theater);
         }
 
-        [HttpPatch("{theaterId}")]
+        [HttpPut("{theaterId}")]
         //[Authorize(Policy = AuthPolicy.TheaterIdInRouteValidation)]
         public async Task<IActionResult> PutTheater(int theaterId, UpdateTheaterRequest updateTheaterRequest)
         {

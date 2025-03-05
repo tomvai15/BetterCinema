@@ -16,6 +16,6 @@ namespace BetterCinema.Domain.Entities
 
         public int UserId { get; set; }
 
-        [JsonIgnore] public UserEntity? UserEntity { get; set; }
+        [JsonIgnore] public UserEntity? User { get; set; }
     }
 }

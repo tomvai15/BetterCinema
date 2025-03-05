@@ -1,0 +1,433 @@
+[
+  {
+    "Name": "CreateTheaterRequest",
+    "Namespace": "BetterCinema.Api.Contracts.Theaters",
+    "Properties": [
+      {
+        "Name": "Name",
+        "Type": "String"
+      },
+      {
+        "Name": "Description",
+        "Type": "String"
+      },
+      {
+        "Name": "Address",
+        "Type": "String"
+      },
+      {
+        "Name": "ImageUrl",
+        "Type": "String"
+      }
+    ]
+  },
+  {
+    "Name": "GetTheaterResponse",
+    "Namespace": "BetterCinema.Api.Contracts.Theaters",
+    "Properties": [
+      {
+        "Name": "Id",
+        "Type": "Int32"
+      },
+      {
+        "Name": "Name",
+        "Type": "String"
+      },
+      {
+        "Name": "Description",
+        "Type": "String"
+      },
+      {
+        "Name": "Address",
+        "Type": "String"
+      },
+      {
+        "Name": "ImageUrl",
+        "Type": "String"
+      },
+      {
+        "Name": "IsConfirmed",
+        "Type": "Boolean"
+      },
+      {
+        "Name": "UserId",
+        "Type": "Int32"
+      },
+      {
+        "Name": "IsOwned",
+        "Type": "Boolean"
+      }
+    ]
+  },
+  {
+    "Name": "GetTheatersResponse",
+    "Namespace": "BetterCinema.Api.Contracts.Theaters",
+    "Properties": [
+      {
+        "Name": "Theaters",
+        "Type": "IEnumerable\u00601"
+      },
+      {
+        "Name": "TotalCount",
+        "Type": "Int32"
+      }
+    ]
+  },
+  {
+    "Name": "UpdateTheaterRequest",
+    "Namespace": "BetterCinema.Api.Contracts.Theaters",
+    "Properties": [
+      {
+        "Name": "Name",
+        "Type": "String"
+      },
+      {
+        "Name": "Description",
+        "Type": "String"
+      },
+      {
+        "Name": "Address",
+        "Type": "String"
+      },
+      {
+        "Name": "ImageUrl",
+        "Type": "String"
+      },
+      {
+        "Name": "IsConfirmed",
+        "Type": "Nullable\u00601"
+      }
+    ]
+  },
+  {
+    "Name": "CreateSessionRequest",
+    "Namespace": "BetterCinema.Api.Contracts.Sessions",
+    "Properties": [
+      {
+        "Name": "Start",
+        "Type": "DateTime"
+      },
+      {
+        "Name": "End",
+        "Type": "DateTime"
+      },
+      {
+        "Name": "Hall",
+        "Type": "String"
+      }
+    ]
+  },
+  {
+    "Name": "GetSessionResponse",
+    "Namespace": "BetterCinema.Api.Contracts.Sessions",
+    "Properties": [
+      {
+        "Name": "SessionId",
+        "Type": "Int32"
+      },
+      {
+        "Name": "Start",
+        "Type": "DateTime"
+      },
+      {
+        "Name": "End",
+        "Type": "DateTime"
+      },
+      {
+        "Name": "Hall",
+        "Type": "String"
+      },
+      {
+        "Name": "MovieId",
+        "Type": "Int32"
+      }
+    ]
+  },
+  {
+    "Name": "GetSessionsResponse",
+    "Namespace": "BetterCinema.Api.Contracts.Sessions",
+    "Properties": [
+      {
+        "Name": "Sessions",
+        "Type": "IEnumerable\u00601"
+      }
+    ]
+  },
+  {
+    "Name": "UpdateSessionRequest",
+    "Namespace": "BetterCinema.Api.Contracts.Sessions",
+    "Properties": [
+      {
+        "Name": "Start",
+        "Type": "DateTime"
+      },
+      {
+        "Name": "End",
+        "Type": "DateTime"
+      },
+      {
+        "Name": "Hall",
+        "Type": "String"
+      }
+    ]
+  },
+  {
+    "Name": "GetRolesResponse",
+    "Namespace": "BetterCinema.Api.Contracts.Roles.Responses",
+    "Properties": []
+  },
+  {
+    "Name": "GetUserPermissionsResponse",
+    "Namespace": "BetterCinema.Api.Contracts.Roles.Responses",
+    "Properties": [
+      {
+        "Name": "Permissions",
+        "Type": "IList\u00601"
+      }
+    ]
+  },
+  {
+    "Name": "PermissionAccessResponseModel",
+    "Namespace": "BetterCinema.Api.Contracts.Roles.Responses",
+    "Properties": [
+      {
+        "Name": "AccessType",
+        "Type": "Int32"
+      },
+      {
+        "Name": "Name",
+        "Type": "String"
+      },
+      {
+        "Name": "HasAccess",
+        "Type": "Boolean"
+      }
+    ]
+  },
+  {
+    "Name": "PermissionResponseModel",
+    "Namespace": "BetterCinema.Api.Contracts.Roles.Responses",
+    "Properties": [
+      {
+        "Name": "ResourceName",
+        "Type": "String"
+      },
+      {
+        "Name": "ResourceType",
+        "Type": "Int32"
+      },
+      {
+        "Name": "Accesses",
+        "Type": "IList\u00601"
+      }
+    ]
+  },
+  {
+    "Name": "RoleResponseModel",
+    "Namespace": "BetterCinema.Api.Contracts.Roles.Responses",
+    "Properties": [
+      {
+        "Name": "Name",
+        "Type": "String"
+      },
+      {
+        "Name": "Permissions",
+        "Type": "IList\u00601"
+      }
+    ]
+  },
+  {
+    "Name": "UserPermissionResponseModel",
+    "Namespace": "BetterCinema.Api.Contracts.Roles.Responses",
+    "Properties": [
+      {
+        "Name": "ResourceType",
+        "Type": "Int32"
+      },
+      {
+        "Name": "AccessType",
+        "Type": "Int32"
+      }
+    ]
+  },
+  {
+    "Name": "CreateMovieRequest",
+    "Namespace": "BetterCinema.Api.Contracts.Movies",
+    "Properties": [
+      {
+        "Name": "Title",
+        "Type": "String"
+      },
+      {
+        "Name": "Description",
+        "Type": "String"
+      },
+      {
+        "Name": "Genre",
+        "Type": "String"
+      },
+      {
+        "Name": "ReleaseDate",
+        "Type": "DateTime"
+      },
+      {
+        "Name": "ImageUrl",
+        "Type": "String"
+      },
+      {
+        "Name": "Director",
+        "Type": "String"
+      }
+    ]
+  },
+  {
+    "Name": "GetMovieResponse",
+    "Namespace": "BetterCinema.Api.Contracts.Movies",
+    "Properties": [
+      {
+        "Name": "MovieId",
+        "Type": "Int32"
+      },
+      {
+        "Name": "Description",
+        "Type": "String"
+      },
+      {
+        "Name": "Title",
+        "Type": "String"
+      },
+      {
+        "Name": "Genre",
+        "Type": "String"
+      },
+      {
+        "Name": "ReleaseDate",
+        "Type": "DateTime"
+      },
+      {
+        "Name": "Director",
+        "Type": "String"
+      },
+      {
+        "Name": "TheaterId",
+        "Type": "Int32"
+      },
+      {
+        "Name": "ImageUrl",
+        "Type": "String"
+      },
+      {
+        "Name": "Sessions",
+        "Type": "IEnumerable\u00601"
+      }
+    ]
+  },
+  {
+    "Name": "GetMoviesResponse",
+    "Namespace": "BetterCinema.Api.Contracts.Movies",
+    "Properties": [
+      {
+        "Name": "Movies",
+        "Type": "IEnumerable\u00601"
+      }
+    ]
+  },
+  {
+    "Name": "UpdateMovieRequest",
+    "Namespace": "BetterCinema.Api.Contracts.Movies",
+    "Properties": [
+      {
+        "Name": "Title",
+        "Type": "String"
+      },
+      {
+        "Name": "Description",
+        "Type": "String"
+      },
+      {
+        "Name": "Genre",
+        "Type": "String"
+      },
+      {
+        "Name": "ReleaseDate",
+        "Type": "DateTime"
+      },
+      {
+        "Name": "ImageUrl",
+        "Type": "String"
+      },
+      {
+        "Name": "Director",
+        "Type": "String"
+      }
+    ]
+  },
+  {
+    "Name": "CreateUserRequest",
+    "Namespace": "BetterCinema.Api.Contracts.Auth",
+    "Properties": [
+      {
+        "Name": "Email",
+        "Type": "String"
+      },
+      {
+        "Name": "Name",
+        "Type": "String"
+      },
+      {
+        "Name": "Surname",
+        "Type": "String"
+      },
+      {
+        "Name": "Password",
+        "Type": "String"
+      }
+    ]
+  },
+  {
+    "Name": "LoginRequest",
+    "Namespace": "BetterCinema.Api.Contracts.Auth",
+    "Properties": [
+      {
+        "Name": "Email",
+        "Type": "String"
+      },
+      {
+        "Name": "Password",
+        "Type": "String"
+      }
+    ]
+  },
+  {
+    "Name": "LoginResponse",
+    "Namespace": "BetterCinema.Api.Contracts.Auth",
+    "Properties": [
+      {
+        "Name": "UserId",
+        "Type": "Int32"
+      },
+      {
+        "Name": "Name",
+        "Type": "String"
+      },
+      {
+        "Name": "Role",
+        "Type": "String"
+      },
+      {
+        "Name": "Token",
+        "Type": "String"
+      }
+    ]
+  },
+  {
+    "Name": "UpdateUserRequest",
+    "Namespace": "BetterCinema.Api.Contracts.Auth",
+    "Properties": [
+      {
+        "Name": "Role",
+        "Type": "String"
+      }
+    ]
+  }
+]

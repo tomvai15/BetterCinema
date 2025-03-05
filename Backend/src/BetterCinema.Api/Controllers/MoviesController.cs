@@ -24,7 +24,7 @@ namespace BetterCinema.Api.Controllers
             }
 
             IEnumerable<GetMovieResponse> getMovies = mapper.Map<IEnumerable<GetMovieResponse>>(movies);
-            return new GetMoviesResponse { Movies = getMovies };
+            return new GetMoviesResponse { Movies = getMovies.ToList() };
         }
 
         [HttpGet("{movieId}")]

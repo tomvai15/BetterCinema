@@ -38,7 +38,7 @@ namespace BetterCinema.Api.Handlers
                 theaters = theaters.Where(t => t.IsConfirmed || t.UserId == userId);
             }
 
-            return new GetTheatersResponse { Theaters = mapper.Map<IEnumerable<GetTheaterResponse>>(theaters), TotalCount = totalCount };
+            return new GetTheatersResponse { Theaters = mapper.Map<IList<GetTheaterResponse>>(theaters), TotalCount = totalCount };
         }
     }
 }

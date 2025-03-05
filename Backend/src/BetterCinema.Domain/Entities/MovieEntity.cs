@@ -22,7 +22,7 @@ namespace BetterCinema.Domain.Entities
         public required string ImageUrl { get; set; }
 
         [JsonIgnore]
-        public TheaterEntity? TheaterEntity { get; set; }
+        public TheaterEntity? Theater { get; set; }
 
         [JsonIgnore]
         public ICollection<SessionEntity>? Sessions { get; set; }

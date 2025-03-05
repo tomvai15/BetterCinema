@@ -25,7 +25,7 @@ namespace BetterCinema.Api.Controllers
             }
 
             IEnumerable<GetSessionResponse> sessionsResponse = mapper.Map<IEnumerable<GetSessionResponse>>(sessions);
-            return new GetSessionsResponse { Sessions = sessionsResponse };
+            return new GetSessionsResponse { Sessions = sessionsResponse.ToList() };
         }
 
         [HttpGet("{sessionId}")]

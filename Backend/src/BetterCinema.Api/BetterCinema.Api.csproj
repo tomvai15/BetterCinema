@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BetterCinema.Api.Contracts\BetterCinema.Api.Contracts.csproj" />
     <ProjectReference Include="..\BetterCinema.Domain\BetterCinema.Domain.csproj" />
     <ProjectReference Include="..\BetterCinema.Infrastructure\BetterCinema.Infrastructure.csproj" />
   </ItemGroup>

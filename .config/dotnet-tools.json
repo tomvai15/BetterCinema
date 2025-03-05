@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "bettercinema.tools.app": {
+      "version": "1.0.0",
+      "commands": [
+        "ReactContractGenerator"
+      ],
+      "rollForward": false
+    }
+  }
+}
