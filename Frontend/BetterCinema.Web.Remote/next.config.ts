@@ -1,13 +1,5 @@
 import type { NextConfig } from "next";
-const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
-
-const remotes = (isServer: boolean) => {
-  const location = isServer ? 'ssr' : 'chunks';
-  return {
-    // specify remotes
-    remote: `remote@http://localhost:3001/_next/static/${location}/remoteEntry.js`,
-  };
-}
+import { NextFederationPlugin } from '@module-federation/nextjs-mf';
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -17,9 +9,9 @@ const nextConfig: NextConfig = {
       new NextFederationPlugin({
         name: 'remote',
         filename: 'static/chunks/remoteEntry.js',
-        remotes: remotes(options.isServer),
         exposes: {
-          // host does not need to expose
+          // specify exposed pages and components
+          './FancyComponent': './components/FancyComponent.js'  
         },
         extraOptions: {
         },

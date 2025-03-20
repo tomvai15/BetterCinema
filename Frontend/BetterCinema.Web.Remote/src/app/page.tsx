@@ -1,9 +1,7 @@
 import { Suspense } from "react";
 import DataComponent from "./DataComponent";
 import Loading from "./Loading";
-import dynamic from 'next/dynamic';
-
-const FancyComponent = dynamic(() => import('remote/FancyComponent'));
+import FancyComponent from "@/components/FancyComponent";
 
 export default function Home() {
   return (
