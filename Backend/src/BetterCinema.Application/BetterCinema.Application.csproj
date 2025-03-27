@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BetterCinema.Domain\BetterCinema.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

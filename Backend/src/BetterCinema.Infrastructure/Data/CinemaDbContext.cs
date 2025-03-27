@@ -12,6 +12,8 @@ namespace BetterCinema.Infrastructure.Data
         public virtual DbSet<RoleEntity> Roles { get; set; }
         public virtual DbSet<PermissionEntity> Permissions { get; set; }
         public virtual DbSet<UserRoleEntity> UserRoles { get; set; }
+        
+        public virtual DbSet<FileMetadataEntity> FileMetadata { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
