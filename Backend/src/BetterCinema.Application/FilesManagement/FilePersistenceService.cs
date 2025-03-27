@@ -1,6 +1,5 @@
 ﻿using BetterCinema.Application.FilesManagement.Interfaces;
 using BetterCinema.Domain.Entities;
-using BetterCinema.Domain.Exceptions;
 using BetterCinema.Domain.Repositories;
 
 namespace BetterCinema.Application.FilesManagement;
@@ -39,19 +38,14 @@ public class FilePersistenceService(
         throw new Exception();
     }
 
-    public async Task<string> GetSignedUrl(string fileName)
+    public async Task<string?> GetSignedUrlAsync(string fileName)
     {
         var result = await fileUploadService.GetSignedUrlAsync(new GetSignedUrlRequest
         {
             FileName = fileName,
             FolderName = FolderName,
         });
-
-        if (result.IsSuccessful())
-        {
-            return result.Data!;
-        }
-
-        throw new NotFoundException();
+        
+        return result.Data;
     }
 }

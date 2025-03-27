@@ -3,5 +3,5 @@
 public interface IFilePersistenceService
 {
     Task<string> UploadFileAsync(Stream fileStream);
-    Task<string> GetSignedUrl(string fileName);
+    Task<string?> GetSignedUrlAsync(string fileName);
 }

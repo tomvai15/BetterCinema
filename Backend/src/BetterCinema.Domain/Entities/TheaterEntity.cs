@@ -9,7 +9,8 @@ namespace BetterCinema.Domain.Entities
         public required string Name { get; set; }
         public required string Description { get; set; }
         public required string Address { get; set; }
-        public required string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? FileName { get; set; }
         public bool IsConfirmed { get; set; }
 
         [JsonIgnore] public ICollection<MovieEntity>? Movies { get; set; }
