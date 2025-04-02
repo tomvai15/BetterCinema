@@ -24,14 +24,14 @@ jobs:
             docker build ./Backend -t ${{ vars.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
             docker push ${{ vars.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
         
-        # - name: 'Deploy to Azure Container Instances'
-          # uses: 'azure/aci-deploy@v1'
-          # with:
-            # resource-group: ${{ secrets.AZURE_RG }}
-            # dns-name-label: ${{ secrets.AZURE_RG }}${{ github.run_number }}
-            # image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
-            # registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-            # registry-username: ${{ secrets.REGISTRY_USERNAME }}
-            # registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-            # name: aci-bettercinema
-            # location: 'west us'
+        - name: 'Deploy to Azure Container Instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: ${{ vars.AZURE_RG }}
+            dns-name-label: ${{ vars.AZURE_RG }}${{ github.run_number }}
+            image: ${{ vars.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
+            registry-login-server: ${{ vars.REGISTRY_LOGIN_SERVER }}
+            registry-username: ${{ vars.REGISTRY_USERNAME }}
+            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+            name: acilinuxpublicipcontainergroup
+            location: 'west europe'
