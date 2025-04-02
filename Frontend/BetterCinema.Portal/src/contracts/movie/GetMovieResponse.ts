@@ -1,5 +1,5 @@
 export type GetMovieResponse = {
-    movieId: number,
+    id: number,
     description: string,
     title: string,
     genre: string,

@@ -85,7 +85,7 @@ const Movies = () => {
 					{
 						movies.length != 0 ?
 							movies.map((movie) => (
-								<Grid item key={movie.movieId} xs={12} sm={6} md={4}>
+								<Grid item key={movie.id} xs={12} sm={6} md={4}>
 									<Card 
 										sx={{ height: '100%', display: 'flex', flexDirection: 'column'}}
 									>
@@ -112,7 +112,7 @@ const Movies = () => {
 											</Typography>
 										</CardContent>
 										<CardActions>
-											<Button onClick={()=>navigateToMovie(movie.movieId)} size="small">Peržiūrėti</Button>
+											<Button onClick={()=>navigateToMovie(movie.id)} size="small">Peržiūrėti</Button>
 										</CardActions>
 									</Card>
 								</Grid>

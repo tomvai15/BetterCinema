@@ -73,7 +73,7 @@ const Theaters = () => {
 				<Grid sx={{ py: 4 }} container spacing={4}>
 					{ theaters.length > 0 ?
 						theaters.map((theater: Theater) => (
-							<Grid item key={theater.theaterId} xs={12} sm={6} md={4}>
+							<Grid item key={theater.id} xs={12} sm={6} md={4}>
 								<Card style={theater.userId == user.userId ? { border: '1px solid green' } : {}}
 									sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
 								>
@@ -96,7 +96,7 @@ const Theaters = () => {
 										</Typography>
 									</CardContent>
 									<CardActions>
-										<Button onClick={()=>navigateToTheater(theater.theaterId)} size="small">Peržiūrėti</Button>
+										<Button onClick={()=>navigateToTheater(theater.id)} size="small">Peržiūrėti</Button>
 										{
 											!theater.isConfirmed &&
 											<Typography color={'red'}>Nepatvirtintas</Typography>

@@ -1,5 +1,5 @@
 export type Theater = {
-    theaterId: number,
+    id: number,
     name: string
     description: string,
     address: string,

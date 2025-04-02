@@ -42,4 +42,10 @@ public class BlobStorageService(IConfiguration configuration) : IBlobStorageServ
 
         return blobClient.GenerateSasUri(sasBuilder).ToString();
     }
+
+    public async Task DeleteBlobAsync(string fileName)
+    {
+        var blobClient = _blobServiceClient.GetBlobContainerClient(_containerName).GetBlobClient(fileName);
+        await blobClient.DeleteIfExistsAsync();
+    }
 }

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BetterCinema.Api.Handlers;
-using BetterCinema.Api.Contracts;
 using AutoMapper;
 using BetterCinema.Api.Contracts.Theaters;
-using BetterCinema.Api.Constants;
 using BetterCinema.Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using BetterCinema.Domain.Entities;
@@ -32,15 +30,7 @@ namespace BetterCinema.Api.Controllers
         [HttpGet("{theaterId}")]
         public async Task<ActionResult<GetTheaterResponse>> GetTheater(int theaterId)
         {
-            var theater = await context.Theaters.FindAsync(theaterId);
-
-            if (theater == null)
-            {
-                return NotFound();
-            }
-
-
-            return mapper.Map<GetTheaterResponse>(theater);
+            return await theatersHandler.GetTheater(theaterId);
         }
 
         [HttpPut("{theaterId}")]
