@@ -11,6 +11,7 @@ builder.Services.AddHttpLogging(o => { });
 IConfiguration config = builder.Configuration;
 
 services.AddApiServices(config);
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -31,7 +32,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHealthChecks("/health");
 app.Run();
 
 public partial class Program { }
