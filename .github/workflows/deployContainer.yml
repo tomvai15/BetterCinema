@@ -18,11 +18,11 @@ jobs:
           uses: azure/docker-login@v1
           with:
             login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-            username: ${{ secrets.REGISTRY_USERNAME }}
+            username: ${{ vars.REGISTRY_USERNAME }}
             password: ${{ secrets.REGISTRY_PASSWORD }}
         - run: |
-            docker build ./Backend -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
-            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
+            docker build ./Backend -t ${{ vars.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
+            docker push ${{ vars.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
         
         # - name: 'Deploy to Azure Container Instances'
           # uses: 'azure/aci-deploy@v1'
