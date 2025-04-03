@@ -19,6 +19,8 @@ param memoryInGb int = 2
 @description('Log Analytics workspace ID')
 param logAnalyticsWorkspaceId string
 
+param logAnalyticsWorkspaceKey string
+
 @description('The behavior of Azure runtime if container has stopped.')
 @allowed([
   'Always'
@@ -56,11 +58,12 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2023-05-01'
       }
     ]
     osType: 'Linux'
-    diagnostics: {
-      logAnalytics: {
-        workspaceId: logAnalyticsWorkspaceId
-      }
-    }
+    // diagnostics: {
+    //   logAnalytics: {
+    //     workspaceId: logAnalyticsWorkspaceId
+    //     workspaceKey: logAnalyticsWorkspaceKey
+    //   }
+    // }
     restartPolicy: restartPolicy
     ipAddress: {
       type: 'Public'

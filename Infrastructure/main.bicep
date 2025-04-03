@@ -31,5 +31,7 @@ module containerizedApp './containerized-app.bicep' = {
   name: 'containerizedAppDeployment'
   params: {
     logAnalyticsWorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
+    logAnalyticsWorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
+
   }
 }
