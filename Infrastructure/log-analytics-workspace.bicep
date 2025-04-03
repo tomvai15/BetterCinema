@@ -21,5 +21,6 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06
 output logAnalyticsWorkspace object = logAnalyticsWorkspace
 
 output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.id
+output logAnalyticsCustomerId string = logAnalyticsWorkspace.properties.customerId
 #disable-next-line outputs-should-not-contain-secrets
 output logAnalyticsWorkspaceKey string = logAnalyticsWorkspace.listKeys().primarySharedKey
