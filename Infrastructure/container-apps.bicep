@@ -11,10 +11,10 @@ param containerAppLogAnalyticsName string = 'log-${uniqueString(resourceGroup().
 param location string = resourceGroup().location
 
 @description('Specifies the docker container image to deploy.')
-param containerImage string = 'acrx47grvfzemoqi.azurecr.io/bettercinema:latest'
+param containerImage string = 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
 
 @description('Specifies the container port.')
-param targetPort int = 8080
+param targetPort int = 80
 
 @description('Number of CPU cores the container can use. Can be with a maximum of two decimals.')
 @allowed([
