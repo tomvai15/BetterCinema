@@ -8,7 +8,7 @@ param location string = resourceGroup().location
 param image string = 'mcr.microsoft.com/azuredocs/aci-helloworld'
 
 @description('Port to open on the container and the public IP address.')
-param port int = 80
+param port int = 8080
 
 @description('The number of CPU cores to allocate to the container.')
 param cpuCores int = 1
