@@ -18,4 +18,4 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06
 }
 
 output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.id
-output logAnalyticsWorkspaceKey string = 'ninja'
+output logAnalyticsWorkspaceKey string = logAnalyticsWorkspace.listKeys().primarySharedKey
