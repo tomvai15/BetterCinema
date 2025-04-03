@@ -10,7 +10,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06
     sku: {
       name: 'PerGB2018'
     }
-    retentionInDays: 1
+    retentionInDays: 30
     workspaceCapping: {
       dailyQuotaGb: 1
     }
