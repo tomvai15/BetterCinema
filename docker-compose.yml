@@ -8,11 +8,17 @@ services:
       dockerfile: Dockerfile       # Dockerfile for the .NET app
     ports:
       - "5001:443"                  # Map host port 8080 to container port 80
-      - "5000:8080"
+      - "5000:80"
     depends_on:
       - db
     environment:
       - ConnectionStrings__DefaultConnection=Server=db;Database=mydb;User=root;Password=rootpassword;
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=root
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/certificate.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
       
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite

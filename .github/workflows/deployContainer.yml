@@ -34,6 +34,6 @@ jobs:
             registry-username: ${{ vars.REGISTRY_USERNAME }}
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: acilinuxpublicipcontainergroup
+            environment-variables: ASPNETCORE_URLS=https://+:443;http://+:80
             location: 'west europe'
             memory: 2
-            ports: 8080
