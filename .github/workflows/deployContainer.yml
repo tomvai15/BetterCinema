@@ -36,3 +36,4 @@ jobs:
             name: acilinuxpublicipcontainergroup
             location: 'west europe'
             memory: 2
+            ports: 8080
