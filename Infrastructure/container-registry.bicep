@@ -18,6 +18,7 @@ resource acrResource 'Microsoft.ContainerRegistry/registries@2023-01-01-preview'
   properties: {
     adminUserEnabled: false
   }
+
 }
 
 @description('Output the login server property for later use')
