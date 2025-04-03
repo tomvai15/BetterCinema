@@ -16,10 +16,10 @@ param cpuCores int = 1
 @description('The amount of memory to allocate to the container in gigabytes.')
 param memoryInGb int = 2
 
-@description('Log Analytics workspace ID')
-param logAnalyticsWorkspaceId string
+// @description('Log Analytics workspace ID')
+// param logAnalyticsWorkspaceId string
 
-param logAnalyticsWorkspaceKey string
+// param logAnalyticsWorkspaceKey string
 
 @description('The behavior of Azure runtime if container has stopped.')
 @allowed([

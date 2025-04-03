@@ -30,8 +30,8 @@ module appInsights 'app-insights.bicep' = {
 module containerizedApp './containerized-app.bicep' = {
   name: 'containerizedAppDeployment'
   params: {
-    logAnalyticsWorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
-    logAnalyticsWorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
+    // logAnalyticsWorkspaceId: logAnalytics.outputs.logAnalyticsWorkspaceId
+    // logAnalyticsWorkspaceKey: logAnalytics.outputs.logAnalyticsWorkspaceKey
 
   }
 }
