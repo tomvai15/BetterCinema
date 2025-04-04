@@ -23,17 +23,25 @@ jobs:
         - run: |
             docker build ./Backend -t ${{ vars.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
             docker push ${{ vars.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
-        
-        - name: 'Deploy to Azure Container Instances'
-          uses: 'azure/aci-deploy@v1'
+
+        - name: Build and deploy Container App
+          uses: azure/container-apps-deploy-action@v1
           with:
-            resource-group: ${{ vars.AZURE_RG }}
-            dns-name-label: ${{ vars.AZURE_RG }}${{ github.run_number }}
-            image: ${{ vars.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
-            registry-login-server: ${{ vars.REGISTRY_LOGIN_SERVER }}
-            registry-username: ${{ vars.REGISTRY_USERNAME }}
-            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-            name: acilinuxpublicipcontainergroup
-            environment-variables: ASPNETCORE_URLS=https://+:443;http://+:80
-            location: 'west europe'
-            memory: 2
+            acrName: ${{ vars.AZURE_CONTAINER_REGISTRY_NAME }}
+            containerAppName: ${{ vars.AZURE_CONTAINER_APP }}
+            resourceGroup: ${{ vars.AZURE_RG }}
+            imageToDeploy: ${{ vars.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
+        
+        # - name: 'Deploy to Azure Container Instances'
+        #   uses: 'azure/aci-deploy@v1'
+        #   with:
+        #     resource-group: ${{ vars.AZURE_RG }}
+        #     dns-name-label: ${{ vars.AZURE_RG }}${{ github.run_number }}
+        #     image: ${{ vars.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
+        #     registry-login-server: ${{ vars.REGISTRY_LOGIN_SERVER }}
+        #     registry-username: ${{ vars.REGISTRY_USERNAME }}
+        #     registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+        #     name: acilinuxpublicipcontainergroup
+        #     environment-variables: ASPNETCORE_URLS=https://+:443;http://+:80
+        #     location: 'west europe'
+        #     memory: 2
