@@ -2,7 +2,7 @@
 param containerAppName string = 'app-${uniqueString(resourceGroup().id)}'
 
 @description('Specifies the name of the container app environment.')
-param containerAppEnvName string = 'env-${uniqueString(resourceGroup().id)}'
+param containerAppEnvName string = 'env-BetterCinema-${uniqueString(resourceGroup().id)}'
 
 @description('Specifies the name of the log analytics workspace.')
 param containerAppLogAnalyticsName string = 'containerapp-log-${uniqueString(resourceGroup().id)}'
