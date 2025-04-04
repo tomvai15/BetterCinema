@@ -31,4 +31,4 @@ jobs:
             containerAppName: ${{ vars.AZURE_CONTAINER_APP }}
             resourceGroup: ${{ vars.AZURE_RG }}
             imageToDeploy: ${{ vars.REGISTRY_LOGIN_SERVER }}/bettercinema:${{ github.sha }}
-            environmentVariables: ASPNETCORE_HTTP_PORTS=80;443
+            environmentVariables: ASPNETCORE_HTTP_PORTS=80
